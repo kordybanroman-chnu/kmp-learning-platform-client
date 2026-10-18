@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">Learning Platform</string>
+
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Get started</string>
+
+    <string name="onboarding_slide_catalog_title">Course catalog</string>
+    <string name="onboarding_slide_catalog_body">The whole platform catalog: course name, price and free seats.</string>
+    <string name="onboarding_slide_enrollment_title">Enroll in a few taps</string>
+    <string name="onboarding_slide_enrollment_body">Pick courses and seat counts, add a note and a preferred schedule.</string>
+    <string name="onboarding_slide_status_title">Status under control</string>
+    <string name="onboarding_slide_status_body">From a submitted enrollment to completion: the status updates while it is processed.</string>
+    <string name="onboarding_slide_language_title">Two languages</string>
+    <string name="onboarding_slide_language_body">Ukrainian and English; the language and the theme are stored on the device.</string>
+
+    <string name="home_placeholder">Courses and enrollments will appear here.</string>
+    <string name="home_theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="home_language">Language</string>
+    <string name="language_uk">UA</string>
+    <string name="language_en">EN</string>
+    <string name="home_show_onboarding">Show the onboarding again</string>
+</resources>

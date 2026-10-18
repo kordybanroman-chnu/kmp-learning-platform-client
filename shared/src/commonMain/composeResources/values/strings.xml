@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">Learning Platform</string>
+
+    <string name="onboarding_skip">Пропустити</string>
+    <string name="onboarding_next">Далі</string>
+    <string name="onboarding_start">Почати</string>
+
+    <string name="onboarding_slide_catalog_title">Каталог курсів</string>
+    <string name="onboarding_slide_catalog_body">Увесь каталог платформи: назва курсу, ціна та вільні місця.</string>
+    <string name="onboarding_slide_enrollment_title">Запис у декілька кліків</string>
+    <string name="onboarding_slide_enrollment_body">Оберіть курси та кількість місць, додайте нотатку й бажаний графік.</string>
+    <string name="onboarding_slide_status_title">Статус під контролем</string>
+    <string name="onboarding_slide_status_body">Від поданої заявки до зарахування: статус оновлюється під час обробки.</string>
+    <string name="onboarding_slide_language_title">Дві мови</string>
+    <string name="onboarding_slide_language_body">Українська та англійська; мова й тема зберігаються на пристрої.</string>
+
+    <string name="home_placeholder">Каталог курсів і записи на навчання з\'являться тут.</string>
+    <string name="home_theme">Тема</string>
+    <string name="theme_system">Системна</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
+    <string name="home_language">Мова</string>
+    <string name="language_uk">УКР</string>
+    <string name="language_en">EN</string>
+    <string name="home_show_onboarding">Показати онбординг ще раз</string>
+</resources>

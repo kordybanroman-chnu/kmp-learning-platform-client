@@ -8,6 +8,10 @@ plugins {
 }
 
 kotlin {
+  compilerOptions {
+    freeCompilerArgs.add("-Xexpect-actual-classes")
+  }
+
   jvm()
 
   android {
@@ -45,6 +49,8 @@ kotlin {
       implementation(libs.compose.uiToolingPreview)
       implementation(libs.androidx.lifecycle.viewmodelCompose)
       implementation(libs.androidx.lifecycle.runtimeCompose)
+      implementation(libs.kermit)
+      api(libs.multiplatform.settings)
     }
     commonTest.dependencies {
       implementation(libs.kotlin.test)

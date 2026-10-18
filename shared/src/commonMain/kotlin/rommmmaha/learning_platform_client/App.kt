@@ -1,47 +1,34 @@
 package rommmmaha.learning_platform_client
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import kmp_learning_platform_client.shared.generated.resources.Res
-import kmp_learning_platform_client.shared.generated.resources.compose_multiplatform
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import com.russhwolf.settings.Settings
+import rommmmaha.learning_platform_client.platform.LocalAppLocale
+import rommmmaha.learning_platform_client.settings.UserSettings
+import rommmmaha.learning_platform_client.theme.LearningPlatformTheme
+import rommmmaha.learning_platform_client.ui.HomeScreen
+import rommmmaha.learning_platform_client.ui.OnboardingScreen
 
 @Composable
-@Preview
-fun App() {
-  MaterialTheme {
-    var showContent by remember { mutableStateOf(false) }
-    Column(
-      modifier = Modifier
-        .background(MaterialTheme.colorScheme.primaryContainer)
-        .safeContentPadding()
-        .fillMaxSize(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-      Button(onClick = { showContent = !showContent }) {
-        Text("Click me!")
-      }
-      AnimatedVisibility(showContent) {
-        val greeting = remember { Greeting().greet() }
-        Column(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-          Image(painterResource(Res.drawable.compose_multiplatform), null)
-          Text("Compose: $greeting")
+fun App(settings: Settings) {
+  val userSettings = remember(settings) { UserSettings(settings) }
+  LaunchedEffect(Unit) {
+    log.i { "App started on ${getPlatform().name}" }
+  }
+  CompositionLocalProvider(LocalAppLocale provides userSettings.language) {
+    key(userSettings.language) {
+      LearningPlatformTheme(themeMode = userSettings.themeMode) {
+        Surface(color = MaterialTheme.colorScheme.background) {
+          if (userSettings.onboardingCompleted) {
+            HomeScreen(userSettings)
+          } else {
+            OnboardingScreen(onFinished = userSettings::completeOnboarding)
+          }
         }
       }
     }
