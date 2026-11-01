@@ -7,13 +7,13 @@
     <string name="onboarding_start">Почати</string>
 
     <string name="onboarding_slide_catalog_title">Каталог курсів</string>
-    <string name="onboarding_slide_catalog_body">Увесь каталог платформи: назва курсу, ціна та вільні місця.</string>
-    <string name="onboarding_slide_enrollment_title">Запис у декілька кліків</string>
-    <string name="onboarding_slide_enrollment_body">Оберіть курси та кількість місць, додайте нотатку й бажаний графік.</string>
-    <string name="onboarding_slide_status_title">Статус під контролем</string>
-    <string name="onboarding_slide_status_body">Від поданої заявки до зарахування: статус оновлюється під час обробки.</string>
-    <string name="onboarding_slide_language_title">Дві мови</string>
-    <string name="onboarding_slide_language_body">Українська та англійська; мова й тема зберігаються на пристрої.</string>
+    <string name="onboarding_slide_catalog_body">Знайдіть дисципліну серед курсів університету: програма, викладач, тривалість, ціна, вільні місця й відгуки.</string>
+    <string name="onboarding_slide_enrollment_title">Запис і оплата</string>
+    <string name="onboarding_slide_enrollment_body">Оберіть курси й кількість місць, додайте нотатку та графік. Підтвердьте місця й оплатіть карткою або рахунком.</string>
+    <string name="onboarding_slide_learning_title">Навчання за програмою</string>
+    <string name="onboarding_slide_learning_body">Модулі, відео, конспекти й тести в одному місці. Продовжуйте з того уроку, де зупинилися.</string>
+    <string name="onboarding_slide_progress_title">Тести, прогрес і сертифікат</string>
+    <string name="onboarding_slide_progress_body">Складайте тести з таймером і спробами, бачте бали та прогрес курсу. Після завершення отримайте сертифікат, залиште відгук і обговоріть матеріали з викладачем.</string>
 
     <string name="home_placeholder">Каталог курсів і записи на навчання з\'являться тут.</string>
     <string name="home_theme">Тема</string>
@@ -24,4 +24,28 @@
     <string name="language_uk">УКР</string>
     <string name="language_en">EN</string>
     <string name="home_show_onboarding">Показати онбординг ще раз</string>
+    <string name="auth_title">Вхід</string>
+    <string name="auth_subtitle">Доступ для студентів університету.</string>
+    <string name="auth_username">Ім\'я користувача</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_show_password">Показати</string>
+    <string name="auth_hide_password">Сховати</string>
+    <string name="auth_sign_in">Увійти</string>
+    <string name="auth_signing_in">Вхід…</string>
+    <string name="auth_error_username_required">Введіть ім\'я користувача</string>
+    <string name="auth_error_username_short">Щонайменше 3 символи</string>
+    <string name="auth_error_password_required">Введіть пароль</string>
+    <string name="auth_error_password_short">Щонайменше 6 символів</string>
+    <string name="auth_error_sign_in">Не вдалося увійти. Спробуйте ще раз.</string>
+    <string name="auth_no_account">Немає акаунта? Зверніться до деканату.</string>
+
+    <string name="home_title">Налаштування</string>
+    <string name="home_subtitle">Тема, мова й онбординг</string>
+    <string name="home_client_subtitle">Клієнт для Android і Desktop</string>
+    <string name="home_app_section">Застосунок</string>
+    <string name="home_sign_out">Вийти</string>
+    <string name="onboarding_demo_course_csharp">Основи C#</string>
+    <string name="onboarding_demo_course_aspnet">ASP.NET Core API</string>
+    <string name="onboarding_demo_meta_csharp">1 200,00 ₴ · 30 місць</string>
+    <string name="onboarding_demo_meta_aspnet">1 800,00 ₴ · 20 місць</string>
 </resources>

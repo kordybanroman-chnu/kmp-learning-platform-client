@@ -8,11 +8,11 @@ import androidx.compose.ui.unit.dp
 import rommmmaha.learning_platform_client.settings.ThemeMode
 
 private val AppShapes = Shapes(
-  extraSmall = RoundedCornerShape(4.dp),
-  small = RoundedCornerShape(8.dp),
+  extraSmall = RoundedCornerShape(6.dp),
+  small = RoundedCornerShape(10.dp),
   medium = RoundedCornerShape(12.dp),
   large = RoundedCornerShape(16.dp),
-  extraLarge = RoundedCornerShape(20.dp),
+  extraLarge = RoundedCornerShape(28.dp),
 )
 
 @Composable
@@ -25,11 +25,7 @@ fun LearningPlatformTheme(
     ThemeMode.Light -> false
     ThemeMode.Dark -> true
   }
-  val colorScheme = when (themeMode) {
-    ThemeMode.System -> platformColorScheme(darkTheme) ?: defaultColors(darkTheme)
-    ThemeMode.Light -> LightColors
-    ThemeMode.Dark -> DarkColors
-  }
+  val colorScheme = if (darkTheme) DarkColors else LightColors
   MaterialTheme(
     colorScheme = colorScheme,
     typography = appTypography(),
@@ -37,5 +33,3 @@ fun LearningPlatformTheme(
     content = content,
   )
 }
-
-private fun defaultColors(darkTheme: Boolean) = if (darkTheme) DarkColors else LightColors

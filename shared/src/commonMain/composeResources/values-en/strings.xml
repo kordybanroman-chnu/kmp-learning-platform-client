@@ -7,13 +7,13 @@
     <string name="onboarding_start">Get started</string>
 
     <string name="onboarding_slide_catalog_title">Course catalog</string>
-    <string name="onboarding_slide_catalog_body">The whole platform catalog: course name, price and free seats.</string>
-    <string name="onboarding_slide_enrollment_title">Enroll in a few taps</string>
-    <string name="onboarding_slide_enrollment_body">Pick courses and seat counts, add a note and a preferred schedule.</string>
-    <string name="onboarding_slide_status_title">Status under control</string>
-    <string name="onboarding_slide_status_body">From a submitted enrollment to completion: the status updates while it is processed.</string>
-    <string name="onboarding_slide_language_title">Two languages</string>
-    <string name="onboarding_slide_language_body">Ukrainian and English; the language and the theme are stored on the device.</string>
+    <string name="onboarding_slide_catalog_body">Find a course among the university catalog: program, instructor, duration, price, available seats and reviews.</string>
+    <string name="onboarding_slide_enrollment_title">Enrollment and payment</string>
+    <string name="onboarding_slide_enrollment_body">Pick courses and seats, add a note and schedule. Confirm seats and pay by card or invoice.</string>
+    <string name="onboarding_slide_learning_title">Learn by the program</string>
+    <string name="onboarding_slide_learning_body">Modules, videos, notes and tests in one place. Continue from the lesson where you stopped.</string>
+    <string name="onboarding_slide_progress_title">Tests, progress and certificate</string>
+    <string name="onboarding_slide_progress_body">Take timed tests with attempts, see scores and course progress. Complete the course to get a certificate, leave a review and discuss materials with the instructor.</string>
 
     <string name="home_placeholder">Courses and enrollments will appear here.</string>
     <string name="home_theme">Theme</string>
@@ -24,4 +24,28 @@
     <string name="language_uk">UA</string>
     <string name="language_en">EN</string>
     <string name="home_show_onboarding">Show the onboarding again</string>
+    <string name="auth_title">Sign in</string>
+    <string name="auth_subtitle">Access for university students.</string>
+    <string name="auth_username">Username</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_show_password">Show</string>
+    <string name="auth_hide_password">Hide</string>
+    <string name="auth_sign_in">Sign in</string>
+    <string name="auth_signing_in">Signing in…</string>
+    <string name="auth_error_username_required">Enter your username</string>
+    <string name="auth_error_username_short">At least 3 characters</string>
+    <string name="auth_error_password_required">Enter your password</string>
+    <string name="auth_error_password_short">At least 6 characters</string>
+    <string name="auth_error_sign_in">Sign in failed. Try again.</string>
+    <string name="auth_no_account">No account? Contact your faculty office.</string>
+
+    <string name="home_title">Settings</string>
+    <string name="home_subtitle">Theme, language and onboarding</string>
+    <string name="home_client_subtitle">Client for Android and Desktop</string>
+    <string name="home_app_section">Application</string>
+    <string name="home_sign_out">Sign out</string>
+    <string name="onboarding_demo_course_csharp">Основи C#</string>
+    <string name="onboarding_demo_course_aspnet">ASP.NET Core API</string>
+    <string name="onboarding_demo_meta_csharp">1 200,00 ₴ · 30 seats</string>
+    <string name="onboarding_demo_meta_aspnet">1 800,00 ₴ · 20 seats</string>
 </resources>

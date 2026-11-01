@@ -49,11 +49,20 @@ kotlin {
       implementation(libs.compose.uiToolingPreview)
       implementation(libs.androidx.lifecycle.viewmodelCompose)
       implementation(libs.androidx.lifecycle.runtimeCompose)
+      implementation(libs.androidx.lifecycle.viewmodelNavigation3)
+      implementation(libs.navigation3.ui)
+      implementation(libs.navigation3.runtime)
+      implementation(libs.koin.core)
+      implementation(libs.koin.core.viewmodel)
+      implementation(libs.koin.compose)
+      implementation(libs.koin.compose.viewmodel)
       implementation(libs.kermit)
       api(libs.multiplatform.settings)
     }
     commonTest.dependencies {
       implementation(libs.kotlin.test)
+      implementation(libs.kotlinx.coroutines.test)
+      implementation(libs.multiplatform.settings.test)
     }
   }
 }

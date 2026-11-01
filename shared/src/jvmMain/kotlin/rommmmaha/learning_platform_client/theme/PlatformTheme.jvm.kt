@@ -13,11 +13,6 @@ import java.io.File
 @Composable
 actual fun platformDarkTheme(): Boolean = remember { DesktopTheme.prefersDark() }
 
-@Composable
-actual fun platformColorScheme(darkTheme: Boolean): ColorScheme? = remember {
-  readKdeGlobals()?.let(::kdeColorScheme)
-}
-
 private object DesktopTheme {
   fun prefersDark(): Boolean {
     val kde = readKdeGlobals()
@@ -31,14 +26,14 @@ internal fun kdeColorScheme(kde: Map<String, Map<String, String>>): ColorScheme?
   val background = kde.kdeColor("Colors:Window", "BackgroundNormal") ?: return null
   val dark = background.luminance() < 0.5f
   val foreground = kde.kdeColor("Colors:Window", "ForegroundNormal")
-    ?: if (dark) Color(0xFFF8FAFC) else Color(0xFF0F172A)
+    ?: if (dark) Color(0xFFF2F5F3) else Color(0xFF14201C)
   val viewForeground = kde.kdeColor("Colors:View", "ForegroundNormal") ?: foreground
   val accent = kde.kdeColor("Colors:Selection", "BackgroundNormal")
-    ?: if (dark) Color(0xFF60A5FA) else Color(0xFF1D4ED8)
+    ?: if (dark) Color(0xFF6FD8C4) else Color(0xFF0E7C66)
   val onAccent = kde.kdeColor("Colors:Selection", "ForegroundNormal")
-    ?: if (accent.luminance() > 0.5f) Color(0xFF0F172A) else Color(0xFFF8FAFC)
+    ?: if (accent.luminance() > 0.5f) Color(0xFF052B24) else Color(0xFFFFFFFF)
   val error = kde.kdeColor("Colors:View", "ForegroundNegative")
-    ?: if (dark) Color(0xFFFFB4AB) else Color(0xFFBA1A1A)
+    ?: if (dark) Color(0xFFFDA29B) else Color(0xFFB42318)
   val mutedForeground = lerp(viewForeground, background, 0.35f)
   val base = if (dark) darkColorScheme() else lightColorScheme()
   return base.copy(
