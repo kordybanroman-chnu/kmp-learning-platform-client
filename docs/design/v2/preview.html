@@ -1,0 +1,1712 @@
+<!doctype html>
+<html lang="uk" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Platform · дизайн, версія 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --canvas: #F4F6F2;
+    --surface: #FFFFFF;
+    --surface-2: #EDF1EC;
+    --raised: #FFFFFF;
+    --text: #14201C;
+    --text-2: #4C5A54;
+    --text-3: #5F6A65;
+    --border: #E1E6DF;
+    --border-strong: #D2D9D1;
+    --accent: #0E7C66;
+    --accent-hover: #0A6555;
+    --accent-soft: #E5F4F0;
+    --on-accent: #FFFFFF;
+    --success: #087443;
+    --success-soft: #EAFBF1;
+    --warning: #A65308;
+    --warning-soft: #FFF6E5;
+    --danger: #B42318;
+    --danger-soft: #FEF2F1;
+    --neutral: #475467;
+    --neutral-soft: #F1F3F2;
+    --input-bg: #FFFFFF;
+    --shadow-sm: 0 1px 2px rgba(20, 32, 28, 0.05);
+    --shadow-card: 0 1px 2px rgba(20, 32, 28, 0.04), 0 5px 14px -6px rgba(20, 32, 28, 0.07);
+    --shadow-float: 0 12px 32px -16px rgba(20, 32, 28, 0.3);
+    --page: #E9EDE7;
+    --frame: #D4DBD3;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --canvas: #0B0F0D;
+    --surface: #121816;
+    --surface-2: #1A211E;
+    --raised: #242D29;
+    --text: #F2F5F3;
+    --text-2: #B7C2BC;
+    --text-3: #8A958F;
+    --border: #232B28;
+    --border-strong: #2E3733;
+    --accent: #6FD8C4;
+    --accent-hover: #8BE6D5;
+    --accent-soft: #15332D;
+    --on-accent: #052B24;
+    --success: #7BE0A8;
+    --success-soft: #11291B;
+    --warning: #F5C56A;
+    --warning-soft: #2B2212;
+    --danger: #FDA29B;
+    --danger-soft: #2E1614;
+    --neutral: #C4CDC8;
+    --neutral-soft: #1C2421;
+    --input-bg: #0E1412;
+    --shadow-sm: none;
+    --shadow-card: none;
+    --shadow-float: 0 16px 40px rgba(0, 0, 0, 0.55);
+    --page: #070A08;
+    --frame: #1E2622;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--page);
+    color: var(--text);
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 23px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; }
+  a { color: inherit; }
+  svg { display: block; }
+
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .icon { width: 20px; height: 20px; }
+
+  /* preview chrome */
+  .preview-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 64px;
+    padding: 10px 32px;
+    background: color-mix(in srgb, var(--canvas) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .preview-brand { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .preview-brand span { color: var(--text-3); font-weight: 400; }
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    flex: 0 0 auto;
+  }
+  .logo.sm { width: 24px; height: 24px; border-radius: 8px; font-size: 12px; }
+
+  .theme-switch { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--surface-2); }
+  .theme-switch button {
+    height: 32px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 9px;
+    background: none;
+    color: var(--text-3);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--text); box-shadow: var(--shadow-sm); }
+
+  .sheet { max-width: 1400px; margin: 0 auto; padding: 40px 32px 96px; }
+  .intro { max-width: 780px; }
+  .intro h1 { margin: 0; font-size: 34px; line-height: 42px; font-weight: 600; letter-spacing: -0.025em; }
+  .intro p { margin: 12px 0 0; font-size: 16px; line-height: 26px; color: var(--text-2); }
+  .intro .small { margin-top: 10px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .system { display: grid; grid-template-columns: 1.15fr 1.45fr 1fr; gap: 16px; margin-top: 32px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: var(--shadow-card); }
+  .panel h3 { margin: 0 0 12px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--text-3); }
+  .swatches { display: flex; gap: 8px; }
+  .swatch { flex: 1; min-width: 0; }
+  .swatch i { display: block; height: 32px; border-radius: 8px; border: 1px solid var(--border); }
+  .swatch span { display: block; margin-top: 6px; font-size: 10px; line-height: 14px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .type-sample { display: flex; align-items: baseline; gap: 10px; }
+  .type-sample b { font-size: 30px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em; }
+  .type-sample span { font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .radius-row { display: flex; gap: 8px; margin-top: 12px; }
+  .radius { flex: 1; height: 32px; border: 1px solid var(--border-strong); background: var(--surface-2); font-size: 10px; line-height: 30px; text-align: center; color: var(--text-3); }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 64px 0 20px; }
+  .section-head h2 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-head span { font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .devices { display: flex; flex-wrap: wrap; gap: 40px 24px; align-items: flex-start; }
+  .device { margin: 0; flex: 0 0 auto; }
+  .device figcaption { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 10px; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text); }
+  .device figcaption span { font-weight: 400; color: var(--text-3); }
+
+  /* phone canvas */
+  .phone {
+    width: 390px;
+    height: 844px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 34px;
+    border: 1px solid var(--frame);
+    background: var(--canvas);
+    color: var(--text);
+    box-shadow: 0 20px 44px -28px rgba(10, 20, 15, 0.45);
+  }
+  html[data-theme="dark"] .phone { box-shadow: 0 20px 44px -20px rgba(0, 0, 0, 0.85); }
+
+  .app { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  .statusbar { flex: 0 0 auto; height: 28px; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .status-icons { display: flex; align-items: center; gap: 5px; }
+  .si { height: 11px; width: auto; }
+
+  /* app bar */
+  .appbar { flex: 0 0 auto; height: 52px; padding: 0 20px; display: flex; align-items: center; gap: 8px; }
+  .appbar h1 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  .appbar .icon-btn { margin-left: auto; }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--text-2);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--text); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .content { flex: 1; min-height: 0; padding: 4px 20px 0; overflow: hidden; }
+  .content.scroll { overflow-y: auto; scrollbar-width: none; }
+  .content.scroll::-webkit-scrollbar { display: none; }
+  .page-sub { margin: 0 0 2px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--text-3);
+  }
+  .section-label:first-child { margin-top: 8px; }
+  .section-label b { font-weight: 500; color: var(--text-3); }
+
+  /* cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .card-pad { padding: 16px; }
+  .card-tight { padding: 6px; }
+
+  .list-row {
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .list-row + .list-row { border-top: 1px solid var(--border); }
+  .list-row:hover { background: var(--surface-2); }
+  .list-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .list-main { flex: 1; min-width: 0; }
+  .list-title { display: block; font-size: 15px; line-height: 22px; font-weight: 600; }
+  .list-meta { display: block; margin-top: 1px; font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .chev { width: 18px; height: 18px; color: var(--text-3); flex: 0 0 auto; }
+
+  .avatar-square {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .avatar-square.lg { width: 48px; height: 48px; border-radius: 14px; font-size: 18px; }
+  .avatar-square.muted { background: var(--surface-2); color: var(--text-3); }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .avatar.sm { width: 28px; height: 28px; font-size: 10px; }
+
+  /* chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+  .chip.no-dot::before { display: none; }
+  .chip-warn { background: var(--warning-soft); color: var(--warning); }
+  .chip-accent { background: var(--accent-soft); color: var(--accent); }
+  .chip-success { background: var(--success-soft); color: var(--success); }
+  .chip-neutral { background: var(--neutral-soft); color: var(--neutral); }
+  .chip-danger { background: var(--danger-soft); color: var(--danger); }
+
+  /* buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: none;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 1px 2px rgba(14, 124, 102, 0.22); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+  .btn-secondary:hover { background: var(--surface-2); }
+  .btn-ghost { height: auto; padding: 0; color: var(--accent); }
+  .btn-ghost:hover { color: var(--accent-hover); }
+  .btn-danger { height: auto; padding: 0; color: var(--danger); }
+  .btn-danger:hover { text-decoration: underline; }
+  .btn-danger-outline { background: var(--surface); border-color: var(--danger); color: var(--danger); }
+  .btn-danger-outline:hover { background: var(--danger-soft); }
+  .btn-block { width: 100%; }
+  .btn-lg { height: 48px; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn:disabled { background: var(--surface-2); border-color: var(--border); color: var(--text-3); box-shadow: none; cursor: not-allowed; }
+  .btn:disabled:hover { background: var(--surface-2); }
+
+  .tabbar {
+    flex: 0 0 auto;
+    display: flex;
+    height: 64px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 0;
+    background: none;
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tab .icon { width: 22px; height: 22px; }
+  .tab.is-active { color: var(--accent); }
+  .tab.is-active .icon { stroke-width: 2; }
+
+  /* course */
+  .hero-course { padding: 18px 16px 16px; }
+  .hero-title-row { display: flex; align-items: center; gap: 12px; }
+  .hero-title-row h2 { margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero-facts { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 16px; }
+  .fact-label { display: block; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .price { font-size: 22px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .price-unit { margin-left: 6px; font-size: 12px; line-height: 16px; font-weight: 400; color: var(--text-3); }
+
+  .flow-step { display: flex; gap: 12px; padding: 10px 0; }
+  .flow-step + .flow-step { border-top: 1px solid var(--border); }
+  .flow-num {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .flow-step strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .flow-step p { margin: 1px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .bottom-bar {
+    flex: 0 0 auto;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .bottom-bar .hint { margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); text-align: center; }
+
+  /* forms */
+  .field + .field { margin-top: 14px; }
+  .field label { display: block; margin-bottom: 6px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--text-3); }
+  .input, .textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .textarea { height: 80px; resize: none; }
+  .input::placeholder, .textarea::placeholder { color: var(--text-3); }
+  .input:focus, .textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .student-static { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .student-name { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .student-mail { display: block; margin-top: 1px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .pick-row + .pick-row { border-top: 1px solid var(--border); }
+  .pick {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+  }
+  .pick-body { flex: 1; min-width: 0; }
+  .pick-title { display: block; font-size: 15px; line-height: 22px; font-weight: 600; }
+  .pick-meta { display: block; margin-top: 1px; font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .pick.is-off .pick-title { color: var(--text-3); }
+  .pick.is-off { cursor: not-allowed; }
+  .cb {
+    appearance: none;
+    display: grid;
+    place-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 9px 0 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--input-bg);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .cb:checked { background: var(--accent); border-color: var(--accent); }
+  .cb:checked::after {
+    content: "";
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--on-accent);
+    border-bottom: 2px solid var(--on-accent);
+    transform: rotate(-45deg) translate(0, -1px);
+  }
+  .cb:disabled { border-color: var(--border); background: var(--surface-2); cursor: not-allowed; }
+
+  .pick-extra { display: flex; align-items: center; gap: 10px; padding: 0 16px 10px 48px; }
+  .extra-label { font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .extra-sum { margin-left: auto; font-size: 13px; line-height: 18px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--input-bg); overflow: hidden; }
+  .stepper button { width: 30px; height: 30px; display: grid; place-items: center; border: 0; background: none; color: var(--text); cursor: pointer; }
+  .stepper button:hover { background: var(--surface-2); }
+  .stepper button .icon { width: 14px; height: 14px; }
+  .stepper span { min-width: 28px; padding: 5px 0; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font-size: 13px; line-height: 18px; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .checkout {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .checkout-label { display: block; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .checkout-total { display: block; font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .checkout .btn { min-width: 148px; }
+
+  .form-hint { margin: 12px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .note { margin: 16px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  /* enrollment list */
+  .student-strip { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; }
+  .student-strip .student-name { font-size: 13px; line-height: 18px; }
+  .student-count { margin-left: auto; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .enrollment-list { display: flex; flex-direction: column; gap: 10px; }
+  .enrollment-card {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .enrollment-card:hover { border-color: var(--border-strong); }
+  .enrollment-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .enrollment-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .enrollment-id { font-size: 16px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .enrollment-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
+  .enrollment-date { font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+  /* status hero + track */
+  .status-hero { padding: 16px; }
+  .status-hero-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .status-hero-date { font-size: 12px; line-height: 16px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .status-hero h2 { margin: 8px 0 0; font-size: 17px; line-height: 24px; font-weight: 600; }
+  .status-hero p { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .track { list-style: none; margin: 12px 0 0; padding: 0; }
+  .track li { position: relative; display: flex; align-items: flex-start; gap: 10px; padding: 0 0 10px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .track li:last-child { padding-bottom: 0; }
+  .track li::before { content: ""; position: absolute; left: 9px; top: 20px; bottom: 0; width: 2px; background: var(--border); }
+  .track li:last-child::before { display: none; }
+  .track .dot { position: relative; z-index: 1; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border-strong); background: var(--surface); flex: 0 0 auto; }
+  .track .dot .icon { width: 12px; height: 12px; }
+  .track .is-done { color: var(--text-2); }
+  .track .is-done .dot { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .track .is-on { color: var(--text); font-weight: 500; }
+  .track .is-on .dot { border-color: var(--accent); }
+  .track .is-on .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  .banner { display: flex; gap: 10px; padding: 14px 16px; border-radius: 16px; background: var(--danger-soft); color: var(--danger); }
+  .banner .icon { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 1px; }
+  .banner strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .banner p { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--text-2); }
+
+  .item { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 16px; }
+  .item + .item { border-top: 1px solid var(--border); }
+  .item-title { display: block; font-size: 14px; line-height: 20px; font-weight: 500; }
+  .item-calc { display: block; margin-top: 1px; font-size: 12px; line-height: 16px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .item-sum { font-size: 14px; line-height: 20px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sum-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface-2); }
+  .sum-row span { font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .sum-row strong { font-size: 17px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .fact { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 16px; }
+  .fact + .fact { border-top: 1px solid var(--border); }
+  .fact dt { font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .fact dd { margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+  .fact dd.empty { font-weight: 400; color: var(--text-3); }
+
+  .actionbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .actionbar .btn-danger { align-self: center; }
+
+  /* settings */
+  .student {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .student + .student { border-top: 1px solid var(--border); }
+  .student:hover { background: var(--surface-2); }
+  .student.is-on { background: var(--accent-soft); }
+  .student.is-on:hover { background: var(--accent-soft); }
+  .student .avatar { width: 36px; height: 36px; }
+  .student .avatar.neutral { background: var(--surface-2); color: var(--text-3); }
+  .student .check-ic { margin-left: auto; width: 20px; height: 20px; color: var(--accent); }
+  .student .check-ic.hidden { visibility: hidden; }
+
+  .seg { display: flex; gap: 2px; padding: 4px; border-radius: 12px; background: var(--surface-2); }
+  .seg button {
+    flex: 1;
+    height: 36px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 9px;
+    background: none;
+    color: var(--text-3);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.is-on { background: var(--raised); color: var(--text); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+  .server-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .server-row .btn { height: 40px; }
+  .status-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--text-2); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex: 0 0 auto; }
+
+  .link-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 14px 16px; border: 0; background: none; color: var(--text); text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+  .link-row:hover { background: var(--surface-2); }
+  .link-row .chev { width: 18px; height: 18px; }
+
+  /* onboarding */
+  .onb-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px 0; }
+  .brand-mini { display: flex; align-items: center; gap: 9px; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .onb-visual {
+    position: relative;
+    flex: 0 0 auto;
+    height: 318px;
+    margin: 26px 20px 0;
+    display: grid;
+    place-items: center;
+    border-radius: 28px;
+    background: var(--accent-soft);
+    overflow: hidden;
+  }
+  .onb-visual::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 156px;
+    border-radius: 20px;
+    background: var(--surface);
+    opacity: 0.55;
+    transform: translateY(14px);
+  }
+  .mini-card {
+    position: relative;
+    z-index: 1;
+    width: 252px;
+    padding: 10px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-float);
+  }
+  .mini-row { display: flex; align-items: center; gap: 10px; padding: 9px 8px; }
+  .mini-row + .mini-row { border-top: 1px solid var(--border); }
+  .mini-row .avatar-square { width: 32px; height: 32px; border-radius: 9px; font-size: 12px; }
+  .mini-title { display: block; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .mini-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .mini-row .chev { width: 14px; height: 14px; }
+  .float-chip { position: absolute; z-index: 2; top: 20px; right: 20px; box-shadow: var(--shadow-sm); }
+  .float-chip.chip-accent { background: var(--surface); }
+
+  .onb-text { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px 20px 0; }
+  .onb-text h1 { margin: 0; font-size: 30px; line-height: 38px; font-weight: 600; letter-spacing: -0.025em; }
+  .onb-text p { margin: 10px 0 0; max-width: 318px; font-size: 15px; line-height: 24px; color: var(--text-2); }
+  .onb-foot { flex: 0 0 auto; display: flex; flex-direction: column; gap: 20px; padding: 26px 20px 20px; }
+  .dots { display: flex; justify-content: center; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--border-strong); }
+  .dot.is-on { width: 20px; background: var(--accent); }
+
+  /* desktop */
+  .desktop-wrap { overflow-x: auto; border-radius: 16px; }
+  .desktop {
+    width: 1280px;
+    height: 800px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--frame);
+    background: var(--canvas);
+    color: var(--text);
+    box-shadow: 0 24px 48px -32px rgba(10, 20, 15, 0.4);
+  }
+  html[data-theme="dark"] .desktop { box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.85); }
+  .rail { flex: 0 0 240px; display: flex; flex-direction: column; padding: 20px 16px; background: var(--surface); border-right: 1px solid var(--border); }
+  .rail-brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .rail-nav { display: flex; flex-direction: column; gap: 2px; margin-top: 26px; }
+  .rail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    color: var(--text-2);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .rail-item .icon { width: 20px; height: 20px; color: var(--text-3); }
+  .rail-item:hover { background: var(--surface-2); color: var(--text); }
+  .rail-item.is-active { background: var(--accent-soft); color: var(--accent); }
+  .rail-item.is-active .icon { color: var(--accent); }
+  .rail-user { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 14px 8px 4px; border-top: 1px solid var(--border); }
+  .rail-user .avatar { width: 32px; height: 32px; font-size: 11px; }
+  .rail-name { display: block; font-size: 13px; line-height: 18px; font-weight: 500; }
+  .rail-mail { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+
+  .desk-main { flex: 1; min-width: 0; padding: 28px 36px; overflow: hidden; }
+  .desk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
+  .desk-head h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+  .desk-head p { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--text-3); }
+  .desk-head .btn { height: 40px; }
+
+  .course-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .course-card { padding: 20px; transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease; }
+  .course-card:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 10px 24px -14px rgba(20, 32, 28, 0.25); }
+  .course-card .avatar-square { width: 44px; height: 44px; border-radius: 13px; font-size: 16px; }
+  .course-card h2 { margin: 14px 0 2px; font-size: 17px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .course-card .price { font-size: 20px; line-height: 28px; }
+  .course-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .detail-link { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: var(--accent); font-size: 13px; line-height: 18px; font-weight: 600; cursor: pointer; }
+  .detail-link .icon { width: 16px; height: 16px; }
+  .detail-link:hover { color: var(--accent-hover); }
+
+  .flow { padding: 6px 16px; }
+  .flow-card { margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: 20px; }
+  .flow-card .flow-step { display: flex; gap: 12px; padding: 0; border: 0; }
+  .flow-card .flow-step p { margin: 2px 0 0; }
+  .desk-note { margin: 16px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .table-card { border-radius: 16px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
+  .table { width: 100%; border-collapse: collapse; }
+  .table th { padding: 12px 20px; background: var(--surface-2); color: var(--text-3); font-size: 12px; line-height: 16px; font-weight: 500; text-align: left; }
+  .table th.num { text-align: right; }
+  .table td { padding: 16px 20px; border-top: 1px solid var(--border); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+  .table tr:hover td { background: var(--surface-2); }
+  .table .id { font-size: 15px; font-weight: 600; }
+  .table .chev-cell { width: 56px; text-align: right; }
+  .table .chev-cell .chev { margin-left: auto; }
+
+  .removed { margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .removed li { display: flex; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-2); font-size: 13px; line-height: 20px; box-shadow: var(--shadow-card); }
+  .removed li::before { content: "✓"; color: var(--accent); font-weight: 600; flex: 0 0 auto; }
+
+  .foot-note { margin-top: 24px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  @media (max-width: 1100px) {
+    .system { grid-template-columns: 1fr; }
+    .removed { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 860px) {
+    .sheet { padding: 28px 16px 64px; }
+    .preview-bar { padding: 10px 16px; }
+    .preview-brand span { display: none; }
+    .section-head { margin-top: 48px; }
+    .desk-main { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-signal" viewBox="0 0 16 12">
+    <path d="M1 11V8M5 11V6M9 11V3M13 11V0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-wifi" viewBox="0 0 16 12">
+    <path d="M1.6 4.1C5.2 1.1 10.8 1.1 14.4 4.1M4 6.9c2.3-1.9 5.7-1.9 8 0M6.6 9.5c.8-.6 2-.6 2.8 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-battery" viewBox="0 0 22 12">
+    <rect x="1" y="1.5" width="17" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <rect x="3" y="3.5" width="12" height="5" rx="1" fill="currentColor"/>
+    <path d="M20 4.5v3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-back" viewBox="0 0 24 24">
+    <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24">
+    <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24">
+    <path d="M20 11a8 8 0 10-2.3 5.7M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-book" viewBox="0 0 24 24">
+    <path d="M12 6.5C10.3 5.2 7.7 4.6 4 5v13c3.7-.4 6.3.2 8 1.5 1.7-1.3 4.3-1.9 8-1.5V5c-3.7-.4-6.3.2-8 1.5zM12 6.5v13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24">
+    <rect x="5" y="3.5" width="14" height="17" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8.5 8h7M8.5 12h7M8.5 16h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24">
+    <path d="M4 7h8M17 7h3M4 17h3M11 17h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="14.5" cy="7" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="8.5" cy="17" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24">
+    <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24">
+    <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24">
+    <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M12 7.5V13M12 16.2v.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header class="preview-bar">
+  <div class="preview-brand">
+    <span class="logo">L</span>
+    Learning Platform
+    <span>дизайн, версія 2</span>
+  </div>
+  <div class="theme-switch" role="group" aria-label="Тема макета">
+    <button type="button" data-theme-btn="light" aria-pressed="true">Світла</button>
+    <button type="button" data-theme-btn="dark" aria-pressed="false">Темна</button>
+  </div>
+</header>
+
+<main class="sheet">
+
+  <section class="intro">
+    <h1>Дизайн Learning Platform, версія 2</h1>
+    <p>Вигляд робочого продукту без візуального шуму. Ті самі дані й ті самі правила, але тепер це схоже на застосунок, який можна випустити: картки, м'які тіні, іконки, статус-чіпи й звична навігація. Нічого зайвого поверх даних з API.</p>
+    <p class="small">Inter, радіуси 12-16, один акцент, м'які кольори статусів. Перемикач теми вгорі змінює всі макети.</p>
+  </section>
+
+  <section class="system" aria-label="Дизайн-система">
+    <div class="panel">
+      <h3>Колір</h3>
+      <div class="swatches">
+        <div class="swatch"><i style="background: var(--canvas);"></i><span>Canvas</span></div>
+        <div class="swatch"><i style="background: var(--surface);"></i><span>Surface</span></div>
+        <div class="swatch"><i style="background: var(--text);"></i><span>Text</span></div>
+        <div class="swatch"><i style="background: var(--accent);"></i><span>Accent</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Статуси</h3>
+      <div class="chip-row">
+        <span class="chip chip-warn">Подано</span>
+        <span class="chip chip-warn">На перевірці</span>
+        <span class="chip chip-accent">Місця підтверджено</span>
+        <span class="chip chip-success">Оплачено</span>
+        <span class="chip chip-neutral">Завершено</span>
+        <span class="chip chip-danger">Скасовано</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Тип і форма</h3>
+      <div class="type-sample"><b>Aa</b><span>Inter 600 · 30/38</span></div>
+      <div class="radius-row">
+        <span class="radius" style="border-radius: 16px;">16</span>
+        <span class="radius" style="border-radius: 12px;">12</span>
+        <span class="radius" style="border-radius: 999px;">pill</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2>Телефон</h2>
+    <span>390 × 844 · світла й темна тема</span>
+  </div>
+
+  <div class="devices">
+
+    <figure class="device">
+      <figcaption>Онбординг <span>слайд 1 з 4</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <div class="onb-head">
+            <div class="brand-mini"><span class="logo sm">L</span>Learning Platform</div>
+            <button class="btn btn-ghost" type="button">Пропустити</button>
+          </div>
+          <div class="onb-visual">
+            <div class="mini-card">
+              <div class="mini-row">
+                <span class="avatar-square">О</span>
+                <span class="pick-body">
+                  <span class="mini-title">Основи C#</span>
+                  <span class="mini-meta">1&nbsp;200,00&nbsp;₴ · 30 місць</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </div>
+              <div class="mini-row">
+                <span class="avatar-square muted">A</span>
+                <span class="pick-body">
+                  <span class="mini-title">ASP.NET Core API</span>
+                  <span class="mini-meta">1&nbsp;800,00&nbsp;₴ · 20 місць</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </div>
+            </div>
+            <span class="chip chip-accent no-dot float-chip">30 місць</span>
+          </div>
+          <div class="onb-text">
+            <h1>Каталог курсів</h1>
+            <p>Увесь каталог платформи: назва курсу, ціна та вільні місця.</p>
+          </div>
+          <div class="onb-foot">
+            <div class="dots" aria-hidden="true">
+              <span class="dot is-on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="button">Далі</button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Каталог <span>3 курси</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <h1>Каталог курсів</h1>
+            <button class="icon-btn" type="button" aria-label="Оновити">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-refresh"/></svg>
+            </button>
+          </header>
+          <div class="content">
+            <p class="page-sub">Оберіть курс, щоб переглянути деталі.</p>
+            <div class="section-label"><span>Доступні курси</span><b>3</b></div>
+            <div class="card">
+              <button class="list-row" type="button">
+                <span class="avatar-square">О</span>
+                <span class="list-main">
+                  <span class="list-title">Основи C#</span>
+                  <span class="list-meta">1&nbsp;200,00&nbsp;₴ · 30 місць</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+              <button class="list-row" type="button">
+                <span class="avatar-square">A</span>
+                <span class="list-main">
+                  <span class="list-title">ASP.NET Core API</span>
+                  <span class="list-meta">1&nbsp;800,00&nbsp;₴ · 20 місць</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+              <button class="list-row" type="button">
+                <span class="avatar-square muted">M</span>
+                <span class="list-main">
+                  <span class="list-title">MongoDB для .NET</span>
+                  <span class="list-meta">1&nbsp;500,00&nbsp;₴ · місць немає</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+            </div>
+            <p class="note">Ціни вказані за одне місце.</p>
+          </div>
+          <nav class="tabbar" aria-label="Основна навігація">
+            <button class="tab is-active" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+              <span>Каталог</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+              <span>Мої заявки</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+              <span>Налаштування</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Деталі курсу <span>30 місць</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <button class="icon-btn" type="button" aria-label="Назад">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-back"/></svg>
+            </button>
+            <h1>Курс</h1>
+          </header>
+          <div class="content">
+            <div class="card hero-course">
+              <div class="hero-title-row">
+                <span class="avatar-square lg">О</span>
+                <h2>Основи C#</h2>
+              </div>
+              <div class="hero-facts">
+                <div>
+                  <span class="fact-label">Ціна за місце</span>
+                  <span class="price">1&nbsp;200,00&nbsp;₴</span>
+                </div>
+                <span class="chip chip-accent no-dot">30 місць</span>
+              </div>
+            </div>
+            <div class="section-label"><span>Як це працює</span></div>
+            <div class="card flow">
+              <div class="flow-step">
+                <span class="flow-num">1</span>
+                <div><strong>Подайте заявку</strong><p>Оберіть кількість місць і надішліть форму.</p></div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-num">2</span>
+                <div><strong>Підтвердіть місця</strong><p>Місця резервуються після підтвердження.</p></div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-num">3</span>
+                <div><strong>Слідкуйте за статусом</strong><p>Статус оновлюється під час обробки.</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <button class="btn btn-primary btn-lg btn-block" type="button">Записатися</button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Нова заявка <span>2 курси вибрано</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <button class="icon-btn" type="button" aria-label="Назад">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-back"/></svg>
+            </button>
+            <h1>Нова заявка</h1>
+          </header>
+          <div class="content">
+            <div class="section-label"><span>Студент</span></div>
+            <div class="card">
+              <div class="student-static">
+                <span class="avatar">ОП</span>
+                <span>
+                  <span class="student-name">Олена Петренко</span>
+                  <span class="student-mail">student1@example.com</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Курси</span><b>2 з 3</b></div>
+            <div class="card">
+              <div class="pick-row">
+                <label class="pick">
+                  <input class="cb" type="checkbox" checked>
+                  <span class="pick-body">
+                    <span class="pick-title">Основи C#</span>
+                    <span class="pick-meta">1&nbsp;200,00&nbsp;₴ · 30 місць</span>
+                  </span>
+                </label>
+                <div class="pick-extra">
+                  <span class="extra-label">Місця</span>
+                  <span class="stepper">
+                    <button type="button" aria-label="Зменшити кількість"><svg class="icon" viewBox="0 0 24 24"><use href="#i-minus"/></svg></button>
+                    <span>1</span>
+                    <button type="button" aria-label="Додати місце"><svg class="icon" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button>
+                  </span>
+                  <span class="extra-sum">1&nbsp;200,00&nbsp;₴</span>
+                </div>
+              </div>
+
+              <div class="pick-row">
+                <label class="pick">
+                  <input class="cb" type="checkbox" checked>
+                  <span class="pick-body">
+                    <span class="pick-title">ASP.NET Core API</span>
+                    <span class="pick-meta">1&nbsp;800,00&nbsp;₴ · 20 місць</span>
+                  </span>
+                </label>
+                <div class="pick-extra">
+                  <span class="extra-label">Місця</span>
+                  <span class="stepper">
+                    <button type="button" aria-label="Зменшити кількість"><svg class="icon" viewBox="0 0 24 24"><use href="#i-minus"/></svg></button>
+                    <span>1</span>
+                    <button type="button" aria-label="Додати місце"><svg class="icon" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button>
+                  </span>
+                  <span class="extra-sum">1&nbsp;800,00&nbsp;₴</span>
+                </div>
+              </div>
+
+              <div class="pick-row">
+                <label class="pick is-off">
+                  <input class="cb" type="checkbox" disabled>
+                  <span class="pick-body">
+                    <span class="pick-title">MongoDB для .NET</span>
+                    <span class="pick-meta">1&nbsp;500,00&nbsp;₴ · місць немає</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Деталі</span></div>
+            <div class="card card-pad">
+              <div class="field">
+                <label for="note">Нотатка</label>
+                <textarea class="textarea" id="note">Вечірня група</textarea>
+              </div>
+              <div class="field">
+                <label for="schedule">Бажаний графік</label>
+                <input class="input" id="schedule" type="text" value="Пн/Ср 19:00">
+              </div>
+            </div>
+          </div>
+          <div class="checkout">
+            <div>
+              <span class="checkout-label">Разом</span>
+              <span class="checkout-total">3&nbsp;000,00&nbsp;₴</span>
+            </div>
+            <button class="btn btn-primary" type="button">Подати заявку</button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Мої заявки <span>3 заявки</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <h1>Мої заявки</h1>
+            <button class="icon-btn" type="button" aria-label="Оновити">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-refresh"/></svg>
+            </button>
+          </header>
+          <div class="content">
+            <div class="student-strip">
+              <span class="avatar sm">ОП</span>
+              <span class="student-name">Олена Петренко</span>
+              <span class="student-count">3 заявки</span>
+            </div>
+            <div class="enrollment-list">
+              <button class="enrollment-card" type="button">
+                <span class="enrollment-top">
+                  <span class="enrollment-id">#1042</span>
+                  <span class="chip chip-warn">Подано</span>
+                </span>
+                <span class="enrollment-bottom">
+                  <span class="enrollment-date">12.03.2026</span>
+                  <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+                </span>
+              </button>
+              <button class="enrollment-card" type="button">
+                <span class="enrollment-top">
+                  <span class="enrollment-id">#1019</span>
+                  <span class="chip chip-neutral">Завершено</span>
+                </span>
+                <span class="enrollment-bottom">
+                  <span class="enrollment-date">18.01.2026</span>
+                  <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+                </span>
+              </button>
+              <button class="enrollment-card" type="button">
+                <span class="enrollment-top">
+                  <span class="enrollment-id">#0984</span>
+                  <span class="chip chip-danger">Скасовано</span>
+                </span>
+                <span class="enrollment-bottom">
+                  <span class="enrollment-date">05.11.2025</span>
+                  <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+                </span>
+              </button>
+            </div>
+            <p class="note">Статус оновлює сервер під час обробки заявки.</p>
+          </div>
+          <nav class="tabbar" aria-label="Основна навігація">
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+              <span>Каталог</span>
+            </button>
+            <button class="tab is-active" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+              <span>Мої заявки</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+              <span>Налаштування</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Деталі заявки <span>Submitted · дії доступні</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <button class="icon-btn" type="button" aria-label="Назад">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-back"/></svg>
+            </button>
+            <h1>Заявка #1042</h1>
+          </header>
+          <div class="content">
+            <div class="card status-hero">
+              <div class="status-hero-top">
+                <span class="chip chip-warn">Подано</span>
+                <span class="status-hero-date">12.03.2026</span>
+              </div>
+              <h2>Заявку подано</h2>
+              <p>Місця резервуються після підтвердження.</p>
+              <ol class="track">
+                <li class="is-on"><span class="dot"></span>Подано</li>
+                <li><span class="dot"></span>На перевірці</li>
+                <li><span class="dot"></span>Місця підтверджено</li>
+                <li><span class="dot"></span>Оплачено</li>
+                <li><span class="dot"></span>Завершено</li>
+              </ol>
+            </div>
+
+            <div class="section-label"><span>Курси</span></div>
+            <div class="card">
+              <div class="item">
+                <div><span class="item-title">Основи C#</span><span class="item-calc">1&nbsp;200,00&nbsp;₴ × 1</span></div>
+                <span class="item-sum">1&nbsp;200,00&nbsp;₴</span>
+              </div>
+              <div class="item">
+                <div><span class="item-title">ASP.NET Core API</span><span class="item-calc">1&nbsp;800,00&nbsp;₴ × 1</span></div>
+                <span class="item-sum">1&nbsp;800,00&nbsp;₴</span>
+              </div>
+              <div class="sum-row"><span>Разом</span><strong>3&nbsp;000,00&nbsp;₴</strong></div>
+            </div>
+
+            <div class="section-label"><span>Деталі</span></div>
+            <div class="card">
+              <dl style="margin: 0;">
+                <div class="fact"><dt>Дата</dt><dd>12.03.2026</dd></div>
+                <div class="fact"><dt>Графік</dt><dd>Пн/Ср 19:00</dd></div>
+                <div class="fact"><dt>Нотатка</dt><dd>Вечірня група</dd></div>
+              </dl>
+            </div>
+          </div>
+          <div class="actionbar">
+            <button class="btn btn-primary btn-lg btn-block" type="button">Підтвердити місця</button>
+            <button class="btn btn-danger" type="button">Скасувати заявку</button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Деталі заявки, скасовано <span>Cancelled · без дій</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <button class="icon-btn" type="button" aria-label="Назад">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-back"/></svg>
+            </button>
+            <h1>Заявка #0984</h1>
+          </header>
+          <div class="content">
+            <div class="banner">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-alert"/></svg>
+              <div>
+                <strong>Заявку скасовано</strong>
+                <p>Створіть нову заявку в каталозі.</p>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Курси</span></div>
+            <div class="card">
+              <div class="item">
+                <div><span class="item-title">MongoDB для .NET</span><span class="item-calc">1&nbsp;500,00&nbsp;₴ × 1</span></div>
+                <span class="item-sum">1&nbsp;500,00&nbsp;₴</span>
+              </div>
+              <div class="sum-row"><span>Разом</span><strong>1&nbsp;500,00&nbsp;₴</strong></div>
+            </div>
+
+            <div class="section-label"><span>Деталі</span></div>
+            <div class="card">
+              <dl style="margin: 0;">
+                <div class="fact"><dt>Дата</dt><dd>05.11.2025</dd></div>
+                <div class="fact"><dt>Графік</dt><dd class="empty">не вказано</dd></div>
+                <div class="fact"><dt>Нотатка</dt><dd class="empty">не вказано</dd></div>
+              </dl>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <button class="btn btn-secondary btn-lg btn-block" type="button">До каталогу</button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Налаштування <span>студент, мова, тема, сервер</span></figcaption>
+      <div class="phone">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar"><h1>Налаштування</h1></header>
+          <div class="content">
+            <div class="section-label"><span>Студент</span></div>
+            <div class="card">
+              <button class="student is-on" type="button">
+                <span class="avatar">ОП</span>
+                <span>
+                  <span class="student-name">Олена Петренко</span>
+                  <span class="student-mail">student1@example.com</span>
+                </span>
+                <svg class="check-ic" viewBox="0 0 24 24"><use href="#i-check"/></svg>
+              </button>
+              <button class="student" type="button">
+                <span class="avatar neutral">АШ</span>
+                <span>
+                  <span class="student-name">Андрій Шевченко</span>
+                  <span class="student-mail">student2@example.com</span>
+                </span>
+                <svg class="check-ic hidden" viewBox="0 0 24 24"><use href="#i-check"/></svg>
+              </button>
+            </div>
+
+            <div class="section-label"><span>Тема</span></div>
+            <div class="card card-tight">
+              <div class="seg" role="group" aria-label="Тема">
+                <button class="is-on" type="button">Системна</button>
+                <button type="button">Світла</button>
+                <button type="button">Темна</button>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Мова</span></div>
+            <div class="card card-tight">
+              <div class="seg" role="group" aria-label="Мова">
+                <button class="is-on" type="button">УКР</button>
+                <button type="button">English</button>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Сервер</span></div>
+            <div class="card card-pad">
+              <div class="field">
+                <label for="server">Адреса сервера</label>
+                <input class="input" id="server" type="text" value="http://localhost:5042">
+              </div>
+              <div class="server-row">
+                <button class="btn btn-secondary" type="button">Перевірити</button>
+                <span class="status-ok"><span class="status-dot"></span>Доступний · 3 курси</span>
+              </div>
+            </div>
+
+            <div class="section-label"><span>Застосунок</span></div>
+            <div class="card">
+              <button class="link-row" type="button">
+                Показати онбординг ще раз
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+            </div>
+          </div>
+          <nav class="tabbar" aria-label="Основна навігація">
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+              <span>Каталог</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+              <span>Мої заявки</span>
+            </button>
+            <button class="tab is-active" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+              <span>Налаштування</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device">
+      <figcaption>Каталог, English <span>назви курсів не перекладаються</span></figcaption>
+      <div class="phone" lang="en">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg>
+            <svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg>
+            <svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg>
+          </span>
+        </div>
+        <div class="app">
+          <header class="appbar">
+            <h1>Course catalog</h1>
+            <button class="icon-btn" type="button" aria-label="Refresh">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-refresh"/></svg>
+            </button>
+          </header>
+          <div class="content">
+            <p class="page-sub">Choose a course to see details.</p>
+            <div class="section-label"><span>Available courses</span><b>3</b></div>
+            <div class="card">
+              <button class="list-row" type="button">
+                <span class="avatar-square">О</span>
+                <span class="list-main">
+                  <span class="list-title">Основи C#</span>
+                  <span class="list-meta">UAH 1,200.00 · 30 seats</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+              <button class="list-row" type="button">
+                <span class="avatar-square">A</span>
+                <span class="list-main">
+                  <span class="list-title">ASP.NET Core API</span>
+                  <span class="list-meta">UAH 1,800.00 · 20 seats</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+              <button class="list-row" type="button">
+                <span class="avatar-square muted">M</span>
+                <span class="list-main">
+                  <span class="list-title">MongoDB для .NET</span>
+                  <span class="list-meta">UAH 1,500.00 · no seats</span>
+                </span>
+                <svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg>
+              </button>
+            </div>
+            <p class="note">Prices are per seat.</p>
+          </div>
+          <nav class="tabbar" aria-label="Main navigation">
+            <button class="tab is-active" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+              <span>Catalog</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+              <span>My enrollments</span>
+            </button>
+            <button class="tab" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+              <span>Settings</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </figure>
+
+  </div>
+
+  <div class="section-head">
+    <h2>Десктоп</h2>
+    <span>1280 × 800 · каталог і заявки</span>
+  </div>
+
+  <div class="devices" style="flex-direction: column; gap: 32px;">
+
+    <figure class="device" style="width: 100%;">
+      <figcaption>Каталог курсів <span>сітка карток замість таблиці</span></figcaption>
+      <div class="desktop-wrap">
+        <div class="desktop">
+          <aside class="rail">
+            <div class="rail-brand"><span class="logo">L</span>Learning Platform</div>
+            <nav class="rail-nav">
+              <a class="rail-item is-active" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+                Каталог
+              </a>
+              <a class="rail-item" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+                Мої заявки
+              </a>
+              <a class="rail-item" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+                Налаштування
+              </a>
+            </nav>
+            <div class="rail-user">
+              <span class="avatar">ОП</span>
+              <span>
+                <span class="rail-name">Олена Петренко</span>
+                <span class="rail-mail">student1@example.com</span>
+              </span>
+            </div>
+          </aside>
+          <main class="desk-main">
+            <div class="desk-head">
+              <div>
+                <h1>Каталог курсів</h1>
+                <p>3 курси доступні для запису</p>
+              </div>
+              <button class="btn btn-secondary" type="button">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-refresh"/></svg>
+                Оновити
+              </button>
+            </div>
+
+            <div class="course-grid">
+              <article class="card course-card">
+                <span class="avatar-square">О</span>
+                <h2>Основи C#</h2>
+                <span class="price">1&nbsp;200,00&nbsp;₴</span>
+                <div class="course-card-foot">
+                  <span class="chip chip-accent no-dot">30 місць</span>
+                  <button class="detail-link" type="button">Деталі <svg class="icon" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+                </div>
+              </article>
+              <article class="card course-card">
+                <span class="avatar-square">A</span>
+                <h2>ASP.NET Core API</h2>
+                <span class="price">1&nbsp;800,00&nbsp;₴</span>
+                <div class="course-card-foot">
+                  <span class="chip chip-accent no-dot">20 місць</span>
+                  <button class="detail-link" type="button">Деталі <svg class="icon" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+                </div>
+              </article>
+              <article class="card course-card">
+                <span class="avatar-square muted">M</span>
+                <h2>MongoDB для .NET</h2>
+                <span class="price">1&nbsp;500,00&nbsp;₴</span>
+                <div class="course-card-foot">
+                  <span class="chip chip-neutral no-dot">Місць немає</span>
+                  <button class="detail-link" type="button">Деталі <svg class="icon" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+                </div>
+              </article>
+            </div>
+
+            <div class="card flow-card">
+              <div class="flow-step">
+                <span class="flow-num">1</span>
+                <div><strong>Подайте заявку</strong><p>Оберіть курси, кількість місць і графік.</p></div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-num">2</span>
+                <div><strong>Підтвердіть місця</strong><p>Місця резервуються після підтвердження.</p></div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-num">3</span>
+                <div><strong>Слідкуйте за статусом</strong><p>Статус оновлюється під час обробки.</p></div>
+              </div>
+            </div>
+            <p class="desk-note">Ціни вказані за одне місце.</p>
+          </main>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="device" style="width: 100%;">
+      <figcaption>Мої заявки <span>таблиця зі статусами</span></figcaption>
+      <div class="desktop-wrap">
+        <div class="desktop">
+          <aside class="rail">
+            <div class="rail-brand"><span class="logo">L</span>Learning Platform</div>
+            <nav class="rail-nav">
+              <a class="rail-item" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-book"/></svg>
+                Каталог
+              </a>
+              <a class="rail-item is-active" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+                Мої заявки
+              </a>
+              <a class="rail-item" href="#">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-sliders"/></svg>
+                Налаштування
+              </a>
+            </nav>
+            <div class="rail-user">
+              <span class="avatar">ОП</span>
+              <span>
+                <span class="rail-name">Олена Петренко</span>
+                <span class="rail-mail">student1@example.com</span>
+              </span>
+            </div>
+          </aside>
+          <main class="desk-main">
+            <div class="desk-head">
+              <div>
+                <h1>Мої заявки</h1>
+                <p>Олена Петренко · 3 заявки</p>
+              </div>
+              <button class="btn btn-secondary" type="button">
+                <svg class="icon" viewBox="0 0 24 24"><use href="#i-refresh"/></svg>
+                Оновити
+              </button>
+            </div>
+
+            <div class="table-card">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 160px;">№</th>
+                    <th style="width: 220px;">Дата</th>
+                    <th>Статус</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="id">#1042</td>
+                    <td>12.03.2026</td>
+                    <td><span class="chip chip-warn">Подано</span></td>
+                    <td class="chev-cell"><svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></td>
+                  </tr>
+                  <tr>
+                    <td class="id">#1019</td>
+                    <td>18.01.2026</td>
+                    <td><span class="chip chip-neutral">Завершено</span></td>
+                    <td class="chev-cell"><svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></td>
+                  </tr>
+                  <tr>
+                    <td class="id">#0984</td>
+                    <td>05.11.2025</td>
+                    <td><span class="chip chip-danger">Скасовано</span></td>
+                    <td class="chev-cell"><svg class="chev" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="desk-note">Статус оновлює сервер під час обробки заявки.</p>
+          </main>
+        </div>
+      </div>
+    </figure>
+
+  </div>
+
+  <div class="section-head">
+    <h2>Що змінилося</h2>
+    <span>після першої редакції</span>
+  </div>
+
+  <ul class="removed">
+    <li>Картки з м'якою тінню замість голих рядків, радіуси 12-16 замість 0.</li>
+    <li>Нижня навігація з іконками й підписами, як у звичайному застосунку.</li>
+    <li>Статуси стали чіпами з м'яким фоном і крапкою, але без шести кричущих кольорів.</li>
+    <li>Форма заявки отримала липку панель з сумою і кнопкою, як у чекауті.</li>
+    <li>Налаштування зібрані в картки з сегментованими перемикачами замість голих рядків.</li>
+    <li>Десктоп отримав нормальний сайдбар, сітку карток і таблицю в картці.</li>
+  </ul>
+
+  <p class="foot-note">Повна специфікація: <code>docs/design/v2/spec.md</code>. Макети статичні: кнопки не виконують дій.</p>
+
+</main>
+
+<script>
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('[data-theme-btn]');
+  function setTheme(theme) {
+    root.dataset.theme = theme;
+    buttons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.themeBtn === theme));
+    });
+  }
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => setTheme(button.dataset.themeBtn));
+  });
+</script>
+
+</body>
+</html>

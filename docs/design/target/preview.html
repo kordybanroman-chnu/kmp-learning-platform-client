@@ -1,0 +1,1848 @@
+<!doctype html>
+<html lang="uk" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Platform · цільовий дизайн</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --canvas: #F4F6F2;
+    --surface: #FFFFFF;
+    --surface-2: #EDF1EC;
+    --raised: #FFFFFF;
+    --text: #14201C;
+    --text-2: #4C5A54;
+    --text-3: #5F6A65;
+    --border: #E1E6DF;
+    --border-strong: #D2D9D1;
+    --accent: #0E7C66;
+    --accent-hover: #0A6555;
+    --accent-soft: #E5F4F0;
+    --on-accent: #FFFFFF;
+    --success: #087443;
+    --success-soft: #EAFBF1;
+    --warning: #A65308;
+    --warning-soft: #FFF6E5;
+    --danger: #B42318;
+    --danger-soft: #FEF2F1;
+    --neutral: #475467;
+    --neutral-soft: #F1F3F2;
+    --input-bg: #FFFFFF;
+    --shadow-sm: 0 1px 2px rgba(20, 32, 28, 0.05);
+    --shadow-card: 0 1px 2px rgba(20, 32, 28, 0.04), 0 5px 14px -6px rgba(20, 32, 28, 0.07);
+    --shadow-float: 0 12px 32px -16px rgba(20, 32, 28, 0.3);
+    --page: #E9EDE7;
+    --frame: #D4DBD3;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --canvas: #0B0F0D;
+    --surface: #121816;
+    --surface-2: #1A211E;
+    --raised: #242D29;
+    --text: #F2F5F3;
+    --text-2: #B7C2BC;
+    --text-3: #8A958F;
+    --border: #232B28;
+    --border-strong: #2E3733;
+    --accent: #6FD8C4;
+    --accent-hover: #8BE6D5;
+    --accent-soft: #15332D;
+    --on-accent: #052B24;
+    --success: #7BE0A8;
+    --success-soft: #11291B;
+    --warning: #F5C56A;
+    --warning-soft: #2B2212;
+    --danger: #FDA29B;
+    --danger-soft: #2E1614;
+    --neutral: #C4CDC8;
+    --neutral-soft: #1C2421;
+    --input-bg: #0E1412;
+    --shadow-sm: none;
+    --shadow-card: none;
+    --shadow-float: 0 16px 40px rgba(0, 0, 0, 0.55);
+    --page: #070A08;
+    --frame: #1E2622;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--page);
+    color: var(--text);
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 23px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; }
+  a { color: inherit; }
+  svg { display: block; }
+
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .icon { width: 20px; height: 20px; }
+
+  /* preview chrome */
+  .preview-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 64px;
+    padding: 10px 32px;
+    background: color-mix(in srgb, var(--canvas) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .preview-brand { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .preview-brand span { color: var(--text-3); font-weight: 400; }
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    flex: 0 0 auto;
+  }
+  .logo.sm { width: 24px; height: 24px; border-radius: 8px; font-size: 12px; }
+
+  .theme-switch { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--surface-2); }
+  .theme-switch button {
+    height: 32px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 9px;
+    background: none;
+    color: var(--text-3);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--text); box-shadow: var(--shadow-sm); }
+
+  .sheet { max-width: 1400px; margin: 0 auto; padding: 40px 32px 96px; }
+  .intro { max-width: 780px; }
+  .intro h1 { margin: 0; font-size: 34px; line-height: 42px; font-weight: 600; letter-spacing: -0.025em; }
+  .intro p { margin: 12px 0 0; font-size: 16px; line-height: 26px; color: var(--text-2); }
+  .intro .small { margin-top: 10px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .system { display: grid; grid-template-columns: 1.15fr 1.45fr 1fr; gap: 16px; margin-top: 32px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: var(--shadow-card); }
+  .panel h3 { margin: 0 0 12px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--text-3); }
+  .swatches { display: flex; gap: 8px; }
+  .swatch { flex: 1; min-width: 0; }
+  .swatch i { display: block; height: 32px; border-radius: 8px; border: 1px solid var(--border); }
+  .swatch span { display: block; margin-top: 6px; font-size: 10px; line-height: 14px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .type-sample { display: flex; align-items: baseline; gap: 10px; }
+  .type-sample b { font-size: 30px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em; }
+  .type-sample span { font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .radius-row { display: flex; gap: 8px; margin-top: 12px; }
+  .radius { flex: 1; height: 32px; border: 1px solid var(--border-strong); background: var(--surface-2); font-size: 10px; line-height: 30px; text-align: center; color: var(--text-3); }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 64px 0 20px; }
+  .section-head h2 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-head span { font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .devices { display: flex; flex-wrap: wrap; gap: 40px 24px; align-items: flex-start; }
+  .device { margin: 0; flex: 0 0 auto; }
+  .device figcaption { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 10px; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text); }
+  .device figcaption span { font-weight: 400; color: var(--text-3); }
+
+  /* phone canvas */
+  .phone {
+    width: 390px;
+    height: 844px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 34px;
+    border: 1px solid var(--frame);
+    background: var(--canvas);
+    color: var(--text);
+    box-shadow: 0 20px 44px -28px rgba(10, 20, 15, 0.45);
+  }
+  html[data-theme="dark"] .phone { box-shadow: 0 20px 44px -20px rgba(0, 0, 0, 0.85); }
+
+  .app { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  .statusbar { flex: 0 0 auto; height: 28px; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .status-icons { display: flex; align-items: center; gap: 5px; }
+  .si { height: 11px; width: auto; }
+
+  /* app bar */
+  .appbar { flex: 0 0 auto; height: 52px; padding: 0 20px; display: flex; align-items: center; gap: 8px; }
+  .appbar h1 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  .appbar .icon-btn { margin-left: auto; }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--text-2);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--text); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .content { flex: 1; min-height: 0; padding: 4px 20px 0; overflow: hidden; }
+  .content.scroll { overflow-y: auto; scrollbar-width: none; }
+  .content.scroll::-webkit-scrollbar { display: none; }
+  .page-sub { margin: 0 0 2px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--text-3);
+  }
+  .section-label:first-child { margin-top: 8px; }
+  .section-label b { font-weight: 500; color: var(--text-3); }
+
+  /* cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .card-pad { padding: 16px; }
+  .card-tight { padding: 6px; }
+
+  .list-row {
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .list-row + .list-row { border-top: 1px solid var(--border); }
+  .list-row:hover { background: var(--surface-2); }
+  .list-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .list-main { flex: 1; min-width: 0; }
+  .list-title { display: block; font-size: 15px; line-height: 22px; font-weight: 600; }
+  .list-meta { display: block; margin-top: 1px; font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .chev { width: 18px; height: 18px; color: var(--text-3); flex: 0 0 auto; }
+
+  .avatar-square {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .avatar-square.lg { width: 48px; height: 48px; border-radius: 14px; font-size: 18px; }
+  .avatar-square.muted { background: var(--surface-2); color: var(--text-3); }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .avatar.sm { width: 28px; height: 28px; font-size: 10px; }
+
+  /* chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+  .chip.no-dot::before { display: none; }
+  .chip-warn { background: var(--warning-soft); color: var(--warning); }
+  .chip-accent { background: var(--accent-soft); color: var(--accent); }
+  .chip-success { background: var(--success-soft); color: var(--success); }
+  .chip-neutral { background: var(--neutral-soft); color: var(--neutral); }
+  .chip-danger { background: var(--danger-soft); color: var(--danger); }
+
+  /* buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: none;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 1px 2px rgba(14, 124, 102, 0.22); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+  .btn-secondary:hover { background: var(--surface-2); }
+  .btn-ghost { height: auto; padding: 0; color: var(--accent); }
+  .btn-ghost:hover { color: var(--accent-hover); }
+  .btn-danger { height: auto; padding: 0; color: var(--danger); }
+  .btn-danger:hover { text-decoration: underline; }
+  .btn-danger-outline { background: var(--surface); border-color: var(--danger); color: var(--danger); }
+  .btn-danger-outline:hover { background: var(--danger-soft); }
+  .btn-block { width: 100%; }
+  .btn-lg { height: 48px; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn:disabled { background: var(--surface-2); border-color: var(--border); color: var(--text-3); box-shadow: none; cursor: not-allowed; }
+  .btn:disabled:hover { background: var(--surface-2); }
+
+  .tabbar {
+    flex: 0 0 auto;
+    display: flex;
+    height: 64px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 0;
+    background: none;
+    color: var(--text-3);
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tab .icon { width: 22px; height: 22px; }
+  .tab.is-active { color: var(--accent); }
+  .tab.is-active .icon { stroke-width: 2; }
+
+  /* course */
+  .hero-course { padding: 18px 16px 16px; }
+  .hero-title-row { display: flex; align-items: center; gap: 12px; }
+  .hero-title-row h2 { margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero-facts { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 16px; }
+  .fact-label { display: block; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .price { font-size: 22px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .price-unit { margin-left: 6px; font-size: 12px; line-height: 16px; font-weight: 400; color: var(--text-3); }
+
+  .flow-step { display: flex; gap: 12px; padding: 10px 0; }
+  .flow-step + .flow-step { border-top: 1px solid var(--border); }
+  .flow-num {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .flow-step strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .flow-step p { margin: 1px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .bottom-bar {
+    flex: 0 0 auto;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .bottom-bar .hint { margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); text-align: center; }
+
+  /* forms */
+  .field + .field { margin-top: 14px; }
+  .field label { display: block; margin-bottom: 6px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--text-3); }
+  .input, .textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .textarea { height: 80px; resize: none; }
+  .input::placeholder, .textarea::placeholder { color: var(--text-3); }
+  .input:focus, .textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .student-static { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .student-name { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .student-mail { display: block; margin-top: 1px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .pick-row + .pick-row { border-top: 1px solid var(--border); }
+  .pick {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+  }
+  .pick-body { flex: 1; min-width: 0; }
+  .pick-title { display: block; font-size: 15px; line-height: 22px; font-weight: 600; }
+  .pick-meta { display: block; margin-top: 1px; font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .pick.is-off .pick-title { color: var(--text-3); }
+  .pick.is-off { cursor: not-allowed; }
+  .cb {
+    appearance: none;
+    display: grid;
+    place-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 9px 0 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--input-bg);
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .cb:checked { background: var(--accent); border-color: var(--accent); }
+  .cb:checked::after {
+    content: "";
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--on-accent);
+    border-bottom: 2px solid var(--on-accent);
+    transform: rotate(-45deg) translate(0, -1px);
+  }
+  .cb:disabled { border-color: var(--border); background: var(--surface-2); cursor: not-allowed; }
+
+  .pick-extra { display: flex; align-items: center; gap: 10px; padding: 0 16px 10px 48px; }
+  .extra-label { font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .extra-sum { margin-left: auto; font-size: 13px; line-height: 18px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--input-bg); overflow: hidden; }
+  .stepper button { width: 30px; height: 30px; display: grid; place-items: center; border: 0; background: none; color: var(--text); cursor: pointer; }
+  .stepper button:hover { background: var(--surface-2); }
+  .stepper button .icon { width: 14px; height: 14px; }
+  .stepper span { min-width: 28px; padding: 5px 0; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font-size: 13px; line-height: 18px; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .checkout {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .checkout-label { display: block; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .checkout-total { display: block; font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .checkout .btn { min-width: 148px; }
+
+  .form-hint { margin: 12px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .note { margin: 16px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  /* enrollment list */
+  .student-strip { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; }
+  .student-strip .student-name { font-size: 13px; line-height: 18px; }
+  .student-count { margin-left: auto; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .enrollment-list { display: flex; flex-direction: column; gap: 10px; }
+  .enrollment-card {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .enrollment-card:hover { border-color: var(--border-strong); }
+  .enrollment-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .enrollment-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .enrollment-id { font-size: 16px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .enrollment-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
+  .enrollment-date { font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+  /* status hero + track */
+  .status-hero { padding: 16px; }
+  .status-hero-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .status-hero-date { font-size: 12px; line-height: 16px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .status-hero h2 { margin: 8px 0 0; font-size: 17px; line-height: 24px; font-weight: 600; }
+  .status-hero p { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+
+  .track { list-style: none; margin: 12px 0 0; padding: 0; }
+  .track li { position: relative; display: flex; align-items: flex-start; gap: 10px; padding: 0 0 10px; font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .track li:last-child { padding-bottom: 0; }
+  .track li::before { content: ""; position: absolute; left: 9px; top: 20px; bottom: 0; width: 2px; background: var(--border); }
+  .track li:last-child::before { display: none; }
+  .track .dot { position: relative; z-index: 1; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border-strong); background: var(--surface); flex: 0 0 auto; }
+  .track .dot .icon { width: 12px; height: 12px; }
+  .track .is-done { color: var(--text-2); }
+  .track .is-done .dot { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .track .is-on { color: var(--text); font-weight: 500; }
+  .track .is-on .dot { border-color: var(--accent); }
+  .track .is-on .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  .banner { display: flex; gap: 10px; padding: 14px 16px; border-radius: 16px; background: var(--danger-soft); color: var(--danger); }
+  .banner .icon { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 1px; }
+  .banner strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .banner p { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--text-2); }
+
+  .item { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 16px; }
+  .item + .item { border-top: 1px solid var(--border); }
+  .item-title { display: block; font-size: 14px; line-height: 20px; font-weight: 500; }
+  .item-calc { display: block; margin-top: 1px; font-size: 12px; line-height: 16px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .item-sum { font-size: 14px; line-height: 20px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sum-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface-2); }
+  .sum-row span { font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .sum-row strong { font-size: 17px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .fact { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 16px; }
+  .fact + .fact { border-top: 1px solid var(--border); }
+  .fact dt { font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .fact dd { margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+  .fact dd.empty { font-weight: 400; color: var(--text-3); }
+
+  .actionbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 20px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2);
+  }
+  .actionbar .btn-danger { align-self: center; }
+
+  /* settings */
+  .student {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .student + .student { border-top: 1px solid var(--border); }
+  .student:hover { background: var(--surface-2); }
+  .student.is-on { background: var(--accent-soft); }
+  .student.is-on:hover { background: var(--accent-soft); }
+  .student .avatar { width: 36px; height: 36px; }
+  .student .avatar.neutral { background: var(--surface-2); color: var(--text-3); }
+  .student .check-ic { margin-left: auto; width: 20px; height: 20px; color: var(--accent); }
+  .student .check-ic.hidden { visibility: hidden; }
+
+  .seg { display: flex; gap: 2px; padding: 4px; border-radius: 12px; background: var(--surface-2); }
+  .seg button {
+    flex: 1;
+    height: 36px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 9px;
+    background: none;
+    color: var(--text-3);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.is-on { background: var(--raised); color: var(--text); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+  .server-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .server-row .btn { height: 40px; }
+  .status-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--text-2); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex: 0 0 auto; }
+
+  .link-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 14px 16px; border: 0; background: none; color: var(--text); text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+  .link-row:hover { background: var(--surface-2); }
+  .link-row .chev { width: 18px; height: 18px; }
+
+  /* onboarding */
+  .onb-head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px 0; }
+  .brand-mini { display: flex; align-items: center; gap: 9px; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .onb-visual {
+    position: relative;
+    flex: 0 0 auto;
+    height: 318px;
+    margin: 26px 20px 0;
+    display: grid;
+    place-items: center;
+    border-radius: 28px;
+    background: var(--accent-soft);
+    overflow: hidden;
+  }
+  .onb-visual::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 156px;
+    border-radius: 20px;
+    background: var(--surface);
+    opacity: 0.55;
+    transform: translateY(14px);
+  }
+  .mini-card {
+    position: relative;
+    z-index: 1;
+    width: 252px;
+    padding: 10px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-float);
+  }
+  .mini-row { display: flex; align-items: center; gap: 10px; padding: 9px 8px; }
+  .mini-row + .mini-row { border-top: 1px solid var(--border); }
+  .mini-row .avatar-square { width: 32px; height: 32px; border-radius: 9px; font-size: 12px; }
+  .mini-title { display: block; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .mini-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .mini-row .chev { width: 14px; height: 14px; }
+  .float-chip { position: absolute; z-index: 2; top: 20px; right: 20px; box-shadow: var(--shadow-sm); }
+  .float-chip.chip-accent { background: var(--surface); }
+
+  .onb-text { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px 20px 0; }
+  .onb-text h1 { margin: 0; font-size: 30px; line-height: 38px; font-weight: 600; letter-spacing: -0.025em; }
+  .onb-text p { margin: 10px 0 0; max-width: 318px; font-size: 15px; line-height: 24px; color: var(--text-2); }
+  .onb-foot { flex: 0 0 auto; display: flex; flex-direction: column; gap: 20px; padding: 26px 20px 20px; }
+  .dots { display: flex; justify-content: center; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--border-strong); }
+  .dot.is-on { width: 20px; background: var(--accent); }
+
+  /* desktop */
+  .desktop-wrap { overflow-x: auto; border-radius: 16px; }
+  .desktop {
+    width: 1280px;
+    height: 800px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--frame);
+    background: var(--canvas);
+    color: var(--text);
+    box-shadow: 0 24px 48px -32px rgba(10, 20, 15, 0.4);
+  }
+  html[data-theme="dark"] .desktop { box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.85); }
+  .rail { flex: 0 0 240px; display: flex; flex-direction: column; padding: 20px 16px; background: var(--surface); border-right: 1px solid var(--border); }
+  .rail-brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .rail-nav { display: flex; flex-direction: column; gap: 2px; margin-top: 26px; }
+  .rail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    color: var(--text-2);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .rail-item .icon { width: 20px; height: 20px; color: var(--text-3); }
+  .rail-item:hover { background: var(--surface-2); color: var(--text); }
+  .rail-item.is-active { background: var(--accent-soft); color: var(--accent); }
+  .rail-item.is-active .icon { color: var(--accent); }
+  .rail-user { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 14px 8px 4px; border-top: 1px solid var(--border); }
+  .rail-user .avatar { width: 32px; height: 32px; font-size: 11px; }
+  .rail-name { display: block; font-size: 13px; line-height: 18px; font-weight: 500; }
+  .rail-mail { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+
+  .desk-main { flex: 1; min-width: 0; padding: 28px 36px; overflow: hidden; }
+  .desk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
+  .desk-head h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+  .desk-head p { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--text-3); }
+  .desk-head .btn { height: 40px; }
+
+  .course-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .course-card { padding: 20px; transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease; }
+  .course-card:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 10px 24px -14px rgba(20, 32, 28, 0.25); }
+  .course-card .avatar-square { width: 44px; height: 44px; border-radius: 13px; font-size: 16px; }
+  .course-card h2 { margin: 14px 0 2px; font-size: 17px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .course-card .price { font-size: 20px; line-height: 28px; }
+  .course-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .detail-link { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: var(--accent); font-size: 13px; line-height: 18px; font-weight: 600; cursor: pointer; }
+  .detail-link .icon { width: 16px; height: 16px; }
+  .detail-link:hover { color: var(--accent-hover); }
+
+  .flow { padding: 6px 16px; }
+  .flow-card { margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: 20px; }
+  .flow-card .flow-step { display: flex; gap: 12px; padding: 0; border: 0; }
+  .flow-card .flow-step p { margin: 2px 0 0; }
+  .desk-note { margin: 16px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  .table-card { border-radius: 16px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
+  .table { width: 100%; border-collapse: collapse; }
+  .table th { padding: 12px 20px; background: var(--surface-2); color: var(--text-3); font-size: 12px; line-height: 16px; font-weight: 500; text-align: left; }
+  .table th.num { text-align: right; }
+  .table td { padding: 16px 20px; border-top: 1px solid var(--border); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+  .table tr:hover td { background: var(--surface-2); }
+  .table .id { font-size: 15px; font-weight: 600; }
+  .table .chev-cell { width: 56px; text-align: right; }
+  .table .chev-cell .chev { margin-left: auto; }
+
+  .removed { margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .removed li { display: flex; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-2); font-size: 13px; line-height: 20px; box-shadow: var(--shadow-card); }
+  .removed li::before { content: "✓"; color: var(--accent); font-weight: 600; flex: 0 0 auto; }
+
+  .foot-note { margin-top: 24px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+
+  @media (max-width: 1100px) {
+    .system { grid-template-columns: 1fr; }
+    .removed { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 860px) {
+    .sheet { padding: 28px 16px 64px; }
+    .preview-bar { padding: 10px 16px; }
+    .preview-brand span { display: none; }
+    .section-head { margin-top: 48px; }
+    .desk-main { padding: 24px; }
+  }
+
+  /* ---------- target additions ---------- */
+  :root { --star: #C88A04; }
+  html[data-theme="dark"] { --star: #F5C56A; }
+
+  .bell { position: relative; }
+  .bell-dot { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); border: 2px solid var(--canvas); }
+  .appbar-actions { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+  .appbar-actions .btn { font-size: 13px; }
+
+  .scope-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .scope { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-2); font-size: 11px; line-height: 14px; font-weight: 500; }
+  .scope::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* auth */
+  .auth { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 22px 20px 20px; }
+  .auth-brand { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .auth-hero { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 42px 0 26px; }
+  .auth-icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 14px; border-radius: 16px; background: var(--accent-soft); color: var(--accent); }
+  .auth-hero h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+  .auth-hero p { margin: 6px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .auth .field { margin-top: 12px; }
+  .auth-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0 20px; }
+  .remember { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; color: var(--text-2); }
+  .remember .cb { width: 18px; height: 18px; margin: 0; }
+  .pass { position: relative; }
+  .pass .input { padding-right: 46px; }
+  .pass button { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 9px; background: none; color: var(--text-3); cursor: pointer; }
+  .auth-note { margin-top: auto; padding-top: 24px; text-align: center; font-size: 12px; line-height: 17px; color: var(--text-3); }
+
+  /* search and filters */
+  .search { position: relative; margin: 2px 0 10px; }
+  .search .icon { position: absolute; left: 13px; top: 13px; width: 18px; height: 18px; color: var(--text-3); }
+  .search input { width: 100%; height: 44px; padding: 0 12px 0 40px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--input-bg); color: var(--text); font-family: inherit; font-size: 14px; line-height: 20px; }
+  .search input::placeholder { color: var(--text-3); }
+  .filter-row { display: flex; gap: 7px; overflow: hidden; margin-bottom: 12px; }
+  .filter { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface); color: var(--text-2); font-family: inherit; font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; cursor: pointer; }
+  .filter.is-on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .result-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--text-3); }
+  .result-line button { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: var(--text-2); font-family: inherit; font-size: 12px; line-height: 16px; font-weight: 500; cursor: pointer; }
+
+  /* course tiles */
+  .course-grid-m { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .course-tile { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-card); transition: border-color 120ms ease; }
+  .course-tile:hover { border-color: var(--border-strong); }
+  .course-cover { position: relative; display: flex; align-items: flex-end; height: 92px; padding: 10px; background: var(--accent-soft); }
+  .course-cover .initial { font-size: 36px; line-height: 1; font-weight: 700; color: var(--accent); opacity: 0.8; letter-spacing: -0.04em; }
+  .course-cover .cat { position: absolute; top: 8px; left: 8px; height: 20px; padding: 0 7px; border-radius: 999px; background: var(--surface); color: var(--text-2); font-size: 10px; line-height: 20px; font-weight: 500; }
+  .course-cover .seat-flag { position: absolute; top: 8px; right: 8px; height: 20px; padding: 0 7px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); font-size: 10px; line-height: 20px; font-weight: 500; }
+  .course-tile.is-off .course-cover { background: var(--surface-2); }
+  .course-tile.is-off .initial { color: var(--text-3); }
+  .course-tile-body { display: flex; flex: 1; flex-direction: column; padding: 10px 12px 12px; }
+  .course-tile h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 40px; margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; letter-spacing: -0.005em; }
+  .course-instructor { margin-top: 2px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .course-rating { display: flex; align-items: center; gap: 3px; margin-top: 7px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--text-2); }
+  .course-rating .icon { color: var(--star); }
+  .course-rating span { color: var(--text-3); font-weight: 400; }
+  .course-tile-foot { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-top: auto; padding-top: 9px; }
+  .course-price { font-size: 14px; line-height: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .course-tile-foot .icon { color: var(--text-3); }
+
+  /* course detail */
+  .cover-lg { position: relative; display: flex; align-items: flex-end; height: 150px; padding: 14px; overflow: hidden; border-radius: 16px; background: var(--accent-soft); }
+  .cover-lg .initial { font-size: 64px; line-height: 1; font-weight: 700; color: var(--accent); opacity: 0.75; letter-spacing: -0.05em; }
+  .cover-lg .cat { position: absolute; top: 12px; left: 12px; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--surface); color: var(--text-2); font-size: 11px; line-height: 22px; font-weight: 500; }
+  .course-h1 { margin: 14px 0 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.02em; }
+  .course-lead { margin: 6px 0 0; font-size: 13px; line-height: 18px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .instructor-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+  .instructor-row .avatar { width: 34px; height: 34px; }
+  .instructor-name { display: block; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .instructor-role { display: block; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .rating-line { display: flex; align-items: center; gap: 5px; margin-top: 12px; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text-2); }
+  .rating-line .icon { color: var(--star); }
+  .rating-line span { color: var(--text-3); font-weight: 400; }
+
+  .module-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .module-row + .module-row { border-top: 1px solid var(--border); }
+  .module-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-2); color: var(--text-3); font-size: 11px; line-height: 14px; font-weight: 600; flex: 0 0 auto; }
+  .module-row.is-done .module-num { background: var(--accent); color: var(--on-accent); }
+  .module-row.is-current .module-num { background: var(--accent-soft); color: var(--accent); }
+  .module-main { flex: 1; min-width: 0; }
+  .module-title { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .module-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .module-row .chev { color: var(--text-3); }
+
+  .buy-bar { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px 16px; border-top: 1px solid var(--border); background: var(--surface); box-shadow: 0 -8px 20px -16px rgba(20, 32, 28, 0.2); }
+  .buy-price { font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .buy-price small { display: block; margin-top: 1px; font-size: 10px; line-height: 13px; font-weight: 400; color: var(--text-3); }
+  .buy-bar .btn { min-width: 150px; }
+
+  /* reviews */
+  .rating-summary { display: flex; align-items: center; gap: 18px; }
+  .rating-big { font-size: 44px; line-height: 48px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
+  .rating-block { flex: 1; min-width: 0; }
+  .stars { display: flex; gap: 1px; color: var(--star); }
+  .rating-count { margin-top: 3px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .rating-bars { margin-top: 8px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .bar-track { flex: 1; height: 5px; overflow: hidden; border-radius: 999px; background: var(--surface-2); }
+  .bar-track i { display: block; height: 100%; border-radius: 999px; background: var(--star); }
+  .bar-row b { min-width: 14px; text-align: right; font-weight: 500; color: var(--text-2); }
+  .review { padding: 14px 16px; }
+  .review + .review { border-top: 1px solid var(--border); }
+  .review-head { display: flex; align-items: center; gap: 10px; }
+  .review-head .avatar { width: 32px; height: 32px; font-size: 10px; }
+  .review-name { display: block; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .review-date { display: block; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .review-stars { display: flex; gap: 1px; margin-left: auto; color: var(--star); }
+  .review-text { margin: 10px 0 0; font-size: 13px; line-height: 20px; color: var(--text-2); }
+
+  .sheet-overlay { position: absolute; inset: 0; z-index: 5; background: rgba(10, 20, 15, 0.42); }
+  .sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; padding: 14px 20px 20px; border-radius: 20px 20px 0 0; background: var(--surface); box-shadow: 0 -14px 34px rgba(0, 0, 0, 0.22); }
+  .sheet-grip { width: 36px; height: 4px; margin: 0 auto 14px; border-radius: 999px; background: var(--border-strong); }
+  .sheet-panel h2 { margin: 0; font-size: 18px; line-height: 24px; font-weight: 600; }
+  .sheet-stars { display: flex; gap: 7px; margin: 14px 0 4px; color: var(--border-strong); }
+  .sheet-stars .is-on { color: var(--star); }
+
+  /* picker */
+  .picker-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; }
+  .picker-row + .picker-row { border-top: 1px solid var(--border); }
+  .picker-row .cb { margin-top: 4px; }
+  .picker-main { flex: 1; min-width: 0; }
+  .picker-title { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .picker-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .picker-price { font-size: 13px; line-height: 18px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .bottom-bar.row { flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; }
+
+  /* learning */
+  .seg-top { margin: 2px 0 14px; }
+  .continue-card { overflow: hidden; }
+  .continue-cover { position: relative; display: flex; align-items: flex-end; height: 104px; padding: 14px; background: var(--accent-soft); }
+  .continue-cover .initial { font-size: 46px; line-height: 1; font-weight: 700; color: var(--accent); opacity: 0.8; letter-spacing: -0.05em; }
+  .continue-cover .cat { position: absolute; top: 10px; left: 12px; height: 20px; padding: 0 7px; border-radius: 999px; background: var(--surface); color: var(--text-2); font-size: 10px; line-height: 20px; font-weight: 500; }
+  .continue-body { padding: 14px 16px 16px; }
+  .continue-title { margin: 0; font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .continue-meta { margin: 2px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .continue-progress { margin-top: 12px; }
+  .progress-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--text-3); }
+  .progress-head b { color: var(--text); font-weight: 600; }
+  .progress { height: 6px; overflow: hidden; border-radius: 999px; background: var(--surface-2); }
+  .progress i { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+  .next-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); }
+  .next-row .icon { flex: 0 0 auto; color: var(--accent); }
+  .next-label { display: block; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .next-title { display: block; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .next-row .btn { height: 32px; margin-left: auto; padding: 0 12px; font-size: 12px; }
+  .learn-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .learn-row + .learn-row { border-top: 1px solid var(--border); }
+  .learn-row .avatar-square { width: 40px; height: 40px; border-radius: 12px; font-size: 14px; }
+  .learn-main { flex: 1; min-width: 0; }
+  .learn-title { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .learn-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .learn-progress { flex: 0 0 76px; }
+  .learn-progress .progress { height: 5px; }
+  .learn-progress span { display: block; margin-top: 4px; text-align: right; font-size: 10px; line-height: 12px; font-weight: 500; color: var(--text-3); }
+  .cert-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 11px; line-height: 14px; font-weight: 500; }
+
+  /* course home */
+  .course-head { display: flex; align-items: center; gap: 12px; }
+  .course-head .avatar-square { width: 48px; height: 48px; border-radius: 14px; font-size: 17px; }
+  .course-head-main { flex: 1; min-width: 0; }
+  .course-head-title { display: block; font-size: 18px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .course-head-meta { display: block; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .seg-course { margin-top: 14px; }
+  .course-next { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--accent-soft); }
+  .course-next .next-label { color: var(--accent); opacity: 0.8; }
+  .course-next .icon { color: var(--accent); }
+  .course-next .btn { margin-left: auto; height: 36px; padding: 0 14px; font-size: 12px; }
+
+  .lesson-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .lesson-row + .lesson-row { border-top: 1px solid var(--border); }
+  .lesson-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--surface-2); color: var(--text-3); flex: 0 0 auto; }
+  .lesson-row.is-done .lesson-icon { background: var(--accent-soft); color: var(--accent); }
+  .lesson-row.is-current .lesson-icon { background: var(--accent-soft); color: var(--accent); }
+  .lesson-main { flex: 1; min-width: 0; }
+  .lesson-title { display: block; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .lesson-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .test-row { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 14px 16px; border: 1px solid var(--accent-soft); border-radius: 16px; background: var(--accent-soft); }
+  .test-row .icon { color: var(--accent); flex: 0 0 auto; }
+  .test-row .btn { margin-left: auto; height: 36px; padding: 0 14px; font-size: 12px; }
+
+  /* lesson */
+  .lesson-video { position: relative; display: grid; place-items: center; height: 150px; border-radius: 16px; background: var(--surface-2); }
+  .lesson-video .play { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--surface); color: var(--text); box-shadow: var(--shadow-card); }
+  .lesson-video .duration { position: absolute; right: 10px; bottom: 10px; height: 22px; padding: 0 8px; border-radius: 6px; background: rgba(20, 32, 28, 0.72); color: #fff; font-size: 10px; line-height: 22px; font-weight: 500; }
+  .prose p { margin: 0 0 12px; font-size: 15px; line-height: 24px; }
+  .file-card { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; }
+  .file-card .icon { color: var(--accent); flex: 0 0 auto; }
+  .file-name { display: block; font-size: 13px; line-height: 18px; font-weight: 500; }
+  .file-meta { display: block; font-size: 10px; line-height: 14px; color: var(--text-3); }
+
+  /* test */
+  .testbar { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; }
+  .testbar-title { flex: 1; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .timer { display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 9px; border-radius: 999px; background: var(--warning-soft); color: var(--warning); font-size: 12px; line-height: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .test-progress { height: 4px; background: var(--surface-2); }
+  .test-progress i { display: block; height: 100%; background: var(--accent); }
+  .question-kicker { margin: 4px 0 0; font-size: 11px; line-height: 14px; font-weight: 500; color: var(--text-3); }
+  .question-text { margin: 10px 0 16px; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .option { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); cursor: pointer; }
+  .option .mark { display: grid; place-items: center; width: 20px; height: 20px; margin-top: 0; border: 1.5px solid var(--border-strong); border-radius: 50%; flex: 0 0 auto; }
+  .option-text { font-size: 14px; line-height: 20px; }
+  .option.is-on { border-color: var(--accent); background: var(--accent-soft); }
+  .option.is-on .mark { border-color: var(--accent); }
+  .option.is-on .mark::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .test-actions { flex-direction: row; align-items: center; justify-content: space-between; }
+
+  .result-hero { text-align: center; padding: 24px 16px; }
+  .result-score { font-size: 56px; line-height: 60px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.045em; }
+  .result-score small { font-size: 22px; line-height: 26px; font-weight: 500; color: var(--text-3); }
+  .result-badge { margin-top: 8px; }
+  .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .result-stat { padding: 10px; border-radius: 12px; background: var(--surface-2); text-align: center; }
+  .result-stat b { display: block; font-size: 17px; line-height: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .result-stat span { display: block; margin-top: 1px; font-size: 10px; line-height: 14px; color: var(--text-3); }
+
+  /* discussion */
+  .thread-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+  .thread-row + .thread-row { border-top: 1px solid var(--border); }
+  .thread-row .avatar { width: 32px; height: 32px; font-size: 10px; }
+  .thread-main { flex: 1; min-width: 0; }
+  .thread-title { display: block; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .thread-meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .message { display: flex; gap: 10px; padding: 12px 16px; }
+  .message + .message { border-top: 1px solid var(--border); }
+  .message .avatar { width: 32px; height: 32px; font-size: 10px; flex: 0 0 auto; }
+  .message-main { flex: 1; min-width: 0; }
+  .message-head { display: flex; align-items: center; gap: 6px; }
+  .message-author { font-size: 12px; line-height: 16px; font-weight: 600; }
+  .message-time { font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .teacher-badge { height: 18px; padding: 0 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 9px; line-height: 18px; font-weight: 600; }
+  .message-text { margin: 4px 0 0; font-size: 13px; line-height: 20px; color: var(--text-2); }
+  .composer { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 10px 16px 16px; border-top: 1px solid var(--border); background: var(--surface); }
+  .composer input { flex: 1; height: 42px; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--input-bg); color: var(--text); font-family: inherit; font-size: 14px; line-height: 20px; }
+  .composer .icon-btn { color: var(--accent); }
+
+  /* certificate */
+  .certificate { padding: 22px 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-card); text-align: center; }
+  .cert-seal { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+  .cert-kicker { font-size: 10px; line-height: 14px; font-weight: 500; color: var(--text-3); letter-spacing: 0.04em; }
+  .cert-title { margin: 5px 0 0; font-size: 20px; line-height: 27px; font-weight: 600; }
+  .cert-course { margin: 8px 0 0; font-size: 16px; line-height: 23px; font-weight: 600; color: var(--accent); }
+  .cert-name { margin: 14px 0 0; font-size: 13px; line-height: 18px; color: var(--text-2); }
+  .cert-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .cert-code { font-weight: 500; letter-spacing: 0.02em; }
+
+  /* notifications */
+  .notification { display: flex; gap: 12px; padding: 14px 16px; }
+  .notification + .notification { border-top: 1px solid var(--border); }
+  .notif-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); color: var(--text-2); flex: 0 0 auto; }
+  .notification.is-unread .notif-icon { background: var(--accent-soft); color: var(--accent); }
+  .notif-main { flex: 1; min-width: 0; }
+  .notif-title { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .notif-text { margin-top: 1px; font-size: 11px; line-height: 16px; color: var(--text-3); }
+  .notif-time { margin-top: 3px; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .unread { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+
+  /* profile and settings */
+  .profile-hero { display: flex; flex-direction: column; align-items: center; padding: 8px 0 18px; text-align: center; }
+  .profile-hero .avatar { width: 72px; height: 72px; margin-bottom: 10px; font-size: 22px; }
+  .profile-name { font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .profile-mail { margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .profile-role { margin-top: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; overflow: hidden; border: 1px solid var(--border); border-radius: 14px; background: var(--border); }
+  .stat { padding: 12px 6px; background: var(--surface); text-align: center; }
+  .stat b { display: block; font-size: 18px; line-height: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stat span { display: block; margin-top: 2px; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .menu-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; border: 0; background: none; color: var(--text); text-align: left; cursor: pointer; }
+  .menu-row + .menu-row { border-top: 1px solid var(--border); }
+  .menu-row .icon { color: var(--text-3); flex: 0 0 auto; }
+  .menu-label { flex: 1; font-size: 13px; line-height: 18px; font-weight: 500; }
+  .menu-row.is-danger .menu-label { color: var(--danger); }
+  .menu-badge { display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 10px; line-height: 14px; font-weight: 600; }
+  .switch { position: relative; width: 44px; height: 26px; border-radius: 999px; background: var(--border-strong); flex: 0 0 auto; transition: background-color 120ms ease; }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 120ms ease; }
+  .switch.is-on { background: var(--accent); }
+  .switch.is-on::after { transform: translateX(18px); }
+  .switch-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .switch-row + .switch-row { border-top: 1px solid var(--border); }
+  .switch-label { flex: 1; font-size: 13px; line-height: 18px; font-weight: 500; }
+
+  .empty-state { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 44px 16px; text-align: center; }
+  .empty-icon { display: grid; place-items: center; width: 58px; height: 58px; margin-bottom: 4px; border-radius: 50%; background: var(--surface-2); color: var(--text-3); }
+  .empty-state h3 { margin: 0; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .empty-state p { max-width: 262px; margin: 0; font-size: 13px; line-height: 18px; color: var(--text-3); }
+  .empty-state .btn { margin-top: 8px; }
+  .banner-warn { background: var(--warning-soft); color: var(--warning); }
+  .banner-warn p { color: var(--text-2); }
+
+  /* desktop */
+  .catalog-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; }
+  .filter-panel { padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-card); align-self: start; }
+  .filter-title { margin: 0 0 8px; font-size: 11px; line-height: 14px; font-weight: 600; color: var(--text-3); }
+  .filter-title + .filter-option { margin-top: 2px; }
+  .filter-option { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; line-height: 18px; color: var(--text-2); }
+  .filter-option .cb { width: 16px; height: 16px; margin: 0; }
+  .filter-divider { height: 1px; margin: 12px 0; background: var(--border); }
+  .search-d { position: relative; flex: 1; max-width: 420px; }
+  .search-d .icon { position: absolute; left: 12px; top: 11px; width: 18px; height: 18px; color: var(--text-3); }
+  .search-d input { width: 100%; height: 40px; padding: 0 12px 0 38px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--input-bg); color: var(--text); font-family: inherit; font-size: 13px; line-height: 18px; }
+  .course-grid-d { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .course-card-d { display: flex; flex-direction: column; overflow: hidden; padding: 0; }
+  .course-card-d .course-cover { height: 96px; }
+  .course-card-d .course-body { display: flex; flex: 1; flex-direction: column; padding: 14px; }
+  .course-card-d h2 { margin: 0; font-size: 16px; line-height: 22px; font-weight: 600; }
+  .course-card-d .price { margin-top: 8px; font-size: 19px; line-height: 26px; }
+  .course-card-d .course-tile-foot { padding-top: 10px; }
+  .course-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+  .course-content h1 { margin: 16px 0 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.025em; }
+  .buy-card { padding: 20px; }
+  .buy-card .buy-price { font-size: 28px; line-height: 34px; }
+  .buy-card .btn { width: 100%; margin-top: 14px; }
+  .buy-facts { margin-top: 16px; }
+  .buy-fact { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .buy-fact b { font-weight: 500; color: var(--text); }
+  .learn-dash { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; align-items: start; }
+  .dash-side { display: flex; flex-direction: column; gap: 16px; }
+  .dash-card { padding: 16px; }
+  .dash-title { margin: 0 0 10px; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .deadline { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border); }
+  .deadline .icon-box { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--surface-2); color: var(--text-2); flex: 0 0 auto; }
+  .deadline-main { flex: 1; min-width: 0; }
+  .deadline-title { display: block; font-size: 12px; line-height: 16px; font-weight: 500; }
+  .deadline-meta { display: block; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .dash-hero { overflow: hidden; }
+  .dash-hero .continue-cover { height: 128px; }
+  .dash-hero .continue-body { padding: 16px 20px 20px; }
+  .dash-hero .continue-title { font-size: 22px; line-height: 28px; }
+  .dash-note { margin: 14px 0 0; font-size: 12px; line-height: 16px; color: var(--text-3); }
+  .mini-progress { margin: 8px 8px 0; }
+  .mini-progress .progress { height: 5px; }
+  .mini-next { display: flex; align-items: center; gap: 6px; margin: 10px 8px 2px; padding: 7px 8px; border-radius: 9px; background: var(--surface-2); font-size: 9px; line-height: 13px; font-weight: 500; color: var(--text-2); }
+  .mini-next .icon { color: var(--accent); }
+
+  .auth-form { margin: auto 0; }
+  .auth-note { margin-top: 0; padding-top: 0; }
+  .filter-row { overflow-x: auto; scrollbar-width: none; }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .enroll-courses { margin-top: 8px; font-size: 12px; line-height: 17px; color: var(--text-3); }
+  .enroll-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 12px; line-height: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .enroll-foot .icon { color: var(--text-3); }
+  .pay-method { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+  .pay-method.is-on { border-color: var(--accent); background: var(--accent-soft); }
+  .pay-mark { display: grid; place-items: center; width: 20px; height: 20px; border: 1.5px solid var(--border-strong); border-radius: 50%; flex: 0 0 auto; }
+  .pay-method.is-on .pay-mark { border-color: var(--accent); }
+  .pay-method.is-on .pay-mark::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .pay-main { flex: 1; min-width: 0; }
+  .pay-title { display: block; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .pay-meta { display: block; margin-top: 1px; font-size: 11px; line-height: 14px; color: var(--text-3); }
+  .pay-method > .icon { color: var(--text-3); }
+  .secure-note { display: flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 11px; line-height: 15px; color: var(--text-3); }
+  .secure-note .icon { color: var(--success); }
+  .success { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 20px; text-align: center; }
+  .success-icon { display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: 16px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+  .success h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.02em; }
+  .success p { margin: 8px 0 0; max-width: 300px; font-size: 14px; line-height: 21px; color: var(--text-3); }
+  .success .card { width: 100%; margin-top: 22px; text-align: left; }
+  .success .btn { width: 100%; margin-top: 16px; }
+  .success .btn-ghost { margin-top: 10px; }
+  .skeleton { border-radius: 8px; background: var(--surface-2); }
+  .skeleton-tile { overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+  .skeleton-cover { height: 92px; background: var(--surface-2); }
+  .skeleton-body { padding: 12px; }
+  .skeleton-line { height: 10px; margin-bottom: 8px; border-radius: 999px; background: var(--surface-2); }
+  .skeleton-line.short { width: 60%; }
+  .bottom-bar.row { display: flex; }
+  .course-content .cover-lg { height: 200px; }
+  .course-content .cover-lg .initial { font-size: 86px; }
+  .course-card-d .price { margin-top: 8px; font-size: 19px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dash-courses { margin-top: 16px; }
+  .dash-results { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .dash-result { padding: 10px; border-radius: 12px; background: var(--surface-2); text-align: center; }
+  .dash-result b { display: block; font-size: 18px; line-height: 22px; font-weight: 600; }
+  .dash-result span { display: block; margin-top: 1px; font-size: 10px; line-height: 14px; color: var(--text-3); }
+  .desk-main .back { padding: 0; border: 0; background: none; color: var(--text-3); font-family: inherit; font-size: 12px; line-height: 16px; font-weight: 500; cursor: pointer; }
+  .course-card-d.is-off .course-cover { background: var(--surface-2); }
+  .course-card-d.is-off .course-cover .initial { color: var(--text-3); }
+  .app { position: relative; }
+  .picker-row.is-off .picker-title, .picker-row.is-off .picker-price { color: var(--text-3); }
+  .notif-main, .notif-text, .notif-time { display: block; }
+  .section-head { scroll-margin-top: 80px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .toc a { display: inline-flex; align-items: center; height: 30px; padding: 0 11px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-2); font-size: 11px; line-height: 14px; font-weight: 500; text-decoration: none; }
+  .toc a:hover { border-color: var(--border-strong); color: var(--text); }
+  .answer-row { padding: 14px 16px; }
+  .answer-row + .answer-row { border-top: 1px solid var(--border); }
+  .answer-head { display: flex; align-items: flex-start; gap: 8px; }
+  .answer-q { flex: 1; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .answer-line { margin-top: 6px; padding-left: 20px; font-size: 12px; line-height: 17px; color: var(--text-3); }
+  .answer-line b { font-weight: 500; color: var(--text-2); }
+  .answer-line.correct b { color: var(--success); }
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-signal" viewBox="0 0 16 12">
+    <path d="M1 11V8M5 11V6M9 11V3M13 11V0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-wifi" viewBox="0 0 16 12">
+    <path d="M1.6 4.1C5.2 1.1 10.8 1.1 14.4 4.1M4 6.9c2.3-1.9 5.7-1.9 8 0M6.6 9.5c.8-.6 2-.6 2.8 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-battery" viewBox="0 0 22 12">
+    <rect x="1" y="1.5" width="17" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <rect x="3" y="3.5" width="12" height="5" rx="1" fill="currentColor"/>
+    <path d="M20 4.5v3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-back" viewBox="0 0 24 24">
+    <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24">
+    <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24">
+    <path d="M20 11a8 8 0 10-2.3 5.7M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-book" viewBox="0 0 24 24">
+    <path d="M12 6.5C10.3 5.2 7.7 4.6 4 5v13c3.7-.4 6.3.2 8 1.5 1.7-1.3 4.3-1.9 8-1.5V5c-3.7-.4-6.3.2-8 1.5zM12 6.5v13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24">
+    <rect x="5" y="3.5" width="14" height="17" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8.5 8h7M8.5 12h7M8.5 16h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24">
+    <path d="M4 7h8M17 7h3M4 17h3M11 17h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="14.5" cy="7" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="8.5" cy="17" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24">
+    <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24">
+    <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24">
+    <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M12 7.5V13M12 16.2v.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="i-learn" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M10 8.5l5.5 3.5L10 15.5v-7z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M5.5 19.5c.7-3.2 3.2-4.8 6.5-4.8s5.8 1.6 6.5 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24">
+    <path d="M6 9.5a6 6 0 1112 0c0 3.6 1.5 4.8 1.5 4.8h-15S6 13.1 6 9.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M10 18a2 2 0 004 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24">
+    <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M15.5 15.5L20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24">
+    <path d="M12 3.6l2.6 5.3 5.8.9-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.8l5.8-.9L12 3.6z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-play" viewBox="0 0 24 24">
+    <path d="M8 5.5l11 6.5-11 6.5v-13z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-file" viewBox="0 0 24 24">
+    <path d="M7 3.5h7l4 4v13H7v-17z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M14 3.5v4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-video" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M12 7v5.3l3.2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-award" viewBox="0 0 24 24">
+    <circle cx="12" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8.5 13.6L7 21l5-2.5L17 21l-1.5-7.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-message" viewBox="0 0 24 24">
+    <path d="M4 5.5h16v10.5H9.5L4 20V5.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-card" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M3 10h18" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24">
+    <rect x="5" y="10.5" width="14" height="9.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8 10.5V8a4 4 0 018 0v2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M8 12.2l2.8 2.8 5.4-5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24">
+    <path d="M12 4v10M8 10l4 4 4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-send" viewBox="0 0 24 24">
+    <path d="M21 3L10.5 13.5M21 3l-7 18-3.5-7.5L3 10l18-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24">
+    <path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M3.5 7l8.5 6 8.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24">
+    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24">
+    <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24">
+    <path d="M4 20h4l10.5-10.5-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M13.5 6.5l4 4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24">
+    <path d="M4 17l5-5 4 4 7-8M15 8h5v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+<header class="preview-bar">
+  <div class="preview-brand"><span class="logo">L</span>Learning Platform <span>цільовий дизайн</span></div>
+  <div class="theme-switch" role="group" aria-label="Тема макета">
+    <button type="button" data-theme-btn="light" aria-pressed="true">Світла</button>
+    <button type="button" data-theme-btn="dark" aria-pressed="false">Темна</button>
+  </div>
+</header>
+<main class="sheet">
+<section class="intro">
+  <h1>Learning Platform: повний студентський застосунок</h1>
+  <p>Цільовий дизайн, не прив'язаний до поточного API. Каталог, запис і оплата, навчання за програмою, матеріали, тести, прогрес, відгуки, обговорення, сертифікат і профіль. Один візуальний стиль для Android і Desktop.</p>
+  <p class="small">Дані демонстраційні. Цільові контракти описані в <code>docs/design/target/spec.md</code>. Викладацький кабінет і адмінка в цей макет не входять: це окремий продукт.</p>
+  <div class="scope-row"><span class="scope">Студент</span><span class="scope">Android + Desktop</span><span class="scope">Українська / English</span><span class="scope">Світла й темна тема</span></div>
+  <nav class="toc" aria-label="Розділи макета"><a href="#onboarding">Вхід</a><a href="#catalog">Каталог</a><a href="#enrollment">Запис</a><a href="#learning">Навчання</a><a href="#assessment">Оцінювання</a><a href="#profile">Профіль</a><a href="#states">Стани</a><a href="#localization">English</a><a href="#desktop">Десктоп</a></nav>
+</section>
+
+<div class="section-head" id="onboarding"><h2>Онбординг і вхід</h2><span>3 екрани</span></div><div class="devices"><figure class="device"><figcaption>Онбординг <span>слайд 3 з 4</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><div class="onb-head"><div class="brand-mini"><span class="logo sm">L</span>Learning Platform</div><button class="btn btn-ghost" type="button">Пропустити</button></div>
+  <div class="onb-visual">
+    <div class="mini-card">
+      <div class="mini-row"><span class="avatar-square">О</span><span class="pick-body"><span class="mini-title">Основи C#</span><span class="mini-meta">Модуль 3 · 42%</span></span><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="mini-progress"><div class="progress"><i style="width:42%"></i></div></div>
+      <div class="mini-next"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-play"/></svg> Наступний урок: Класи та об'єкти</div>
+    </div>
+    <span class="chip chip-accent no-dot float-chip">42%</span>
+  </div>
+  <div class="onb-text"><h1>Навчання за програмою</h1><p>Модулі, матеріали й тести в одному місці. Прогрес зберігається автоматично.</p></div>
+  <div class="onb-foot"><div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot is-on"></span><span class="dot"></span></div><button class="btn btn-primary btn-lg btn-block" type="button">Далі</button></div></div></div></figure><figure class="device"><figcaption>Вхід <span>email + пароль</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><div class="auth">
+    <div class="auth-brand"><span class="logo">L</span>Learning Platform</div>
+    <div class="auth-form">
+    <div class="auth-hero"><span class="auth-icon"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></span><h1>Вхід</h1><p>Доступ для студентів університету.</p></div>
+    <div class="field"><label for="email">Електронна пошта</label><input class="input" id="email" type="email" value="student1@example.com"></div>
+    <div class="field"><label for="pass">Пароль</label><div class="pass"><input class="input" id="pass" type="password" value="learning2026"><button type="button" aria-label="Показати пароль"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-eye"/></svg></button></div></div>
+    <div class="auth-row"><label class="remember"><input class="cb" type="checkbox" checked>Запам'ятати мене</label><button class="btn btn-ghost" type="button">Забули пароль?</button></div>
+    <button class="btn btn-primary btn-lg btn-block" type="button">Увійти</button>
+    </div>
+    <p class="auth-note">Немає акаунта? Зверніться до деканату.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Відновлення пароля <span>email</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><div class="auth">
+    <div class="auth-brand"><span class="logo">L</span>Learning Platform</div>
+    <div class="auth-form">
+      <div class="auth-hero"><span class="auth-icon"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><use href="#i-mail"/></svg></span><h1>Відновлення пароля</h1><p>Введіть пошту, і ми надішлемо посилання для зміни пароля.</p></div>
+      <div class="field"><label for="reset-email">Електронна пошта</label><input class="input" id="reset-email" type="email" placeholder="student1@example.com"></div>
+      <button class="btn btn-primary btn-lg btn-block" type="button">Надіслати посилання</button>
+      <button class="btn btn-ghost" style="display:flex;margin:14px auto 0" type="button">Повернутися до входу</button>
+    </div>
+    <p class="auth-note">Лист надходить протягом кількох хвилин. Перевірте теку «Спам».</p>
+  </div></div></div></figure></div>
+<div class="section-head" id="catalog"><h2>Каталог і курс</h2><span>4 екрани</span></div><div class="devices"><figure class="device"><figcaption>Каталог <span>пошук, категорії, 4 курси</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Каталог курсів</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="search"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-search"/></svg><input type="search" placeholder="Пошук курсів"></div>
+    <div class="filter-row"><button class="filter is-on" type="button">Усі</button><button class="filter" type="button">Програмування</button><button class="filter" type="button">Бази даних</button><button class="filter" type="button">Алгоритми</button></div>
+    <div class="result-line"><span>4 курси</span><button type="button">За популярністю <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-chevron-down"/></svg></button></div>
+    <div class="course-grid-m"><article class="course-tile">
+    <div class="course-cover"><span class="cat">Програмування</span><span class="initial">О</span></div>
+    <div class="course-tile-body">
+      <h3>Основи C#</h3>
+      <span class="course-instructor">Ігор Коваленко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.8</b><span>(24)</span></div>
+      <div class="course-tile-foot"><span class="course-price">1 200,00 ₴</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile">
+    <div class="course-cover"><span class="cat">Веб</span><span class="initial">A</span></div>
+    <div class="course-tile-body">
+      <h3>ASP.NET Core API</h3>
+      <span class="course-instructor">Марія Гриценко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.6</b><span>(18)</span></div>
+      <div class="course-tile-foot"><span class="course-price">1 800,00 ₴</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile is-off">
+    <div class="course-cover"><span class="cat">Бази даних</span><span class="initial">M</span><span class="seat-flag">Місць немає</span></div>
+    <div class="course-tile-body">
+      <h3>MongoDB для .NET</h3>
+      <span class="course-instructor">Олег Бондар</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.4</b><span>(9)</span></div>
+      <div class="course-tile-foot"><span class="course-price">1 500,00 ₴</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile">
+    <div class="course-cover"><span class="cat">Алгоритми</span><span class="initial">А</span></div>
+    <div class="course-tile-body">
+      <h3>Алгоритми та структури даних</h3>
+      <span class="course-instructor">Наталія Сидоренко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.9</b><span>(31)</span></div>
+      <div class="course-tile-foot"><span class="course-price">1 600,00 ₴</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article></div>
+    <p class="note">Ціни вказані за одне місце.</p>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Деталі курсу <span>програма і ціна</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Курс</h1></header>
+  <div class="content scroll">
+    <div class="cover-lg"><span class="cat">Програмування</span><span class="initial">О</span></div>
+    <h1 class="course-h1">Основи C#</h1>
+    <p class="course-lead">12 годин · 6 модулів · 30 місць</p>
+    <div class="instructor-row"><span class="avatar">ІК</span><span><span class="instructor-name">Ігор Коваленко</span><span class="instructor-role">Викладач</span></span></div>
+    <div class="rating-line"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-star"/></svg> 4.8 <span>· 24 відгуки</span><button class="btn btn-ghost" style="margin-left:auto;font-size:12px" type="button">Усі</button></div>
+    <div class="section-label"><span>Програма курсу</span><b>6 модулів</b></div>
+    <div class="card">
+      <div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Вступ до C#</span><span class="module-meta">3 уроки · 45 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Основи мови</span><span class="module-meta">4 уроки · 1 год 20 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="module-row is-current"><span class="module-num">3</span><span class="module-main"><span class="module-title">Об'єкти та класи</span><span class="module-meta">3 уроки · тест · 25 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <button class="link-row" type="button">Показати всі 6 модулів <svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+    </div>
+    <div class="section-label"><span>Відгуки</span><b>4.8</b></div>
+    <div class="card"><div class="review"><div class="review-head"><span class="avatar">ІК</span><span><span class="review-name">Ірина Коваль</span><span class="review-date">2 дні тому</span></span><span class="review-stars"><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></div><p class="review-text">Дуже зрозуміло пояснюють. Практика після кожного модуля допомагає закріпити матеріал.</p></div></div>
+    <div style="height:16px"></div>
+  </div>
+  <div class="buy-bar"><div class="buy-price">1 200,00 ₴<small>за одне місце</small></div><button class="btn btn-primary" type="button">Записатися</button></div></div></div></figure><figure class="device"><figcaption>Відгуки <span>4.8 · 24 відгуки</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Відгуки</h1></header>
+  <div class="content scroll">
+    <div class="card card-pad rating-summary">
+      <div><div class="rating-big">4.8</div><div class="stars"><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg></div><div class="rating-count">24 відгуки</div></div>
+      <div class="rating-block"><div class="rating-bars">
+        <div class="bar-row"><span>5</span><span class="bar-track"><i style="width:75%"></i></span><b>18</b></div>
+        <div class="bar-row"><span>4</span><span class="bar-track"><i style="width:17%"></i></span><b>4</b></div>
+        <div class="bar-row"><span>3</span><span class="bar-track"><i style="width:4%"></i></span><b>1</b></div>
+        <div class="bar-row"><span>2</span><span class="bar-track"><i style="width:4%"></i></span><b>1</b></div>
+        <div class="bar-row"><span>1</span><span class="bar-track"><i style="width:0%"></i></span><b>0</b></div>
+      </div></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="review"><div class="review-head"><span class="avatar">ІК</span><span><span class="review-name">Ірина Коваль</span><span class="review-date">2 дні тому</span></span><span class="review-stars"><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></div><p class="review-text">Дуже зрозуміло пояснюють. Практика після кожного модуля допомагає закріпити матеріал.</p></div>
+      <div class="review"><div class="review-head"><span class="avatar">АМ</span><span><span class="review-name">Андрій Мельник</span><span class="review-date">тиждень тому</span></span><span class="review-stars"><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:0.25"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></div><p class="review-text">Багато практики, але темп швидкий. Для новачка краще мати базу з програмування.</p></div>
+      <div class="review"><div class="review-head"><span class="avatar">МТ</span><span><span class="review-name">Марія Ткаченко</span><span class="review-date">2 тижні тому</span></span><span class="review-stars"><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></div><p class="review-text">Найкращий курс з C#, який я проходила. Викладач відповідає на питання в обговоренні.</p></div>
+    </div>
+    <p class="note">Відгук можна залишити після запису на курс.</p>
+  </div>
+  <div class="bottom-bar"><button class="btn btn-primary btn-block" type="button">Написати відгук</button></div></div></div></figure><figure class="device"><figcaption>Написати відгук <span>нижня панель</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Відгуки</h1></header>
+  <div class="content">
+    <div class="card card-pad rating-summary"><div><div class="rating-big">4.8</div><div class="stars"><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><use href="#i-star"/></svg></div><div class="rating-count">24 відгуки</div></div><div class="rating-block"><div class="rating-bars"><div class="bar-row"><span>5</span><span class="bar-track"><i style="width:75%"></i></span><b>18</b></div><div class="bar-row"><span>4</span><span class="bar-track"><i style="width:17%"></i></span><b>4</b></div><div class="bar-row"><span>3</span><span class="bar-track"><i style="width:4%"></i></span><b>1</b></div></div></div></div>
+    <div class="card" style="margin-top:14px"><div class="review"><div class="review-head"><span class="avatar">ІК</span><span><span class="review-name">Ірина Коваль</span><span class="review-date">2 дні тому</span></span><span class="review-stars"><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span style="opacity:1"><svg class="icon" style="width:11px;height:11px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></span></div><p class="review-text">Дуже зрозуміло пояснюють. Практика після кожного модуля допомагає закріпити матеріал.</p></div></div>
+  </div>
+  <div class="sheet-overlay"></div>
+  <div class="sheet-panel">
+    <div class="sheet-grip"></div>
+    <h2>Ваш відгук</h2>
+    <p class="note" style="margin:4px 0 0">Оцініть курс і додайте коментар.</p>
+    <div class="sheet-stars"><span class="is-on"><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="is-on"><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="is-on"><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class="is-on"><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span><span class=""><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24"><use href="#i-star"/></svg></span></div>
+    <div class="field"><label for="review-text">Коментар</label><textarea class="textarea" id="review-text" placeholder="Що було корисним?"></textarea></div>
+    <button class="btn btn-primary btn-lg btn-block" type="button">Опублікувати</button>
+  </div></div></div></figure></div>
+<div class="section-head" id="enrollment"><h2>Запис і оплата</h2><span>6 екранів</span></div><div class="devices"><figure class="device"><figcaption>Вибір курсів <span>пошук і вибір</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Вибір курсів</h1></header>
+  <div class="content">
+    <div class="search"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-search"/></svg><input type="search" placeholder="Пошук курсів"></div>
+    <div class="card"><div class="picker-row"><input class="cb" type="checkbox" checked aria-label="Алгоритми та структури даних"><span class="picker-main"><span class="picker-title">Алгоритми та структури даних</span><span class="picker-meta">14 год · 8 модулів · 15 місць</span></span><span class="picker-price">1 600,00 ₴</span></div><div class="picker-row"><input class="cb" type="checkbox" aria-label="Основи C#"><span class="picker-main"><span class="picker-title">Основи C#</span><span class="picker-meta">12 год · 6 модулів · 30 місць</span></span><span class="picker-price">1 200,00 ₴</span></div><div class="picker-row"><input class="cb" type="checkbox" aria-label="ASP.NET Core API"><span class="picker-main"><span class="picker-title">ASP.NET Core API</span><span class="picker-meta">16 год · 7 модулів · 20 місць</span></span><span class="picker-price">1 800,00 ₴</span></div><div class="picker-row is-off"><input class="cb" type="checkbox" disabled aria-label="MongoDB для .NET"><span class="picker-main"><span class="picker-title">MongoDB для .NET</span><span class="picker-meta">10 год · 5 модулів · місць немає</span></span><span class="picker-price">1 500,00 ₴</span></div></div>
+    <p class="note">Курс без вільних місць вибрати не можна.</p>
+  </div>
+  <div class="bottom-bar row"><span class="note" style="margin:0">Обрано 1</span><button class="btn btn-primary" type="button">Готово</button></div></div></div></figure><figure class="device"><figcaption>Нова заявка <span>1 курс · 1 600 ₴</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Нова заявка</h1></header>
+  <div class="content">
+    <div class="section-label"><span>Студент</span></div>
+    <div class="card"><div class="student-static"><span class="avatar">ОП</span><span><span class="student-name">Олена Петренко</span><span class="student-mail">student1@example.com</span></span></div></div>
+    <div class="section-label"><span>Курси</span><b>1 з 4</b></div>
+    <div class="card">
+      <div class="pick-row">
+        <label class="pick"><input class="cb" type="checkbox" checked><span class="pick-body"><span class="pick-title">Алгоритми та структури даних</span><span class="pick-meta">14 год · 8 модулів · 15 місць</span></span></label>
+        <div class="pick-extra"><span class="extra-label">Місця</span><span class="stepper"><button type="button" aria-label="Зменшити"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-minus"/></svg></button><span>1</span><button type="button" aria-label="Додати"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-plus"/></svg></button></span><span class="extra-sum">1 600,00 ₴</span></div>
+      </div>
+      <button class="link-row" type="button" style="border-top:1px solid var(--border)"><span style="display:inline-flex;align-items:center;gap:8px"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-plus"/></svg> Додати курс</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+    </div>
+    <div class="section-label"><span>Деталі</span></div>
+    <div class="card card-pad">
+      <div class="field"><label for="note">Нотатка</label><textarea class="textarea" id="note" placeholder="Необов'язково"></textarea></div>
+      <div class="field"><label for="schedule">Бажаний графік</label><input class="input" id="schedule" type="text" placeholder="Наприклад, Пн/Ср 19:00"></div>
+    </div>
+    <p class="form-hint">Місця резервуються після підтвердження.</p>
+  </div>
+  <div class="checkout"><div><span class="checkout-label">Разом</span><span class="checkout-total">1 600,00 ₴</span></div><button class="btn btn-primary" type="button">Подати заявку</button></div></div></div></figure><figure class="device"><figcaption>Навчання · Заявки <span>3 заявки</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Навчання</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="seg seg-top" role="group" aria-label="Розділ навчання"><button type="button">Мої курси</button><button class="is-on" type="button">Заявки</button></div>
+    <div class="section-label"><span>Мої заявки</span><b>3</b></div>
+    <div class="enrollment-list">
+      <article class="enrollment-card"><div class="enrollment-top"><span class="enrollment-id">#1042</span><span class="chip chip-warn">Подано</span></div><div class="enrollment-date">12.03.2026</div><div class="enroll-courses">Алгоритми та структури даних</div><div class="enroll-foot"><span>1 600,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></article>
+      <article class="enrollment-card"><div class="enrollment-top"><span class="enrollment-id">#1019</span><span class="chip chip-success">Оплачено</span></div><div class="enrollment-date">18.01.2026</div><div class="enroll-courses">Основи C# · ASP.NET Core API</div><div class="enroll-foot"><span>3 000,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></article>
+      <article class="enrollment-card"><div class="enrollment-top"><span class="enrollment-id">#0984</span><span class="chip chip-danger">Скасовано</span></div><div class="enrollment-date">05.11.2025</div><div class="enroll-courses">MongoDB для .NET</div><div class="enroll-foot"><span>1 500,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></article>
+    </div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Деталі заявки <span>після підтвердження місць</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Заявка #1042</h1></header>
+  <div class="content">
+    <div class="card status-hero">
+      <div class="status-hero-top"><span class="chip chip-accent">Місця підтверджено</span><span class="status-hero-date">12.03.2026</span></div>
+      <h2>Місця зарезервовано</h2>
+      <p>Оплатіть заявку, щоб відкрити курс.</p>
+      <ol class="track">
+        <li class="is-done"><span class="dot"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span>Подано</li>
+        <li class="is-done"><span class="dot"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span>На перевірці</li>
+        <li class="is-on"><span class="dot"></span>Місця підтверджено</li>
+        <li><span class="dot"></span>Оплачено</li>
+      </ol>
+    </div>
+    <div class="section-label"><span>Курси</span></div>
+    <div class="card">
+      <div class="item"><div><span class="item-title">Алгоритми та структури даних</span><span class="item-calc">1 600,00 ₴ × 1</span></div><span class="item-sum">1 600,00 ₴</span></div>
+      <div class="sum-row"><span>Разом</span><strong>1 600,00 ₴</strong></div>
+    </div>
+    <div class="section-label"><span>Деталі</span></div>
+    <div class="card"><dl style="margin:0"><div class="fact"><dt>Дата</dt><dd>12.03.2026</dd></div><div class="fact"><dt>Графік</dt><dd>Пн/Ср 19:00</dd></div><div class="fact"><dt>Нотатка</dt><dd>Вечірня група</dd></div></dl></div>
+  </div>
+  <div class="actionbar"><button class="btn btn-primary btn-lg btn-block" type="button">Оплатити 1 600,00 ₴</button><button class="btn btn-danger" type="button">Скасувати заявку</button></div></div></div></figure><figure class="device"><figcaption>Оплата <span>картка або рахунок</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Оплата</h1></header>
+  <div class="content">
+    <div class="card card-pad">
+      <div class="fact" style="padding:0 0 10px;border:0"><dt>Заявка</dt><dd>#1042</dd></div>
+      <div class="fact" style="padding:10px 0;border-top:1px solid var(--border)"><dt>Курс</dt><dd>Алгоритми та структури даних</dd></div>
+      <div class="fact" style="padding:10px 0 0;border-top:1px solid var(--border)"><dt>До сплати</dt><dd style="font-size:16px">1 600,00 ₴</dd></div>
+    </div>
+    <div class="section-label"><span>Спосіб оплати</span></div>
+    <div class="pay-method is-on"><span class="pay-mark"></span><span class="pay-main"><span class="pay-title">Картка Visa •••• 4242</span><span class="pay-meta">Основна картка</span></span><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-card"/></svg></div>
+    <div class="pay-method"><span class="pay-mark"></span><span class="pay-main"><span class="pay-title">Інша картка</span><span class="pay-meta">Visa, Mastercard</span></span><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-card"/></svg></div>
+    <div class="pay-method"><span class="pay-mark"></span><span class="pay-main"><span class="pay-title">Рахунок для юридичних осіб</span><span class="pay-meta">Оплата за реквізитами</span></span><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-file"/></svg></div>
+    <div class="secure-note"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-lock"/></svg> Платіж захищено. Кошти не списуються до підтвердження.</div>
+  </div>
+  <div class="buy-bar"><div class="buy-price">1 600,00 ₴<small>до сплати</small></div><button class="btn btn-primary" type="button">Оплатити</button></div></div></div></figure><figure class="device"><figcaption>Оплата успішна <span>доступ до курсу</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><div class="success">
+    <span class="success-icon"><svg class="icon" style="width:36px;height:36px" viewBox="0 0 24 24"><use href="#i-check-circle"/></svg></span>
+    <h1>Оплачено</h1>
+    <p>Курс «Алгоритми та структури даних» додано до навчання.</p>
+    <div class="card card-pad"><div class="fact" style="padding:0 0 8px;border:0"><dt>Сума</dt><dd>1 600,00 ₴</dd></div><div class="fact" style="padding:8px 0 0;border-top:1px solid var(--border)"><dt>Спосіб</dt><dd>Visa •••• 4242</dd></div></div>
+    <button class="btn btn-primary btn-lg" type="button">Перейти до курсу</button>
+    <button class="btn btn-ghost" type="button">До заявок</button>
+  </div></div></div></figure></div>
+<div class="section-head" id="learning"><h2>Навчання</h2><span>6 екранів</span></div><div class="devices"><figure class="device"><figcaption>Навчання · Мої курси <span>2 активні · 1 завершений</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Навчання</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="seg seg-top" role="group" aria-label="Розділ навчання"><button class="is-on" type="button">Мої курси</button><button type="button">Заявки</button></div>
+    <div class="card continue-card">
+      <div class="continue-cover"><span class="cat">Програмування</span><span class="initial">О</span></div>
+      <div class="continue-body">
+        <h2 class="continue-title">Основи C#</h2>
+        <p class="continue-meta">Модуль 3 з 6 · 42%</p>
+        <div class="continue-progress"><div class="progress-head"><span>Прогрес</span><b>42%</b></div><div class="progress"><i style="width:42%"></i></div></div>
+        <div class="next-row"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-play"/></svg><span><span class="next-label">Наступний урок</span><span class="next-title">Класи та об'єкти</span></span><button class="btn btn-primary" type="button">Продовжити</button></div>
+      </div>
+    </div>
+    <div class="section-label"><span>Інші курси</span><b>2</b></div>
+    <div class="card">
+      <div class="learn-row"><span class="avatar-square">A</span><span class="learn-main"><span class="learn-title">ASP.NET Core API</span><span class="learn-meta">Не почато · 7 модулів</span></span><span class="learn-progress"><div class="progress"><i style="width:0%"></i></div><span>0%</span></span></div>
+      <div class="learn-row"><span class="avatar-square muted">Б</span><span class="learn-main"><span class="learn-title">Бази даних SQL</span><span class="learn-meta">Завершено · 18.01.2026</span><span class="cert-link"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-award"/></svg> Сертифікат</span></span><span class="learn-progress"><div class="progress"><i style="width:100%"></i></div><span>100%</span></span></div>
+    </div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Курс · Програма <span>42% · 6 модулів</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Основи C#</h1></header>
+  <div class="content">
+    <div class="course-head"><span class="avatar-square">О</span><span class="course-head-main"><span class="course-head-title">Основи C#</span><span class="course-head-meta">Ігор Коваленко · 6 модулів</span></span></div>
+    <div class="progress-head" style="margin-top:12px"><span>Прогрес</span><b>42%</b></div>
+    <div class="progress"><i style="width:42%"></i></div>
+    <div class="seg seg-course" role="group" aria-label="Курс"><button class="is-on" type="button">Програма</button><button class="" type="button">Результати</button><button class="" type="button">Обговорення</button></div>
+    
+    <div class="course-next"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-play"/></svg><span><span class="next-label">Наступний урок</span><span class="next-title">Класи та об'єкти</span></span><button class="btn btn-primary" type="button">Відкрити</button></div>
+    <div class="section-label"><span>Модулі</span><b>6</b></div>
+    <div class="card">
+      <div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Вступ до C#</span><span class="module-meta">3 уроки · 45 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Основи мови</span><span class="module-meta">4 уроки · 1 год 20 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="module-row is-current"><span class="module-num">3</span><span class="module-main"><span class="module-title">Об'єкти та класи</span><span class="module-meta">2 з 4 · тест</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="module-row is-locked"><span class="module-num">4</span><span class="module-main"><span class="module-title">Колекції та LINQ</span><span class="module-meta">Доступно після модуля 3</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></div>
+      <div class="module-row is-locked"><span class="module-num">5</span><span class="module-main"><span class="module-title">Фінальний проєкт</span><span class="module-meta">Доступно після модуля 4</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></div>
+    </div>
+    <p class="note">Модуль відкривається після завершення попереднього.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Модуль 3 <span>3 уроки + тест</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Модуль 3</h1></header>
+  <div class="content">
+    <h1 class="course-h1" style="font-size:20px;line-height:26px">Об'єкти та класи</h1>
+    <p class="course-lead">3 уроки · тест · 25 хв</p>
+    <div class="progress-head" style="margin-top:12px"><span>Прогрес модуля</span><b>50%</b></div>
+    <div class="progress"><i style="width:50%"></i></div>
+    <div class="section-label"><span>Уроки</span></div>
+    <div class="card">
+      <div class="lesson-row is-done"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="lesson-main"><span class="lesson-title">Що таке клас і об'єкт</span><span class="lesson-meta">Відео · 8 хв</span></span><span class="chip chip-accent no-dot">Виконано</span></div>
+      <div class="lesson-row is-done"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="lesson-main"><span class="lesson-title">Поля та методи</span><span class="lesson-meta">Текст · 7 хв</span></span><span class="chip chip-accent no-dot">Виконано</span></div>
+      <div class="lesson-row is-current"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-video"/></svg></span><span class="lesson-main"><span class="lesson-title">Класи та об'єкти</span><span class="lesson-meta">Відео · 12 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+    <div class="test-row"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-doc"/></svg><span class="lesson-main"><span class="lesson-title">Тест «Основи ООП»</span><span class="lesson-meta">10 питань · 20 хв · 80% для зарахування</span></span><button class="btn btn-primary" type="button">Відкрити</button></div>
+  </div></div></div></figure><figure class="device"><figcaption>Урок <span>текст, відео, файл</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Урок 3</h1></header>
+  <div class="content scroll">
+    <h1 class="course-h1" style="font-size:20px;line-height:26px">Класи та об'єкти</h1>
+    <p class="course-lead">Модуль 3 · 12 хв</p>
+    <div class="lesson-video" style="margin-top:14px"><span class="play"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-play"/></svg></span><span class="duration">6 хв</span></div>
+    <div class="prose" style="margin-top:18px"><p>Клас описує стан і поведінку об'єкта. Поля зберігають дані, методи визначають дії, які об'єкт уміє виконувати.</p><p>Створення об'єкта викликає конструктор. Інкапсуляція дозволяє приховати внутрішні поля й відкрити тільки потрібні методи.</p></div>
+    <div class="file-card"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-file"/></svg><span class="lesson-main"><span class="file-name">Конспект уроку.pdf</span><span class="file-meta">PDF · 1,2 МБ</span></span><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-download"/></svg></div>
+    <div style="height:16px"></div>
+  </div>
+  <div class="bottom-bar"><button class="btn btn-primary btn-lg btn-block" type="button">Позначити як виконане</button></div></div></div></figure><figure class="device"><figcaption>Тест · Огляд <span>10 питань · 20 хв</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Тест</h1></header>
+  <div class="content">
+    <h1 class="course-h1">Основи ООП</h1>
+    <p class="course-lead">Модуль 3 · автоматична перевірка</p>
+    <div class="result-stats">
+      <div class="result-stat"><b>10</b><span>питань</span></div>
+      <div class="result-stat"><b>20</b><span>хвилин</span></div>
+      <div class="result-stat"><b>80%</b><span>для зарахування</span></div>
+      <div class="result-stat"><b>2</b><span>спроби</span></div>
+    </div>
+    <div class="section-label"><span>Правила</span></div>
+    <div class="card card-pad" style="font-size:13px;line-height:20px;color:var(--text-2)">Одна правильна відповідь на питання. Час обмежений 20 хвилинами. Після завершення відповіді не змінюються. Спроби не зараховуються частково.</div>
+    <p class="note">Спроб: 0 з 2. Найкращий результат: ще немає.</p>
+  </div>
+  <div class="bottom-bar"><button class="btn btn-primary btn-lg btn-block" type="button">Почати тест</button></div></div></div></figure><figure class="device"><figcaption>Тест · Питання <span>3 з 10 · 18:42</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><div class="testbar"><button class="icon-btn" type="button" aria-label="Закрити тест"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-x"/></svg></button><span class="testbar-title">Питання 3 з 10</span><span class="timer"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-clock"/></svg> 18:42</span></div>
+  <div class="test-progress"><i style="width:30%"></i></div>
+  <div class="content">
+    <p class="question-kicker">Питання 3</p>
+    <h2 class="question-text">Який принцип ООП дозволяє приховати внутрішній стан об'єкта?</h2>
+    <label class="option is-on"><span class="mark"></span><span class="option-text">Інкапсуляція</span></label>
+    <label class="option"><span class="mark"></span><span class="option-text">Успадкування</span></label>
+    <label class="option"><span class="mark"></span><span class="option-text">Поліморфізм</span></label>
+    <label class="option"><span class="mark"></span><span class="option-text">Абстракція</span></label>
+  </div>
+  <div class="bottom-bar row test-actions"><button class="btn btn-secondary" type="button">Назад</button><button class="btn btn-primary" type="button">Далі</button></div></div></div></figure></div>
+<div class="section-head" id="assessment"><h2>Оцінювання і спільнота</h2><span>7 екранів</span></div><div class="devices"><figure class="device"><figcaption>Тест · Результат <span>8/10 · складено</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Результат</h1></header>
+  <div class="content">
+    <div class="result-hero">
+      <div class="result-score">8<small>/10</small></div>
+      <div class="result-badge"><span class="chip chip-success">Складено</span></div>
+      <p class="note">Тест зараховано. Наступний модуль відкрито.</p>
+    </div>
+    <div class="result-stats"><div class="result-stat"><b>8</b><span>правильних</span></div><div class="result-stat"><b>2</b><span>неправильних</span></div></div>
+    <div class="card" style="margin-top:16px"><button class="link-row" type="button">Переглянути відповіді <svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button></div>
+  </div>
+  <div class="actionbar"><button class="btn btn-primary btn-lg btn-block" type="button">До курсу</button></div></div></div></figure><figure class="device"><figcaption>Розбір тесту <span>відповіді й помилки</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Розбір тесту</h1></header>
+  <div class="content">
+    <div class="card card-pad" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div><div class="result-score" style="font-size:30px;line-height:34px">8<small>/10</small></div><div class="note" style="margin-top:2px">Основи ООП · 80%</div></div><span class="chip chip-success">Складено</span></div>
+    <div class="section-label"><span>Питання</span></div>
+    <div class="card">
+      <div class="answer-row"><div class="answer-head"><span class="answer-q">1. Який принцип ООП дозволяє приховати внутрішній стан об'єкта?</span><span class="chip chip-success no-dot">Правильно</span></div><div class="answer-line correct"><b>Ваша відповідь:</b> Інкапсуляція</div></div>
+      <div class="answer-row"><div class="answer-head"><span class="answer-q">2. Що описує поліморфізм?</span><span class="chip chip-danger no-dot">Помилка</span></div><div class="answer-line"><b>Ваша відповідь:</b> Приховування полів</div><div class="answer-line correct"><b>Правильна:</b> Один інтерфейс, різні реалізації</div></div>
+      <div class="answer-row"><div class="answer-head"><span class="answer-q">3. Навіщо потрібен конструктор?</span><span class="chip chip-success no-dot">Правильно</span></div><div class="answer-line correct"><b>Ваша відповідь:</b> Ініціалізує об'єкт під час створення</div></div>
+    </div>
+    <p class="note">Показано 3 з 10 питань. Решта доступні в повному розборі.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Курс · Результати <span>тести й прогрес</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Основи C#</h1></header>
+  <div class="content">
+    <div class="course-head"><span class="avatar-square">О</span><span class="course-head-main"><span class="course-head-title">Основи C#</span><span class="course-head-meta">Ігор Коваленко · 6 модулів</span></span></div>
+    <div class="progress-head" style="margin-top:12px"><span>Прогрес</span><b>42%</b></div>
+    <div class="progress"><i style="width:42%"></i></div>
+    <div class="seg seg-course" role="group" aria-label="Курс"><button class="" type="button">Програма</button><button class="is-on" type="button">Результати</button><button class="" type="button">Обговорення</button></div>
+    
+    <div class="section-label"><span>Результати</span><b>3 тести</b></div>
+    <div class="stats"><div class="stat"><b>1/3</b><span>тестів</span></div><div class="stat"><b>80%</b><span>середній</span></div><div class="stat"><b>2/6</b><span>модулів</span></div></div>
+    <div class="card" style="margin-top:14px">
+      <div class="lesson-row"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-doc"/></svg></span><span class="lesson-main"><span class="lesson-title">Основи ООП</span><span class="lesson-meta">8/10 · 80%</span></span><span class="chip chip-success">Складено</span></div>
+      <div class="lesson-row"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></span><span class="lesson-main"><span class="lesson-title">Колекції та LINQ</span><span class="lesson-meta">Доступно після модуля 3</span></span><span class="chip chip-neutral">Закрито</span></div>
+      <div class="lesson-row"><span class="lesson-icon"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></span><span class="lesson-main"><span class="lesson-title">Фінальний тест</span><span class="lesson-meta">Доступно після модуля 4</span></span><span class="chip chip-neutral">Закрито</span></div>
+    </div>
+    <p class="note">Сертифікат відкриється після 100% програми.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Курс · Обговорення <span>3 теми</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Основи C#</h1></header>
+  <div class="content">
+    <div class="course-head"><span class="avatar-square">О</span><span class="course-head-main"><span class="course-head-title">Основи C#</span><span class="course-head-meta">Ігор Коваленко · 6 модулів</span></span></div>
+    <div class="progress-head" style="margin-top:12px"><span>Прогрес</span><b>42%</b></div>
+    <div class="progress"><i style="width:42%"></i></div>
+    <div class="seg seg-course" role="group" aria-label="Курс"><button class="" type="button">Програма</button><button class="" type="button">Результати</button><button class="is-on" type="button">Обговорення</button></div>
+    
+    <div class="section-label"><span>Обговорення</span><button class="btn btn-ghost" type="button">Нова тема</button></div>
+    <div class="card">
+      <div class="thread-row"><span class="avatar">ІК</span><span class="thread-main"><span class="thread-title">Питання щодо домашнього завдання 3</span><span class="thread-meta">Ірина Коваль · 5 відповідей · 2 год</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="thread-row"><span class="avatar">АМ</span><span class="thread-main"><span class="thread-title">Помилка в прикладі з уроку 4</span><span class="thread-meta">Андрій Мельник · 2 відповіді · вчора</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="thread-row"><span class="avatar">МТ</span><span class="thread-main"><span class="thread-title">Хто вже здав тест?</span><span class="thread-meta">Марія Ткаченко · 8 відповідей · 2 дні</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+    <p class="note">Питання до викладача та студентів курсу.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Нова тема <span>нижня панель</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Основи C#</h1></header>
+  <div class="content">
+    <div class="course-head"><span class="avatar-square">О</span><span class="course-head-main"><span class="course-head-title">Основи C#</span><span class="course-head-meta">Ігор Коваленко · 6 модулів</span></span></div>
+    <div class="progress-head" style="margin-top:12px"><span>Прогрес</span><b>42%</b></div>
+    <div class="progress"><i style="width:42%"></i></div>
+    <div class="seg seg-course" role="group" aria-label="Курс"><button class="" type="button">Програма</button><button class="" type="button">Результати</button><button class="is-on" type="button">Обговорення</button></div>
+    
+    <div class="section-label"><span>Обговорення</span><button class="btn btn-ghost" type="button">Нова тема</button></div>
+    <div class="card">
+      <div class="thread-row"><span class="avatar">ІК</span><span class="thread-main"><span class="thread-title">Питання щодо домашнього завдання 3</span><span class="thread-meta">Ірина Коваль · 5 відповідей · 2 год</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="thread-row"><span class="avatar">АМ</span><span class="thread-main"><span class="thread-title">Помилка в прикладі з уроку 4</span><span class="thread-meta">Андрій Мельник · 2 відповіді · вчора</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+      <div class="thread-row"><span class="avatar">МТ</span><span class="thread-main"><span class="thread-title">Хто вже здав тест?</span><span class="thread-meta">Марія Ткаченко · 8 відповідей · 2 дні</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </div>
+  <div class="sheet-overlay"></div>
+  <div class="sheet-panel">
+    <div class="sheet-grip"></div>
+    <h2>Нова тема</h2>
+    <div class="field"><label for="topic-title">Заголовок</label><input class="input" id="topic-title" type="text" placeholder="Про що питання?"></div>
+    <div class="field"><label for="topic-text">Повідомлення</label><textarea class="textarea" id="topic-text" placeholder="Опишіть питання або ситуацію"></textarea></div>
+    <button class="btn btn-primary btn-lg btn-block" type="button">Опублікувати</button>
+  </div></div></div></figure><figure class="device"><figcaption>Тема обговорення <span>5 повідомлень</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Питання щодо ДЗ 3</h1></header>
+  <div class="content">
+    <div class="message"><span class="avatar">МТ</span><span class="message-main"><span class="message-head"><span class="message-author">Марія Ткаченко</span><span class="message-time">2 год</span></span><p class="message-text">Не розумію, чому в завданні 3 потрібно використовувати інтерфейс, а не абстрактний клас. Можете пояснити на прикладі?</p></span></div>
+    <div class="message"><span class="avatar">ІК</span><span class="message-main"><span class="message-head"><span class="message-author">Ігор Коваленко</span><span class="teacher-badge">Викладач</span><span class="message-time">1 год</span></span><p class="message-text">Інтерфейс описує контракт без спільного стану. Якщо потрібні поля й конструктор, беріть абстрактний клас. У завданні важлива заміна реалізації, тому інтерфейс доречніший.</p></span></div>
+    <div class="message"><span class="avatar">АМ</span><span class="message-main"><span class="message-head"><span class="message-author">Андрій Мельник</span><span class="message-time">40 хв</span></span><p class="message-text">Дякую, тепер зрозуміло. Я теж спочатку зробив через абстрактний клас.</p></span></div>
+  </div>
+  <div class="composer"><input type="text" placeholder="Написати повідомлення"><button class="icon-btn" type="button" aria-label="Надіслати"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-send"/></svg></button></div></div></div></figure><figure class="device"><figcaption>Сертифікат <span>завершений курс</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Сертифікат</h1></header>
+  <div class="content">
+    <div class="certificate">
+      <span class="cert-seal"><svg class="icon" style="width:30px;height:30px" viewBox="0 0 24 24"><use href="#i-award"/></svg></span>
+      <div class="cert-kicker">СЕРТИФІКАТ</div>
+      <h1 class="cert-title">Про завершення курсу</h1>
+      <p class="cert-course">Бази даних SQL</p>
+      <p class="cert-name">Олена Петренко</p>
+      <div class="cert-meta"><span>18.01.2026</span><span class="cert-code">DB-2026-1019</span></div>
+    </div>
+    <p class="note">Сертифікат можна перевірити за кодом на порталі університету.</p>
+  </div>
+  <div class="bottom-bar"><button class="btn btn-primary btn-lg btn-block" type="button">Завантажити PDF</button><button class="btn btn-ghost" style="display:flex;margin:10px auto 0" type="button">Поділитися</button></div></div></div></figure></div>
+<div class="section-head" id="profile"><h2>Профіль</h2><span>4 екрани</span></div><div class="devices"><figure class="device"><figcaption>Повідомлення <span>4 повідомлення</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Повідомлення</h1><div class="appbar-actions"><button class="btn btn-ghost" type="button">Прочитати все</button></div></header>
+  <div class="content">
+    <div class="card">
+      <div class="notification is-unread"><span class="notif-icon"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-learn"/></svg></span><span class="notif-main"><span class="notif-title">Новий модуль у курсі<span class="unread"></span></span><span class="notif-text">У курсі «Основи C#» відкрито модуль 4 «Колекції та LINQ».</span><span class="notif-time">10:24</span></span></div>
+      <div class="notification is-unread"><span class="notif-icon"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-card"/></svg></span><span class="notif-main"><span class="notif-title">Нагадування про оплату<span class="unread"></span></span><span class="notif-text">Заявка #1042 очікує оплати. Місця зарезервовано до 20.03.</span><span class="notif-time">09:10</span></span></div>
+      <div class="notification"><span class="notif-icon"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-message"/></svg></span><span class="notif-main"><span class="notif-title">Відповідь у обговоренні</span><span class="notif-text">Ігор Коваленко відповів у темі «Питання щодо ДЗ 3».</span><span class="notif-time">2 год</span></span></div>
+      <div class="notification"><span class="notif-icon"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-doc"/></svg></span><span class="notif-main"><span class="notif-title">Тест доступний</span><span class="notif-text">Тест «Основи ООП» можна скласти до 20.03. Залишилось 1 спроба.</span><span class="notif-time">вчора</span></span></div>
+    </div>
+  </div></div></div></figure><figure class="device"><figcaption>Мої сертифікати <span>1 сертифікат</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Мої сертифікати</h1></header>
+  <div class="content">
+    <div class="section-label"><span>Отримані</span><b>1</b></div>
+    <div class="card">
+      <button class="link-row" type="button" style="gap:12px"><span class="avatar-square" style="color:var(--accent)"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-award"/></svg></span><span style="flex:1"><span class="lesson-title">Бази даних SQL</span><span class="lesson-meta">18.01.2026 · DB-2026-1019</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+    </div>
+    <p class="note">Сертифікат з'являється після завершення 100% програми курсу.</p>
+  </div></div></div></figure><figure class="device"><figcaption>Профіль <span>студент</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Профіль</h1><div class="appbar-actions"><button class="icon-btn" type="button" aria-label="Налаштування"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-sliders"/></svg></button></div></header>
+  <div class="content">
+    <div class="profile-hero"><span class="avatar">ОП</span><span class="profile-name">Олена Петренко</span><span class="profile-mail">student1@example.com</span><span class="profile-role"><span class="chip chip-accent no-dot">Студент</span></span></div>
+    <div class="stats"><div class="stat"><b>2</b><span>активні</span></div><div class="stat"><b>1</b><span>завершено</span></div><div class="stat"><b>85%</b><span>середній бал</span></div></div>
+    <div class="section-label"><span>Акаунт</span></div>
+    <div class="card">
+      <button class="menu-row" type="button"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="menu-label">Повідомлення</span><span class="menu-badge">2</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+      <button class="menu-row" type="button"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-award"/></svg><span class="menu-label">Мої сертифікати</span><span class="menu-badge">1</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+      <button class="menu-row is-danger" type="button"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-x"/></svg><span class="menu-label">Вийти</span></button>
+    </div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Налаштування <span>мова, тема, сповіщення</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Налаштування</h1></header>
+  <div class="content">
+    <div class="section-label"><span>Мова</span></div>
+    <div class="card card-tight"><div class="seg" role="group" aria-label="Мова"><button class="is-on" type="button">УКР</button><button type="button">English</button></div></div>
+    <div class="section-label"><span>Тема</span></div>
+    <div class="card card-tight"><div class="seg" role="group" aria-label="Тема"><button class="is-on" type="button">Системна</button><button type="button">Світла</button><button type="button">Темна</button></div></div>
+    <div class="section-label"><span>Сповіщення</span></div>
+    <div class="card">
+      <div class="switch-row"><span class="switch-label">Нагадування про дедлайни</span><span class="switch is-on"></span></div>
+      <div class="switch-row"><span class="switch-label">Нові матеріали</span><span class="switch is-on"></span></div>
+    </div>
+    <div class="section-label"><span>Акаунт</span></div>
+    <div class="card">
+      <div class="student-static"><span class="avatar">ОП</span><span><span class="student-name">Олена Петренко</span><span class="student-mail">student1@example.com</span></span></div>
+      <button class="link-row" type="button" style="border-top:1px solid var(--border)">Змінити пароль <svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+    </div>
+    <div class="section-label"><span>Про застосунок</span></div>
+    <div class="card"><button class="link-row" type="button">Learning Platform · 1.0.0 <svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button></div>
+  </div></div></div></figure></div>
+<div class="section-head" id="states"><h2>Стани</h2><span>6 екранів</span></div><div class="devices"><figure class="device"><figcaption>Пошук без результатів <span>стан</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Каталог курсів</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="search"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-search"/></svg><input type="search" value="python"></div>
+    <div class="filter-row"><button class="filter is-on" type="button">Усі</button><button class="filter" type="button">Програмування</button><button class="filter" type="button">Бази даних</button></div>
+    <div class="empty-state"><span class="empty-icon"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><use href="#i-search"/></svg></span><h3>Нічого не знайдено</h3><p>Спробуйте інший запит або скиньте фільтри.</p><button class="btn btn-primary" type="button">Очистити пошук</button></div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Порожні курси <span>стан</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Навчання</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="seg seg-top" role="group" aria-label="Розділ навчання"><button class="is-on" type="button">Мої курси</button><button type="button">Заявки</button></div>
+    <div class="empty-state"><span class="empty-icon"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><use href="#i-learn"/></svg></span><h3>Ще немає курсів</h3><p>Оберіть курс у каталозі, щоб почати навчання.</p><button class="btn btn-primary" type="button">До каталогу</button></div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Немає звʼязку <span>стан</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Каталог курсів</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="banner banner-warn"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-alert"/></svg><div><strong>Немає зв'язку із сервером</strong><p>Показані збережені дані. Перевірте мережу.</p></div></div>
+    <div class="empty-state"><span class="empty-icon"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><use href="#i-alert"/></svg></span><h3>Не вдалося завантажити каталог</h3><p>Перевірте з'єднання і спробуйте ще раз.</p><button class="btn btn-primary" type="button">Повторити</button></div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Завантаження <span>скелетон</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Каталог курсів</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="skeleton" style="height:44px;margin:2px 0 12px"></div>
+    <div style="display:flex;gap:8px;margin-bottom:14px"><span class="skeleton" style="width:56px;height:30px"></span><span class="skeleton" style="width:104px;height:30px"></span><span class="skeleton" style="width:88px;height:30px"></span></div>
+    <div class="course-grid-m"><div class="skeleton-tile"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line" style="width:40%"></div></div></div><div class="skeleton-tile"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line" style="width:40%"></div></div></div><div class="skeleton-tile"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line" style="width:40%"></div></div></div><div class="skeleton-tile"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line" style="width:40%"></div></div></div></div>
+  </div><nav class="tabbar" aria-label="Основна навігація"><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Каталог</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Навчання</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Профіль</span></button></nav></div></div></figure><figure class="device"><figcaption>Тест не складено <span>стан</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Результат</h1></header>
+  <div class="content">
+    <div class="result-hero">
+      <div class="result-score">5<small>/10</small></div>
+      <div class="result-badge"><span class="chip chip-danger">Не складено</span></div>
+      <p class="note">Залишилась 1 спроба. Повторіть матеріал модуля.</p>
+    </div>
+    <div class="result-stats"><div class="result-stat"><b>5</b><span>правильних</span></div><div class="result-stat"><b>5</b><span>неправильних</span></div></div>
+    <div class="card" style="margin-top:16px"><button class="link-row" type="button">Переглянути відповіді <svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button></div>
+  </div>
+  <div class="actionbar"><button class="btn btn-primary btn-lg btn-block" type="button">Спробувати ще раз</button><button class="btn btn-ghost" type="button">До курсу</button></div></div></div></figure><figure class="device"><figcaption>Оплата не пройшла <span>стан</span></figcaption><div class="phone"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><button class="icon-btn" type="button" aria-label="Назад"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-back"/></svg></button><h1>Оплата</h1></header>
+  <div class="content">
+    <div class="banner"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-alert"/></svg><div><strong>Платіж не пройшов</strong><p>Кошти не списано. Спробуйте ще раз або виберіть інший спосіб.</p></div></div>
+    <div class="card card-pad" style="margin-top:14px"><div class="fact" style="padding:0 0 8px;border:0"><dt>Заявка</dt><dd>#1042</dd></div><div class="fact" style="padding:8px 0 0;border-top:1px solid var(--border)"><dt>До сплати</dt><dd style="font-size:16px">1 600,00 ₴</dd></div></div>
+    <div class="pay-method is-on"><span class="pay-mark"></span><span class="pay-main"><span class="pay-title">Картка Visa •••• 4242</span><span class="pay-meta">Основна картка</span></span><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-card"/></svg></div>
+    <div class="secure-note"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-lock"/></svg> Платіж захищено. Кошти не списуються до підтвердження.</div>
+  </div>
+  <div class="buy-bar"><div class="buy-price">1 600,00 ₴<small>до сплати</small></div><button class="btn btn-primary" type="button">Повторити оплату</button></div></div></div></figure></div>
+<div class="section-head" id="localization"><h2>Локалізація</h2><span>1 екран</span></div><div class="devices"><figure class="device"><figcaption>Каталог, English <span>назви курсів не перекладаються</span></figcaption><div class="phone" lang="en"><div class="statusbar"><span>9:41</span><span class="status-icons"><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-signal"/></svg><svg class="si" viewBox="0 0 16 12" width="15" height="11"><use href="#i-wifi"/></svg><svg class="si" viewBox="0 0 22 12" width="20" height="11"><use href="#i-battery"/></svg></span></div><div class="app"><header class="appbar"><h1>Course catalog</h1><div class="appbar-actions"><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div></header>
+  <div class="content">
+    <div class="search"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-search"/></svg><input type="search" placeholder="Search courses"></div>
+    <div class="filter-row"><button class="filter is-on" type="button">All</button><button class="filter" type="button">Programming</button><button class="filter" type="button">Databases</button><button class="filter" type="button">Algorithms</button></div>
+    <div class="result-line"><span>4 courses</span><button type="button">Most popular <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-chevron-down"/></svg></button></div>
+    <div class="course-grid-m"><article class="course-tile">
+    <div class="course-cover"><span class="cat">Programming</span><span class="initial">О</span></div>
+    <div class="course-tile-body">
+      <h3>Основи C#</h3>
+      <span class="course-instructor">Ігор Коваленко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.8</b><span>(24)</span></div>
+      <div class="course-tile-foot"><span class="course-price">UAH 1,200.00</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile">
+    <div class="course-cover"><span class="cat">Web</span><span class="initial">A</span></div>
+    <div class="course-tile-body">
+      <h3>ASP.NET Core API</h3>
+      <span class="course-instructor">Марія Гриценко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.6</b><span>(18)</span></div>
+      <div class="course-tile-foot"><span class="course-price">UAH 1,800.00</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile is-off">
+    <div class="course-cover"><span class="cat">Databases</span><span class="initial">M</span><span class="seat-flag">No seats</span></div>
+    <div class="course-tile-body">
+      <h3>MongoDB для .NET</h3>
+      <span class="course-instructor">Олег Бондар</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.4</b><span>(9)</span></div>
+      <div class="course-tile-foot"><span class="course-price">UAH 1,500.00</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article><article class="course-tile">
+    <div class="course-cover"><span class="cat">Algorithms</span><span class="initial">А</span></div>
+    <div class="course-tile-body">
+      <h3>Алгоритми та структури даних</h3>
+      <span class="course-instructor">Наталія Сидоренко</span>
+      <div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.9</b><span>(31)</span></div>
+      <div class="course-tile-foot"><span class="course-price">UAH 1,600.00</span><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div>
+    </div>
+  </article></div>
+    <p class="note">Prices are per seat.</p>
+  </div><nav class="tabbar" aria-label="Main navigation"><button class="tab is-active" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Catalog</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-learn"/></svg><span>Learning</span></button><button class="tab" type="button"><svg class="icon" style="width:22px;height:22px" viewBox="0 0 24 24"><use href="#i-user"/></svg><span>Profile</span></button></nav></div></div></figure></div>
+<div class="section-head" id="desktop"><h2>Десктоп</h2><span>3 екрани</span></div><div class="devices" style="flex-direction:column;gap:32px;"><figure class="device" style="width:100%"><figcaption>Каталог курсів <span>сайдбар, пошук, фільтри, сітка</span></figcaption><div class="desktop-wrap"><div class="desktop"><aside class="rail"><div class="rail-brand"><span class="logo">L</span>Learning Platform</div><nav class="rail-nav"><a class="rail-item is-active" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-book"/></svg>Каталог</a><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-learn"/></svg>Навчання</a><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-user"/></svg>Профіль</a></nav><div class="rail-user"><span class="avatar">ОП</span><span><span class="rail-name">Олена Петренко</span><span class="rail-mail">student1@example.com</span></span></div></aside>
+  <main class="desk-main">
+    <div class="desk-head"><div><h1>Каталог курсів</h1><p>4 курси доступні для запису</p></div><button class="btn btn-secondary" type="button"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-refresh"/></svg> Оновити</button></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><div class="search-d"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><use href="#i-search"/></svg><input type="search" placeholder="Пошук курсів"></div><button class="icon-btn bell" type="button" aria-label="Повідомлення"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-bell"/></svg><span class="bell-dot"></span></button></div>
+    <div class="catalog-layout">
+      <aside class="filter-panel">
+        <p class="filter-title">Категорії</p>
+        <label class="filter-option"><input class="cb" type="checkbox" checked>Усі</label>
+        <label class="filter-option"><input class="cb" type="checkbox">Програмування</label>
+        <label class="filter-option"><input class="cb" type="checkbox">Бази даних</label>
+        <label class="filter-option"><input class="cb" type="checkbox">Алгоритми</label>
+        <div class="filter-divider"></div>
+        <p class="filter-title">Ціна</p>
+        <label class="filter-option"><input class="cb" type="checkbox">До 1 500 ₴</label>
+        <label class="filter-option"><input class="cb" type="checkbox">1 500-2 000 ₴</label>
+        <div class="filter-divider"></div>
+        <button class="btn btn-ghost" type="button">Скинути</button>
+      </aside>
+      <div><div class="course-grid-d"><article class="card course-card-d"><div class="course-cover"><span class="cat">Програмування</span><span class="initial">О</span></div><div class="course-body"><h2>Основи C#</h2><span class="course-instructor">Ігор Коваленко</span><div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.8</b><span>(24)</span></div><div class="course-tile-foot"><span class="price">1 200,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></div></article><article class="card course-card-d"><div class="course-cover"><span class="cat">Веб</span><span class="initial">A</span></div><div class="course-body"><h2>ASP.NET Core API</h2><span class="course-instructor">Марія Гриценко</span><div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.6</b><span>(18)</span></div><div class="course-tile-foot"><span class="price">1 800,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></div></article><article class="card course-card-d is-off"><div class="course-cover"><span class="cat">Бази даних</span><span class="initial">M</span><span class="seat-flag">Місць немає</span></div><div class="course-body"><h2>MongoDB для .NET</h2><span class="course-instructor">Олег Бондар</span><div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.4</b><span>(9)</span></div><div class="course-tile-foot"><span class="price">1 500,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></div></article><article class="card course-card-d"><div class="course-cover"><span class="cat">Алгоритми</span><span class="initial">А</span></div><div class="course-body"><h2>Алгоритми та структури даних</h2><span class="course-instructor">Наталія Сидоренко</span><div class="course-rating"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><use href="#i-star"/></svg><b>4.9</b><span>(31)</span></div><div class="course-tile-foot"><span class="price">1 600,00 ₴</span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div></div></article></div><p class="desk-note">Ціни вказані за одне місце.</p></div>
+    </div>
+  </main></div></div></figure><figure class="device" style="width:100%"><figcaption>Курс <span>контент і картка запису</span></figcaption><div class="desktop-wrap"><div class="desktop"><aside class="rail"><div class="rail-brand"><span class="logo">L</span>Learning Platform</div><nav class="rail-nav"><a class="rail-item is-active" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-book"/></svg>Каталог</a><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-learn"/></svg>Навчання</a><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-user"/></svg>Профіль</a></nav><div class="rail-user"><span class="avatar">ОП</span><span><span class="rail-name">Олена Петренко</span><span class="rail-mail">student1@example.com</span></span></div></aside>
+  <main class="desk-main">
+    <button class="back" type="button">← Каталог</button>
+    <div class="course-layout" style="margin-top:12px">
+      <div class="course-content">
+        <div class="cover-lg"><span class="cat">Програмування</span><span class="initial">О</span></div>
+        <h1>Основи C#</h1>
+        <p class="course-lead">12 годин · 6 модулів · 30 місць</p>
+        <div class="instructor-row"><span class="avatar">ІК</span><span><span class="instructor-name">Ігор Коваленко</span><span class="instructor-role">Викладач</span></span><span class="rating-line" style="margin-top:0;margin-left:auto"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-star"/></svg> 4.8 <span>· 24 відгуки</span></span></div>
+        <div class="section-label"><span>Програма курсу</span><b>6 модулів</b></div>
+        <div class="card"><div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Вступ до C#</span><span class="module-meta">3 уроки · 45 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div><div class="module-row is-done"><span class="module-num"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span class="module-main"><span class="module-title">Основи мови</span><span class="module-meta">4 уроки · 1 год 20 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div><div class="module-row is-current"><span class="module-num">3</span><span class="module-main"><span class="module-title">Об'єкти та класи</span><span class="module-meta">3 уроки · тест · 25 хв</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-chevron"/></svg></div><div class="module-row is-locked"><span class="module-num">4</span><span class="module-main"><span class="module-title">Колекції та LINQ</span><span class="module-meta">Доступно після модуля 3</span></span><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-lock"/></svg></div></div>
+      </div>
+      <aside class="card buy-card"><div class="buy-price">1 200,00 ₴<small>за одне місце</small></div><button class="btn btn-primary btn-lg btn-block" type="button">Записатися</button><div class="buy-facts"><div class="buy-fact"><span>Місця</span><b>30</b></div><div class="buy-fact"><span>Тривалість</span><b>12 год</b></div><div class="buy-fact"><span>Модулі</span><b>6</b></div></div></aside>
+    </div>
+  </main></div></div></figure><figure class="device" style="width:100%"><figcaption>Навчання <span>курси, дедлайни, результати</span></figcaption><div class="desktop-wrap"><div class="desktop"><aside class="rail"><div class="rail-brand"><span class="logo">L</span>Learning Platform</div><nav class="rail-nav"><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-book"/></svg>Каталог</a><a class="rail-item is-active" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-learn"/></svg>Навчання</a><a class="rail-item" href="#"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-user"/></svg>Профіль</a></nav><div class="rail-user"><span class="avatar">ОП</span><span><span class="rail-name">Олена Петренко</span><span class="rail-mail">student1@example.com</span></span></div></aside>
+  <main class="desk-main">
+    <div class="desk-head"><div><h1>Мої курси</h1><p>2 активні · 1 завершений</p></div><button class="btn btn-secondary" type="button"><svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><use href="#i-refresh"/></svg> Оновити</button></div>
+    <div class="learn-dash">
+      <div>
+        <div class="card dash-hero"><div class="continue-cover"><span class="cat">Програмування</span><span class="initial">О</span></div><div class="continue-body"><h2 class="continue-title">Основи C#</h2><p class="continue-meta">Модуль 3 з 6 · 42%</p><div class="progress-head" style="margin-top:10px"><span>Прогрес</span><b>42%</b></div><div class="progress"><i style="width:42%"></i></div><div class="next-row"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-play"/></svg><span><span class="next-label">Наступний урок</span><span class="next-title">Класи та об'єкти</span></span><button class="btn btn-primary" type="button">Продовжити</button></div></div></div>
+        <div class="card dash-courses"><div class="dash-title" style="padding:14px 16px 4px">Інші курси</div><div class="learn-row"><span class="avatar-square">A</span><span class="learn-main"><span class="learn-title">ASP.NET Core API</span><span class="learn-meta">Не почато · 7 модулів</span></span><span class="learn-progress"><div class="progress"><i style="width:0%"></i></div><span>0%</span></span></div><div class="learn-row"><span class="avatar-square muted">Б</span><span class="learn-main"><span class="learn-title">Бази даних SQL</span><span class="learn-meta">Завершено · 18.01.2026</span></span><span class="learn-progress"><div class="progress"><i style="width:100%"></i></div><span>100%</span></span></div></div>
+      </div>
+      <div class="dash-side">
+        <div class="card dash-card"><div class="dash-title">Найближчі події</div><div class="deadline"><span class="icon-box"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-doc"/></svg></span><span class="deadline-main"><span class="deadline-title">Тест «Основи ООП»</span><span class="deadline-meta">до 20.03 · 1 спроба</span></span></div><div class="deadline"><span class="icon-box"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><use href="#i-video"/></svg></span><span class="deadline-main"><span class="deadline-title">Модуль 4 · Колекції</span><span class="deadline-meta">відкриється 25.03</span></span></div></div>
+        <div class="card dash-card"><div class="dash-title">Результати</div><div class="dash-results"><div class="dash-result"><b>1/3</b><span>тестів</span></div><div class="dash-result"><b>80%</b><span>середній</span></div></div></div>
+      </div>
+    </div>
+  </main></div></div></figure></div>
+
+<p class="foot-note">Цільовий макет: <code>docs/design/target/</code>. Макети статичні: кнопки не виконують дій.</p>
+</main>
+<script>
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('[data-theme-btn]');
+  function setTheme(theme) {
+    root.dataset.theme = theme;
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.themeBtn === theme)));
+  }
+  buttons.forEach((button) => button.addEventListener('click', () => setTheme(button.dataset.themeBtn)));
+</script>
+</body>
+</html>
