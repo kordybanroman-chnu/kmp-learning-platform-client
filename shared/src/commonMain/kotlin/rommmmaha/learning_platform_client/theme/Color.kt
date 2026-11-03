@@ -39,6 +39,9 @@ internal val LightColors = lightColorScheme(
   scrim = Color(0xFF0B0F0D),
 )
 
+internal val LogoDarkContainer = Color(0xFF11584A)
+internal val LogoDarkContent = Color(0xFFE6F2EE)
+
 internal val DarkColors = darkColorScheme(
   primary = Color(0xFF6FD8C4),
   onPrimary = Color(0xFF052B24),

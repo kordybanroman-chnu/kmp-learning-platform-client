@@ -1,5 +1,6 @@
 package rommmmaha.learning_platform_client.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -21,11 +22,12 @@ fun LearningPlatformTheme(
   content: @Composable () -> Unit,
 ) {
   val darkTheme = when (themeMode) {
-    ThemeMode.System -> platformDarkTheme()
+    ThemeMode.System -> isSystemInDarkTheme()
     ThemeMode.Light -> false
     ThemeMode.Dark -> true
   }
   val colorScheme = if (darkTheme) DarkColors else LightColors
+  PlatformSystemBars(darkTheme)
   MaterialTheme(
     colorScheme = colorScheme,
     typography = appTypography(),

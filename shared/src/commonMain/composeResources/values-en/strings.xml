@@ -15,7 +15,6 @@
     <string name="onboarding_slide_progress_title">Tests, progress and certificate</string>
     <string name="onboarding_slide_progress_body">Take timed tests with attempts, see scores and course progress. Complete the course to get a certificate, leave a review and discuss materials with the instructor.</string>
 
-    <string name="home_placeholder">Courses and enrollments will appear here.</string>
     <string name="home_theme">Theme</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
@@ -44,8 +43,8 @@
     <string name="home_client_subtitle">Client for Android and Desktop</string>
     <string name="home_app_section">Application</string>
     <string name="home_sign_out">Sign out</string>
-    <string name="onboarding_demo_course_csharp">Основи C#</string>
+    <string name="onboarding_demo_course_csharp">C# Basics</string>
     <string name="onboarding_demo_course_aspnet">ASP.NET Core API</string>
-    <string name="onboarding_demo_meta_csharp">1 200,00 ₴ · 30 seats</string>
-    <string name="onboarding_demo_meta_aspnet">1 800,00 ₴ · 20 seats</string>
+    <string name="onboarding_demo_meta_csharp">UAH 1,200.00 · 30 seats</string>
+    <string name="onboarding_demo_meta_aspnet">UAH 1,800.00 · 20 seats</string>
 </resources>

@@ -1,19 +1,15 @@
 package rommmmaha.learning_platform_client
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.rememberViewModelStoreOwner
@@ -36,9 +32,7 @@ import rommmmaha.learning_platform_client.platform.LocalAppLocale
 import rommmmaha.learning_platform_client.settings.UserSettings
 import rommmmaha.learning_platform_client.theme.LearningPlatformTheme
 import rommmmaha.learning_platform_client.ui.auth.AuthScreen
-import rommmmaha.learning_platform_client.ui.components.LogoMark
 import rommmmaha.learning_platform_client.ui.home.HomeScreen
-import rommmmaha.learning_platform_client.ui.main.MainUiState
 import rommmmaha.learning_platform_client.ui.main.MainViewModel
 import rommmmaha.learning_platform_client.ui.main.StartDestination
 import rommmmaha.learning_platform_client.ui.onboarding.OnboardingScreen
@@ -69,91 +63,91 @@ private fun AppContent() {
   val platformOwner = LocalViewModelStoreOwner.current
   val owner: ViewModelStoreOwner = platformOwner ?: rememberViewModelStoreOwner(parent = null)
 
-  LaunchedEffect(Unit) {
-    log.i { "App started on ${getPlatform().name}" }
-  }
-
   CompositionLocalProvider(
     LocalViewModelStoreOwner provides owner,
     LocalAppLocale provides userSettings.language,
   ) {
     val mainViewModel: MainViewModel = koinViewModel()
-    val mainState by mainViewModel.state.collectAsState()
 
     LearningPlatformTheme(themeMode = userSettings.themeMode) {
       Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
       ) {
-        when (val state = mainState) {
-          MainUiState.Loading -> Splash()
-          is MainUiState.Ready -> {
-            val backStack = remember(state.start) {
-              NavBackStack<NavKey>(state.start.toKey())
+        val backStack = rememberSaveable(mainViewModel.start, saver = navBackStackSaver) {
+          NavBackStack<NavKey>(mainViewModel.start.toKey())
+        }
+        key(userSettings.language) {
+          val saveableDecorator = rememberSaveableStateHolderNavEntryDecorator<NavKey>()
+          val storeProvider = rememberViewModelStoreProvider(parent = owner)
+          val viewModelDecorator =
+            rememberViewModelStoreNavEntryDecorator<NavKey>(storeProvider)
+          val decorators: List<NavEntryDecorator<NavKey>> =
+            remember(saveableDecorator, viewModelDecorator) {
+              listOf(saveableDecorator, viewModelDecorator)
             }
-            key(userSettings.language) {
-              val saveableDecorator = rememberSaveableStateHolderNavEntryDecorator<NavKey>()
-              val storeProvider = rememberViewModelStoreProvider(parent = owner)
-              val viewModelDecorator =
-                rememberViewModelStoreNavEntryDecorator<NavKey>(storeProvider)
-              val decorators: List<NavEntryDecorator<NavKey>> =
-                remember(saveableDecorator, viewModelDecorator) {
-                  listOf(saveableDecorator, viewModelDecorator)
-                }
 
-              NavDisplay(
-                backStack = backStack,
-                entryDecorators = decorators,
-                onBack = {
-                  if (backStack.size > 1) backStack.removeLastOrNull()
-                },
-                entryProvider = entryProvider<NavKey> {
-                  entry<OnboardingKey> {
-                    OnboardingScreen(
-                      onFinished = {
-                        backStack.clear()
-                        backStack.add(AuthKey)
-                      },
-                    )
-                  }
-                  entry<AuthKey> {
-                    AuthScreen(
-                      onSignedIn = {
-                        backStack.clear()
-                        backStack.add(HomeKey)
-                      },
-                    )
-                  }
-                  entry<HomeKey> {
-                    HomeScreen(
-                      userSettings = userSettings,
-                      onRestartOnboarding = {
-                        restartOnboarding()
-                        backStack.clear()
-                        backStack.add(OnboardingKey)
-                      },
-                      onSignOut = {
-                        backStack.clear()
-                        backStack.add(AuthKey)
-                      },
-                    )
-                  }
-                },
-              )
-            }
-          }
+          NavDisplay(
+            backStack = backStack,
+            entryDecorators = decorators,
+            onBack = {
+              if (backStack.size > 1) backStack.removeLastOrNull()
+            },
+            entryProvider = entryProvider<NavKey> {
+              entry<OnboardingKey> {
+                OnboardingScreen(
+                  onFinished = {
+                    backStack.clear()
+                    backStack.add(AuthKey)
+                  },
+                )
+              }
+              entry<AuthKey> {
+                AuthScreen(
+                  onSignedIn = {
+                    backStack.clear()
+                    backStack.add(HomeKey)
+                  },
+                )
+              }
+              entry<HomeKey> {
+                HomeScreen(
+                  userSettings = userSettings,
+                  onRestartOnboarding = {
+                    restartOnboarding()
+                    backStack.clear()
+                    backStack.add(OnboardingKey)
+                  },
+                  onSignOut = {
+                    backStack.clear()
+                    backStack.add(AuthKey)
+                  },
+                )
+              }
+            },
+          )
         }
       }
     }
   }
 }
 
-@Composable
-private fun Splash() {
-  Box(
-    modifier = Modifier.fillMaxSize(),
-    contentAlignment = Alignment.Center,
-  ) {
-    LogoMark(size = 48.dp)
-  }
+private val navBackStackSaver = Saver<NavBackStack<NavKey>, List<String>>(
+  save = { stack -> stack.map { it.routeName() } },
+  restore = { routes ->
+    NavBackStack<NavKey>().apply { addAll(routes.map { it.toRouteKey() }) }
+  },
+)
+
+private fun NavKey.routeName(): String = when (this) {
+  OnboardingKey -> "onboarding"
+  AuthKey -> "auth"
+  HomeKey -> "home"
+  else -> error("Unknown navigation key")
+}
+
+private fun String.toRouteKey(): NavKey = when (this) {
+  "onboarding" -> OnboardingKey
+  "home" -> HomeKey
+  else -> AuthKey
 }

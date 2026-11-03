@@ -1,11 +1,13 @@
 package rommmmaha.learning_platform_client.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -21,36 +23,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import rommmmaha.learning_platform_client.theme.LogoDarkContainer
+import rommmmaha.learning_platform_client.theme.LogoDarkContent
 
 @Composable
 fun LogoMark(
   modifier: Modifier = Modifier,
   size: Dp = 28.dp,
 ) {
+  val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+  val container = if (dark) LogoDarkContainer else MaterialTheme.colorScheme.primary
+  val content = if (dark) LogoDarkContent else MaterialTheme.colorScheme.onPrimary
+
   Box(
     modifier = modifier
       .size(size)
-      .clip(RoundedCornerShape(size * 0.32f))
-      .background(MaterialTheme.colorScheme.primary),
+      .clip(RoundedCornerShape(size * 0.22f))
+      .background(container),
     contentAlignment = Alignment.Center,
   ) {
-    Text(
-      text = "L",
-      color = MaterialTheme.colorScheme.onPrimary,
-      style = MaterialTheme.typography.titleMedium.copy(
-        fontSize = (size.value * 0.5f).sp,
-        lineHeight = size.value.sp,
-        fontWeight = FontWeight.Bold,
-      ),
-      modifier = Modifier.padding(bottom = size * 0.02f),
-    )
+    Canvas(modifier = Modifier.fillMaxSize()) {
+      val unit = this.size.width / 108f
+      val glyph = Path().apply {
+        moveTo(33.4f * unit, 25.6f * unit)
+        lineTo(50f * unit, 25.6f * unit)
+        lineTo(50f * unit, 68.4f * unit)
+        lineTo(74.6f * unit, 68.4f * unit)
+        lineTo(74.6f * unit, 82.4f * unit)
+        lineTo(33.4f * unit, 82.4f * unit)
+        close()
+      }
+      drawPath(path = glyph, color = content)
+    }
   }
 }
 

@@ -15,7 +15,6 @@
     <string name="onboarding_slide_progress_title">Тести, прогрес і сертифікат</string>
     <string name="onboarding_slide_progress_body">Складайте тести з таймером і спробами, бачте бали та прогрес курсу. Після завершення отримайте сертифікат, залиште відгук і обговоріть матеріали з викладачем.</string>
 
-    <string name="home_placeholder">Каталог курсів і записи на навчання з\'являться тут.</string>
     <string name="home_theme">Тема</string>
     <string name="theme_system">Системна</string>
     <string name="theme_light">Світла</string>

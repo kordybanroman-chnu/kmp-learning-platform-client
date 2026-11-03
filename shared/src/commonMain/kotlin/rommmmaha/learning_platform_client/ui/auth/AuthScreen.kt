@@ -1,11 +1,8 @@
 package rommmmaha.learning_platform_client.ui.auth
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -34,14 +28,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.semantics.error
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -53,7 +43,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import rommmmaha.learning_platform_client.ui.components.LogoMark
 
 import kmp_learning_platform_client.shared.generated.resources.Res
-import kmp_learning_platform_client.shared.generated.resources.app_name
 import kmp_learning_platform_client.shared.generated.resources.auth_error_password_required
 import kmp_learning_platform_client.shared.generated.resources.auth_error_password_short
 import kmp_learning_platform_client.shared.generated.resources.auth_error_sign_in
@@ -95,23 +84,11 @@ fun AuthScreen(
         .verticalScroll(rememberScrollState())
         .padding(horizontal = 20.dp, vertical = 24.dp),
     ) {
-      Row(verticalAlignment = Alignment.CenterVertically) {
-        LogoMark(size = 28.dp)
-        Spacer(Modifier.width(10.dp))
-        Text(
-          text = stringResource(Res.string.app_name),
-          style = MaterialTheme.typography.titleSmall,
-          color = MaterialTheme.colorScheme.onSurface,
-        )
-      }
-
-      Spacer(Modifier.height(36.dp))
-
       Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
-        LockBadge()
+        LogoMark(size = 56.dp)
         Spacer(Modifier.height(14.dp))
         Text(
           text = stringResource(Res.string.auth_title),
@@ -227,43 +204,6 @@ fun AuthScreen(
 }
 
 @Composable
-private fun LockBadge() {
-  val color = MaterialTheme.colorScheme.primary
-  Box(
-    modifier = Modifier
-      .size(56.dp)
-      .clip(RoundedCornerShape(16.dp))
-      .background(MaterialTheme.colorScheme.primaryContainer),
-    contentAlignment = Alignment.Center,
-  ) {
-    Canvas(modifier = Modifier.size(26.dp)) {
-      val stroke = 2.dp.toPx()
-      drawRoundRect(
-        color = color,
-        topLeft = Offset(size.width * 0.12f, size.height * 0.44f),
-        size = Size(size.width * 0.76f, size.height * 0.44f),
-        cornerRadius = CornerRadius(3.dp.toPx()),
-        style = Stroke(stroke),
-      )
-      drawArc(
-        color = color,
-        startAngle = 180f,
-        sweepAngle = 180f,
-        useCenter = false,
-        topLeft = Offset(size.width * 0.25f, size.height * 0.1f),
-        size = Size(size.width * 0.5f, size.height * 0.56f),
-        style = Stroke(stroke, cap = StrokeCap.Round),
-      )
-      drawCircle(
-        color = color,
-        radius = size.width * 0.055f,
-        center = Offset(size.width * 0.5f, size.height * 0.66f),
-      )
-    }
-  }
-}
-
-@Composable
 private fun AuthField(
   label: String,
   value: String,
@@ -276,6 +216,8 @@ private fun AuthField(
   visualTransformation: VisualTransformation = VisualTransformation.None,
   trailingIcon: @Composable (() -> Unit)? = null,
 ) {
+  val errorText = error?.let { authErrorMessage(it) }
+
   Column(modifier = Modifier.fillMaxWidth()) {
     Text(
       text = label,
@@ -288,7 +230,14 @@ private fun AuthField(
       onValueChange = onValueChange,
       modifier = Modifier
         .fillMaxWidth()
-        .then(fieldModifier),
+        .then(fieldModifier)
+        .then(
+          if (errorText != null) {
+            Modifier.semantics { this.error(errorText) }
+          } else {
+            Modifier
+          },
+        ),
       enabled = enabled,
       singleLine = true,
       isError = error != null,
@@ -308,10 +257,10 @@ private fun AuthField(
         errorContainerColor = MaterialTheme.colorScheme.surface,
       ),
     )
-    if (error != null) {
+    if (errorText != null) {
       Spacer(Modifier.height(6.dp))
       Text(
-        text = authErrorMessage(error),
+        text = errorText,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.error,
       )

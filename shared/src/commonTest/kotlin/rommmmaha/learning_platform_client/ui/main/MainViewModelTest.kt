@@ -12,10 +12,7 @@ class MainViewModelTest {
       IsOnboardingCompletedUseCase(FakeOnboardingRepository(completed = true)),
     )
 
-    assertEquals(
-      MainUiState.Ready(StartDestination.Auth),
-      viewModel.state.value,
-    )
+    assertEquals(StartDestination.Auth, viewModel.start)
   }
 
   @Test
@@ -24,10 +21,7 @@ class MainViewModelTest {
       IsOnboardingCompletedUseCase(FakeOnboardingRepository(completed = false)),
     )
 
-    assertEquals(
-      MainUiState.Ready(StartDestination.Onboarding),
-      viewModel.state.value,
-    )
+    assertEquals(StartDestination.Onboarding, viewModel.start)
   }
 
   private class FakeOnboardingRepository(private val completed: Boolean) : OnboardingRepository {

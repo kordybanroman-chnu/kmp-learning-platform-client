@@ -108,12 +108,13 @@ fun OnboardingScreen(
     modifier = Modifier
       .fillMaxSize()
       .safeContentPadding()
-      .padding(horizontal = 20.dp, vertical = 16.dp),
+      .padding(vertical = 16.dp),
   ) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .height(48.dp),
+        .height(48.dp)
+        .padding(horizontal = 20.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       LogoMark(size = 28.dp)
@@ -140,6 +141,8 @@ fun OnboardingScreen(
 
     HorizontalPager(
       state = pagerState,
+      contentPadding = PaddingValues(horizontal = 20.dp),
+      pageSpacing = 20.dp,
       modifier = Modifier
         .fillMaxWidth()
         .weight(1f)
@@ -190,6 +193,7 @@ fun OnboardingScreen(
       },
       modifier = Modifier
         .fillMaxWidth()
+        .padding(horizontal = 20.dp)
         .height(48.dp),
       shape = MaterialTheme.shapes.medium,
     ) {
