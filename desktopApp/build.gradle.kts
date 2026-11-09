@@ -21,6 +21,9 @@ compose.desktop {
       targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
       packageName = "rommmmaha.learning_platform_client"
       packageVersion = "1.0.0"
+      linux {
+        modules("jdk.unsupported", "java.management")
+      }
     }
   }
 }

@@ -25,17 +25,20 @@
     <string name="home_show_onboarding">Показати онбординг ще раз</string>
     <string name="auth_title">Вхід</string>
     <string name="auth_subtitle">Доступ для студентів університету.</string>
-    <string name="auth_username">Ім\'я користувача</string>
+    <string name="auth_email">Електронна пошта</string>
     <string name="auth_password">Пароль</string>
     <string name="auth_show_password">Показати</string>
     <string name="auth_hide_password">Сховати</string>
     <string name="auth_sign_in">Увійти</string>
     <string name="auth_signing_in">Вхід…</string>
-    <string name="auth_error_username_required">Введіть ім\'я користувача</string>
-    <string name="auth_error_username_short">Щонайменше 3 символи</string>
+    <string name="auth_error_email_required">Введіть електронну пошту</string>
+    <string name="auth_error_email_invalid">Введіть коректну адресу електронної пошти</string>
     <string name="auth_error_password_required">Введіть пароль</string>
     <string name="auth_error_password_short">Щонайменше 6 символів</string>
-    <string name="auth_error_sign_in">Не вдалося увійти. Спробуйте ще раз.</string>
+    <string name="auth_error_invalid_credentials">Невірна пошта або пароль</string>
+    <string name="auth_error_invalid_request">Перевірте дані для входу</string>
+    <string name="auth_error_network">Немає з’єднання. Спробуйте ще раз.</string>
+    <string name="auth_error_unknown">Не вдалося увійти. Спробуйте ще раз.</string>
     <string name="auth_no_account">Немає акаунта? Зверніться до деканату.</string>
 
     <string name="home_title">Налаштування</string>

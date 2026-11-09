@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
+import eu.anifantakis.lib.ksafe.KSafe
 import rommmmaha.learning_platform_client.settings.createSettings
 
 class MainActivity : ComponentActivity() {
@@ -14,7 +15,8 @@ class MainActivity : ComponentActivity() {
 
     setContent {
       val settings = remember { createSettings(applicationContext) }
-      App(settings = settings)
+      val ksafe = remember { KSafe(applicationContext) }
+      App(settings = settings, ksafe = ksafe)
     }
   }
 }

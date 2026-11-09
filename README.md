@@ -4,7 +4,7 @@
 
 UI і логіка написані один раз на Kotlin Multiplatform (Compose Multiplatform) і працюють на Android і Desktop. Різні лише точки входу і кілька платформних функцій.
 
-На цьому етапі виконана лабораторна 5: Navigation 3, Koin, MVI для онбордингу, екран входу, перехід онбординг → авторизація → головний екран і новий візуальний стиль. Мережевого шару, каталогу й екранів навчання ще немає.
+На цьому етапі виконана лабораторна 6: мережевий стек авторизації на Ktor, безпечне зберігання токенів на KSafe, автоматичне оновлення токенів, MVI-екран входу зі снекбаром і навігація за ознакою авторизованого користувача.
 
 ## Структура
 
@@ -20,6 +20,7 @@ UI і логіка написані один раз на Kotlin Multiplatform (C
 │       ├── commonMain/
 │       │   ├── composeResources/  рядки uk/en і шрифти Inter
 │       │   └── kotlin/.../
+│       │       ├── data/          Ktor-мережа, DTO, сховище токенів
 │       │       ├── di/            Koin-модуль
 │       │       ├── domain/        репозиторії та use cases
 │       │       ├── settings/      multiplatform-settings
@@ -34,20 +35,26 @@ UI і логіка написані один раз на Kotlin Multiplatform (C
 
 ## Що вже є
 
-- Navigation 3: `NavDisplay` і `NavBackStack` на KMP-бібліотеці з AndroidX runtime. Стартовий екран залежить від прапорця онбордингу.
+- Navigation 3: `NavDisplay` і `NavBackStack` на KMP-бібліотеці з AndroidX runtime. Стартовий екран залежить від прапорця онбордингу і стану авторизації: онбординг, вхід або головний екран.
 - Koin: `di/AppModule.kt`, `KoinApplication` у `App.kt`, ViewModel-и на кожен NavEntry через `lifecycle-viewmodel-navigation3`.
 - MVI онбордингу: `OnboardingContract`, `OnboardingViewModel`, `CompleteOnboardingUseCase`, `SettingsOnboardingRepository`. Чотири слайди: каталог, запис і оплата, навчання, тести й сертифікат.
-- Екран входу: MVI, валідація імені користувача і пароля, показ пароля, клавіатурні дії Next і Done. Авторизація локальна: `FakeAuthRepository` приймає будь-які коректні дані, бо серверного auth API ще немає.
-- Головний екран як налаштування: тема, мова, повторний онбординг, вихід. Стан зберігається через multiplatform-settings.
+- Екран входу: MVI з ефектами, валідація пошти і пароля, показ пароля, клавіатурні дії Next і Done. Помилки мережі й логіну показуються снекбаром через `AuthEffect.ShowError`.
+- Мережевий стек: `data/network/AuthApi` з DTO `LoginRequest`, `RefreshRequest`, `AuthResponse`, `ProblemDetails`, `KtorAuthApi` на `HttpClient` з `ContentNegotiation` і `Logging`. Базовий URL: `https://learning-platform-mock.rommmmaha.workers.dev`.
+- Авторизований клієнт: `HttpClient` з плагіном `Auth` і Bearer-токенами. При `401` клієнт викликає `POST /api/auth/refresh` і повторює запит.
+- Токени: сесія з `accessToken`, `refreshToken` і часом закінчення лежить у `TokenStore` на KSafe. Android: `KSafe(context)` з Keystore, Desktop: `KSafe()` на JVM.
+- Автооновлення: `NetworkAuthRepository.refreshIfNeeded()` перевіряє термін дії перед відображенням і оновлює сесію через `refresh`. Помилка оновлення очищає токени і повертає застосунок на екран входу.
+- Головний екран як налаштування: тема, мова, повторний онбординг, вихід. Вихід очищає токени через `SignOutUseCase` і веде на екран входу. Стан зберігається через multiplatform-settings.
 - Новий стиль: зелена палітра, картки з радіусом 16, типографіка Inter, сегментовані перемикачі, онбординг з ілюстраціями. Світла, темна і системна тема; системну ознаку «темно» дає `isSystemInDarkTheme()`.
 - Іконка застосунку: біла «L» на зеленій плитці; адаптивна іконка Android з монохромним шаром для Themed icons.
 - Локалізація українською та англійською без перезапуску застосунку.
-- Логування через kermit з тегом `LearningPlatform`.
-- Тести: MVI онбордингу, валідація входу, стартовий екран, Koin-граф.
+- Логування через kermit з тегом `LearningPlatform` і Ktor `Logging`.
+- Тести: MVI онбордингу, валідація входу, ефекти снекбару, оновлення сесії, стартовий екран, Koin-граф.
 
 Динамічні кольори Material You і палітра KDE у темі не застосовуються: кольори завжди беруться з палітри застосунку.
 
 ## Запуск
+
+Застосунок працює з деплоєним моком `https://learning-platform-mock.rommmmaha.workers.dev`. Локальний мок з `.docs/mock` для запуску не потрібен.
 
 ```bash
 ./gradlew :androidApp:assembleDebug
@@ -55,21 +62,24 @@ UI і логіка написані один раз на Kotlin Multiplatform (C
 ./gradlew :shared:jvmTest
 ```
 
+Тестові дані мока: `student1@example.com`, пароль `learning2026`.
+
 Desktop-пакет збирається у `.deb`, `.msi` або `.dmg` через `nativeDistributions`; головний клас `rommmmaha.learning_platform_client.MainKt`.
 
 ## Межі
 
-Каталог, запис, оплата, навчання, тести й сертифікати описані в `docs/design/target`, але не реалізовані. Для них потрібен HTTP-клієнт, DTO, репозиторії та серверні контракти. Екран входу не звертається до сервера.
+Каталог, запис, оплата, навчання, тести й сертифікати описані в `docs/design/target`, але не реалізовані. Авторизований `HttpClient` зареєстрований у Koin-графі і готовий до цих екранів, але Bearer-запитів поза `/api/auth` клієнт поки не робить.
 
-## Відповідність лабораторній 5
+## Відповідність лабораторній 6
 
 | Вимога | Де в коді |
 | --- | --- |
-| Navigation 3 KMP + Android | `App.kt`, `gradle/libs.versions.toml` |
-| Koin | `di/AppModule.kt`, `App.kt` |
-| multiplatform-settings | `settings/UserSettings.kt`, `domain/onboarding/Onboarding.kt` |
-| MVI онбордингу і use case | `ui/onboarding/`, `domain/onboarding/` |
-| Екран авторизації | `ui/auth/AuthScreen.kt` |
-| Перехід онбординг → авторизація | `App.kt` |
-| ViewModel і use case перевірки онбордингу | `ui/main/MainViewModel.kt`, `IsOnboardingCompletedUseCase` |
-| Валідація і клавіатура | `ui/auth/AuthViewModel.kt`, `ui/auth/AuthScreen.kt` |
+| Ktor | `gradle/libs.versions.toml`, `data/network/ApiClient.kt`, `data/network/AuthApi.kt` |
+| KSafe | `data/auth/TokenStore.kt`, `App.kt`, точки входу |
+| Мережевий стек авторизації | `data/network/`, `domain/auth/Auth.kt` |
+| Токени в безпечному сховищі | `data/auth/Session.kt`, `data/auth/TokenStore.kt` |
+| Автооновлення токенів | `Auth` плагін у `ApiClient.kt`, `refreshIfNeeded()` у `NetworkAuthRepository`, запуск у `MainViewModel` |
+| MVI екрана авторизації | `ui/auth/AuthContract.kt`, `ui/auth/AuthViewModel.kt`, `ui/auth/AuthScreen.kt` |
+| Обробка помилок і снекбар | `AuthEffect.ShowError`, `SnackbarHost` у `AuthScreen.kt` |
+| Головний екран і перехід після входу | `ui/home/HomeScreen.kt`, `App.kt` |
+| Навігація за ознакою авторизації | `ui/main/MainViewModel.kt`, `App.kt` |

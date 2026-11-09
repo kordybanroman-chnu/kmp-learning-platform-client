@@ -5,8 +5,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -22,11 +25,15 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.russhwolf.settings.Settings
+import eu.anifantakis.lib.ksafe.KSafe
+import kotlinx.coroutines.launch
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.dsl.koinConfiguration
+import rommmmaha.learning_platform_client.data.auth.KSafeTokenStore
 import rommmmaha.learning_platform_client.di.appModule
+import rommmmaha.learning_platform_client.domain.auth.SignOutUseCase
 import rommmmaha.learning_platform_client.domain.onboarding.RestartOnboardingUseCase
 import rommmmaha.learning_platform_client.platform.LocalAppLocale
 import rommmmaha.learning_platform_client.settings.UserSettings
@@ -44,12 +51,13 @@ private data object HomeKey : NavKey
 private fun StartDestination.toKey(): NavKey = when (this) {
   StartDestination.Onboarding -> OnboardingKey
   StartDestination.Auth -> AuthKey
+  StartDestination.Home -> HomeKey
 }
 
 @Composable
-fun App(settings: Settings) {
-  val koinConfig = remember(settings) {
-    koinConfiguration { modules(appModule(settings)) }
+fun App(settings: Settings, ksafe: KSafe) {
+  val koinConfig = remember(settings, ksafe) {
+    koinConfiguration { modules(appModule(settings, KSafeTokenStore(ksafe))) }
   }
   KoinApplication(configuration = koinConfig) {
     AppContent()
@@ -60,22 +68,25 @@ fun App(settings: Settings) {
 private fun AppContent() {
   val userSettings = koinInject<UserSettings>()
   val restartOnboarding = koinInject<RestartOnboardingUseCase>()
+  val signOut = koinInject<SignOutUseCase>()
   val platformOwner = LocalViewModelStoreOwner.current
   val owner: ViewModelStoreOwner = platformOwner ?: rememberViewModelStoreOwner(parent = null)
+  val scope = rememberCoroutineScope()
 
   CompositionLocalProvider(
     LocalViewModelStoreOwner provides owner,
     LocalAppLocale provides userSettings.language,
   ) {
     val mainViewModel: MainViewModel = koinViewModel()
+    val start by mainViewModel.start.collectAsState()
 
     LearningPlatformTheme(themeMode = userSettings.themeMode) {
       Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
       ) {
-        val backStack = rememberSaveable(mainViewModel.start, saver = navBackStackSaver) {
-          NavBackStack<NavKey>(mainViewModel.start.toKey())
+        val backStack = rememberSaveable(start, saver = navBackStackSaver) {
+          NavBackStack<NavKey>(start.toKey())
         }
         key(userSettings.language) {
           val saveableDecorator = rememberSaveableStateHolderNavEntryDecorator<NavKey>()
@@ -119,6 +130,9 @@ private fun AppContent() {
                     backStack.add(OnboardingKey)
                   },
                   onSignOut = {
+                    scope.launch {
+                      signOut()
+                    }
                     backStack.clear()
                     backStack.add(AuthKey)
                   },

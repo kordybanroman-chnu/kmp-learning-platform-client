@@ -5,6 +5,7 @@ plugins {
   alias(libs.plugins.androidMultiplatformLibrary)
   alias(libs.plugins.composeMultiplatform)
   alias(libs.plugins.composeCompiler)
+  alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -55,6 +56,14 @@ kotlin {
       implementation(libs.koin.compose.viewmodel)
       implementation(libs.kermit)
       api(libs.multiplatform.settings)
+      api(libs.ksafe)
+      implementation(libs.ktor.client.core)
+      implementation(libs.ktor.client.okhttp)
+      implementation(libs.ktor.client.content.negotiation)
+      implementation(libs.ktor.serialization.kotlinx.json)
+      implementation(libs.ktor.client.auth)
+      implementation(libs.ktor.client.logging)
+      implementation(libs.kotlinx.serialization.json)
     }
     commonTest.dependencies {
       implementation(libs.kotlin.test)

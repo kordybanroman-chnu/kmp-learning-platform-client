@@ -25,17 +25,20 @@
     <string name="home_show_onboarding">Show the onboarding again</string>
     <string name="auth_title">Sign in</string>
     <string name="auth_subtitle">Access for university students.</string>
-    <string name="auth_username">Username</string>
+    <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
     <string name="auth_show_password">Show</string>
     <string name="auth_hide_password">Hide</string>
     <string name="auth_sign_in">Sign in</string>
     <string name="auth_signing_in">Signing in…</string>
-    <string name="auth_error_username_required">Enter your username</string>
-    <string name="auth_error_username_short">At least 3 characters</string>
+    <string name="auth_error_email_required">Enter your email</string>
+    <string name="auth_error_email_invalid">Enter a valid email address</string>
     <string name="auth_error_password_required">Enter your password</string>
     <string name="auth_error_password_short">At least 6 characters</string>
-    <string name="auth_error_sign_in">Sign in failed. Try again.</string>
+    <string name="auth_error_invalid_credentials">Invalid email or password</string>
+    <string name="auth_error_invalid_request">Check your sign-in details</string>
+    <string name="auth_error_network">No connection. Try again.</string>
+    <string name="auth_error_unknown">Sign in failed. Try again.</string>
     <string name="auth_no_account">No account? Contact your faculty office.</string>
 
     <string name="home_title">Settings</string>

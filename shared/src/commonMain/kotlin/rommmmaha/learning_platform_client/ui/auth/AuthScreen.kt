@@ -19,6 +19,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,11 +45,15 @@ import org.koin.compose.viewmodel.koinViewModel
 import rommmmaha.learning_platform_client.ui.components.LogoMark
 
 import kmp_learning_platform_client.shared.generated.resources.Res
+import kmp_learning_platform_client.shared.generated.resources.auth_email
+import kmp_learning_platform_client.shared.generated.resources.auth_error_email_invalid
+import kmp_learning_platform_client.shared.generated.resources.auth_error_email_required
+import kmp_learning_platform_client.shared.generated.resources.auth_error_invalid_credentials
+import kmp_learning_platform_client.shared.generated.resources.auth_error_invalid_request
+import kmp_learning_platform_client.shared.generated.resources.auth_error_network
 import kmp_learning_platform_client.shared.generated.resources.auth_error_password_required
 import kmp_learning_platform_client.shared.generated.resources.auth_error_password_short
-import kmp_learning_platform_client.shared.generated.resources.auth_error_sign_in
-import kmp_learning_platform_client.shared.generated.resources.auth_error_username_required
-import kmp_learning_platform_client.shared.generated.resources.auth_error_username_short
+import kmp_learning_platform_client.shared.generated.resources.auth_error_unknown
 import kmp_learning_platform_client.shared.generated.resources.auth_hide_password
 import kmp_learning_platform_client.shared.generated.resources.auth_no_account
 import kmp_learning_platform_client.shared.generated.resources.auth_password
@@ -56,7 +62,6 @@ import kmp_learning_platform_client.shared.generated.resources.auth_sign_in
 import kmp_learning_platform_client.shared.generated.resources.auth_signing_in
 import kmp_learning_platform_client.shared.generated.resources.auth_subtitle
 import kmp_learning_platform_client.shared.generated.resources.auth_title
-import kmp_learning_platform_client.shared.generated.resources.auth_username
 
 @Composable
 fun AuthScreen(
@@ -65,9 +70,27 @@ fun AuthScreen(
 ) {
   val state by viewModel.state.collectAsState()
   val passwordFocus = remember { FocusRequester() }
+  val snackbar = remember { SnackbarHostState() }
+  val invalidCredentialsMsg = stringResource(Res.string.auth_error_invalid_credentials)
+  val invalidRequestMsg = stringResource(Res.string.auth_error_invalid_request)
+  val networkMsg = stringResource(Res.string.auth_error_network)
+  val unknownMsg = stringResource(Res.string.auth_error_unknown)
 
   LaunchedEffect(state.isSignedIn) {
     if (state.isSignedIn) onSignedIn()
+  }
+
+  LaunchedEffect(viewModel) {
+    viewModel.effects.collect { effect ->
+      val error = (effect as? AuthEffect.ShowError)?.error ?: return@collect
+      val message = when (error) {
+        SignInError.InvalidCredentials -> invalidCredentialsMsg
+        SignInError.InvalidRequest -> invalidRequestMsg
+        SignInError.Network -> networkMsg
+        SignInError.Unknown -> unknownMsg
+      }
+      snackbar.showSnackbar(message)
+    }
   }
 
   Box(
@@ -107,13 +130,13 @@ fun AuthScreen(
       Spacer(Modifier.height(28.dp))
 
       AuthField(
-        label = stringResource(Res.string.auth_username),
-        value = state.username,
-        onValueChange = { viewModel.onIntent(AuthIntent.UsernameChanged(it)) },
-        error = state.usernameError,
+        label = stringResource(Res.string.auth_email),
+        value = state.email,
+        onValueChange = { viewModel.onIntent(AuthIntent.EmailChanged(it)) },
+        emailError = state.emailError,
         enabled = !state.isSubmitting,
         keyboardOptions = KeyboardOptions(
-          keyboardType = KeyboardType.Text,
+          keyboardType = KeyboardType.Email,
           imeAction = ImeAction.Next,
         ),
         keyboardActions = KeyboardActions(
@@ -127,7 +150,7 @@ fun AuthScreen(
         label = stringResource(Res.string.auth_password),
         value = state.password,
         onValueChange = { viewModel.onIntent(AuthIntent.PasswordChanged(it)) },
-        error = state.passwordError,
+        passwordError = state.passwordError,
         enabled = !state.isSubmitting,
         fieldModifier = Modifier.focusRequester(passwordFocus),
         keyboardOptions = KeyboardOptions(
@@ -163,15 +186,6 @@ fun AuthScreen(
         },
       )
 
-      if (state.signInFailed) {
-        Spacer(Modifier.height(12.dp))
-        Text(
-          text = stringResource(Res.string.auth_error_sign_in),
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.error,
-        )
-      }
-
       Spacer(Modifier.height(20.dp))
 
       Button(
@@ -200,6 +214,13 @@ fun AuthScreen(
         modifier = Modifier.fillMaxWidth(),
       )
     }
+
+    SnackbarHost(
+      hostState = snackbar,
+      modifier = Modifier
+        .align(Alignment.BottomCenter)
+        .padding(horizontal = 20.dp, vertical = 16.dp),
+    )
   }
 }
 
@@ -208,7 +229,8 @@ private fun AuthField(
   label: String,
   value: String,
   onValueChange: (String) -> Unit,
-  error: AuthFieldError?,
+  emailError: EmailError? = null,
+  passwordError: PasswordError? = null,
   enabled: Boolean,
   keyboardOptions: KeyboardOptions,
   keyboardActions: KeyboardActions,
@@ -216,7 +238,11 @@ private fun AuthField(
   visualTransformation: VisualTransformation = VisualTransformation.None,
   trailingIcon: @Composable (() -> Unit)? = null,
 ) {
-  val errorText = error?.let { authErrorMessage(it) }
+  val errorText = when {
+    emailError != null -> emailErrorMessage(emailError)
+    passwordError != null -> passwordErrorMessage(passwordError)
+    else -> null
+  }
 
   Column(modifier = Modifier.fillMaxWidth()) {
     Text(
@@ -240,7 +266,7 @@ private fun AuthField(
         ),
       enabled = enabled,
       singleLine = true,
-      isError = error != null,
+      isError = errorText != null,
       shape = MaterialTheme.shapes.medium,
       textStyle = MaterialTheme.typography.bodyLarge,
       keyboardOptions = keyboardOptions,
@@ -269,9 +295,13 @@ private fun AuthField(
 }
 
 @Composable
-private fun authErrorMessage(error: AuthFieldError): String = when (error) {
-  AuthFieldError.UsernameRequired -> stringResource(Res.string.auth_error_username_required)
-  AuthFieldError.UsernameTooShort -> stringResource(Res.string.auth_error_username_short)
-  AuthFieldError.PasswordRequired -> stringResource(Res.string.auth_error_password_required)
-  AuthFieldError.PasswordTooShort -> stringResource(Res.string.auth_error_password_short)
+private fun emailErrorMessage(error: EmailError): String = when (error) {
+  EmailError.Required -> stringResource(Res.string.auth_error_email_required)
+  EmailError.Invalid -> stringResource(Res.string.auth_error_email_invalid)
+}
+
+@Composable
+private fun passwordErrorMessage(error: PasswordError): String = when (error) {
+  PasswordError.Required -> stringResource(Res.string.auth_error_password_required)
+  PasswordError.TooShort -> stringResource(Res.string.auth_error_password_short)
 }
